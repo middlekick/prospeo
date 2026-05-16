@@ -22,10 +22,10 @@ Centraliser la prospection : sourcing de leads (Google Maps + INPI), suivi des a
 gestion des RDV, scripts d'appel, relances, journal d'activité — le tout sur une interface unique.
 
 ### Vision long terme
-- SaaS multi-utilisateurs avec abonnements Stripe ← **en cours**
+- SaaS multi-utilisateurs avec abonnements Stripe ✅ **système de plans complet**
 - Auth Clerk déjà en place
 - DB PostgreSQL (Neon) déjà en place
-- Déploiement Vercel (prochaine étape)
+- Déploiement Vercel ← **prochaine étape** (CLI installé, git init fait, instructions prêtes)
 
 ---
 
@@ -75,20 +75,31 @@ Prospeo/
 │       └── webhook/route.ts           # POST — webhook Stripe
 ├── components/
 │   ├── layout/
-│   │   └── Sidebar.tsx                # Sidebar 56px — nav + UserButton Clerk en bas
+│   │   ├── Sidebar.tsx                # Sidebar 220px — nav + plan badge + UserButton Clerk
+│   │   └── LayoutShell.tsx            # Shell avec orbe violet + margin ml-[220px]
 │   ├── leads/
 │   │   ├── types.ts                   # re-export Lead + TAG_OPTIONS + TAG_LABEL + colors
-│   │   ├── LeadsTable.tsx             # Table triable + tag inline + lien "Trouver"
-│   │   ├── LeadDrawer.tsx             # Drawer 480px — Suivi/Ads/RDV + EmailPanel + Journal
+│   │   ├── LeadsTable.tsx             # Table flexbox + tag inline + tri + lien "Trouver"
+│   │   ├── LeadDrawer.tsx             # Drawer 480px — Suivi/Ads(gated)/RDV + EmailPanel + Journal
 │   │   ├── FilterPills.tsx            # Filtres par statut + badge rappels pulsé
 │   │   ├── StatsBar.tsx               # Stats globales (total, rappels, intéressés, RDV…)
-│   │   ├── ScrapeForm.tsx             # Formulaire scraping Google Maps
+│   │   ├── ScrapeForm.tsx             # Formulaire scraping + badge quota Free
 │   │   ├── ImportCSV.tsx              # Modal import CSV avec preview 3 lignes
-│   │   └── EnrichButton.tsx           # Enrichissement batch leads sans téléphone
-│   └── inpi/
-│       └── INPISearch.tsx             # Formulaire + table INPI (depts, NAF, RM, pagination)
+│   │   └── EnrichButton.tsx           # Enrichissement batch leads sans téléphone (Pro+ only)
+│   ├── inpi/
+│   │   └── INPISearch.tsx             # Formulaire + table INPI (depts, NAF, RM, pagination)
+│   ├── landing/
+│   │   └── AnimatedDemo.tsx           # Démo animée pour la landing page
+│   └── ui/
+│       ├── UpgradeGate.tsx            # Overlay 🔒 avec CTA vers /landing#pricing
+│       ├── OnboardingModal.tsx        # Modal 4 étapes au 1er login (localStorage)
+│       ├── TrialCodeModal.tsx         # Modal code d'invitation trial
+│       └── ContactModal.tsx           # Modal contact (landing page)
+├── hooks/
+│   └── usePlan.ts                     # Hook plan — fetch /api/plan, cache 5min sessionStorage
 ├── lib/
 │   ├── db.ts                          # Activity, Lead, fromPrisma, normalizeLead, leadKey
+│   ├── plan.ts                        # PLAN_LIMITS, getUserPlan(), checkAndIncrementScrape()
 │   ├── prisma.ts                      # Singleton PrismaClient (adapter pg, hot-reload safe)
 │   ├── phone.ts                       # toWhatsAppUrl() — normalisation 06/07 → wa.me/336...
 │   ├── email.ts                       # mailer + 3 templates HTML (offre, rdv_confirmation, rdv_rappel)
@@ -102,12 +113,13 @@ Prospeo/
 │   ├── artisans.json                  # ⚠️ BACKUP UNIQUEMENT — données migrées vers Neon
 │   └── scripts.json                   # Scripts d'appel (cold call + closing Google Ads)
 ├── prisma.config.ts                   # Config Prisma v7 (datasource.url via dotenv)
-├── middleware.ts                      # Clerk middleware — protège tout sauf /sign-in /sign-up /landing
+├── middleware.ts                      # Clerk middleware — protège tout sauf /sign-in /sign-up /landing /api/webhook
+├── vercel.json                        # Config Vercel (timeout 60s sur scrape/enrich/inpi)
 ├── .env                               # Variables d'environnement (ne jamais committer)
 ├── next.config.ts                     # serverExternalPackages: nodemailer, serpapi
 ├── tsconfig.json                      # scripts/ et lib/prisma.ts exclus du check TS (Prisma v7)
 ├── CLAUDE.md                          # Ce fichier
-└── package.json
+└── package.json                       # build: "prisma generate && next build"
 ```
 
 ---
@@ -128,15 +140,25 @@ CONTACT_TEL=06 18 14 62 83
 # Stripe
 STRIPE_SECRET_KEY=...
 STRIPE_WEBHOOK_SECRET=...
-NEXT_PUBLIC_STRIPE_PRICE_ID=price_...    # Price ID du plan SaaS (créer sur dashboard.stripe.com)
+STRIPE_PRICE_ID_PRO=price_...            # Plan Pro 19€/mois
+STRIPE_PRICE_ID_AGENCY=price_...         # Plan Agence 49€/mois
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
 
 # Clerk — Auth
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
 CLERK_SECRET_KEY=sk_...
 
+# App URL (localhost en dev, URL Vercel en prod)
+NEXT_PUBLIC_APP_URL=https://votre-projet.vercel.app
+
 # Neon — PostgreSQL
 DATABASE_URL=postgresql://...
 DIRECT_URL=postgresql://...              # Même URL que DATABASE_URL (Neon sans pooler séparé)
+
+# Plans & Admin
+TRIAL_INVITE_CODES=FORMATION2025         # Codes trial (virgule-séparés)
+TRIAL_DURATION_DAYS=7                    # Durée du trial en jours
+ADMIN_USER_IDS=user_xxx,user_yyy         # IDs Clerk des admins
 ```
 
 ---
@@ -350,14 +372,19 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - [x] Boutons SMS/appel dans les emails
 - [x] Scripts : closing mis à jour (nom société, pas prénom)
 
-### Phase 4 — SaaS ✅ TERMINÉ (infrastructure)
+### Phase 4 — SaaS ✅ TERMINÉ
 - [x] Auth Clerk multi-utilisateurs
 - [x] Migration PostgreSQL (Prisma v7 + Neon)
-- [x] Plans d'abonnement Stripe (routes prêtes, Price ID à brancher)
-- [x] Landing page publique avec effet curseur
-- [ ] **Déploiement Vercel** ← prochaine étape
-- [ ] Dashboard admin (stats globales, gestion users)
-- [ ] Stripe webhook → activer/désactiver accès selon abonnement
+- [x] Plans d'abonnement Stripe (routes checkout + webhook opérationnels)
+- [x] Landing page publique avec effet curseur + pricing 0€/19€/49€
+- [x] Système de plans Free/Pro/Agence avec gates API + UI
+- [x] Trial par code d'invitation (FORMATION2025, 7 jours)
+- [x] Dashboard admin (/admin) : gestion users, plan, reset password, suppression
+- [x] Page 404 custom dark theme
+- [x] Modal onboarding 4 étapes au 1er login
+- [x] Scripts d'appel CRUD avec localStorage + import/export JSON
+- [x] Sidebar redesignée 220px avec labels + badge plan
+- [ ] **Déploiement Vercel** ← prochaine étape (CLI installé, `vercel` à lancer)
 
 ### Phase 5 — Post-lancement
 - [ ] Tags personnalisables par user

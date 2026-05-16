@@ -3,7 +3,7 @@ import { getJson }                    from "serpapi";
 import { auth }                       from "@clerk/nextjs/server";
 import { prisma }                     from "@/lib/prisma";
 import { normalizeLead }              from "@/lib/db";
-import { checkAndIncrementScrape }    from "@/lib/plan";
+import { checkAndIncrementScrape, getUserPlan, PLAN_LIMITS } from "@/lib/plan";
 
 const PAGE_SIZE = 20;
 
@@ -57,6 +57,22 @@ export async function POST(req: NextRequest) {
       existing.map(r => `${r.nom.toLowerCase()}|${r.telephone.toLowerCase()}`)
     );
 
+    // ── Limite 100 leads pour le plan free ────────────────────────────────────
+    const planTier   = await getUserPlan(userId);
+    const maxLeads   = PLAN_LIMITS[planTier].maxLeads;
+    const currentCount = existing.length;
+
+    if (maxLeads !== null && currentCount >= maxLeads) {
+      return NextResponse.json(
+        {
+          error:   "upgrade_required",
+          feature: "leads_limit",
+          message: `Limite de ${maxLeads} leads atteinte sur le plan Free. Passez en Pro pour des leads illimités.`,
+        },
+        { status: 403 }
+      );
+    }
+
     let collected: Record<string, unknown>[] = [];
     let start = 0;
 
@@ -74,6 +90,8 @@ export async function POST(req: NextRequest) {
     const today = new Date().toISOString().slice(0, 10);
 
     for (const r of collected) {
+      // Arrêter si on atteint la limite de leads du plan
+      if (maxLeads !== null && currentCount + added >= maxLeads) break;
       if (added >= nb) break;
       const c = normalizeLead({
         nom: String(r.title || ""), metier,

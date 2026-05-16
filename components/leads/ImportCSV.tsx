@@ -68,7 +68,13 @@ export default function ImportCSV({ onClose, onImported }: Props) {
         body: JSON.stringify({ leads: rows }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erreur import");
+      if (!res.ok) {
+        // Message clair si plan free
+        if (data.error === "upgrade_required") {
+          throw new Error("L'import CSV est réservé au plan Pro. Passez Pro sur /landing#pricing.");
+        }
+        throw new Error(data.error || "Erreur import");
+      }
       setMsg({ text: `✓ ${data.added} lead(s) importé(s) (doublons ignorés)`, ok: true });
       setTimeout(onImported, 1200);
     } catch (e) {

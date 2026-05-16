@@ -20,7 +20,7 @@ export default function LeadsPage() {
   const [selected, setSelected] = useState<Lead | null>(null);
   const [showImport, setShowImport] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const { plan } = usePlan();
+  const { plan, loading: planLoading } = usePlan();
 
   // Afficher l'onboarding au 1er login (vérification localStorage)
   useEffect(() => {
@@ -109,7 +109,9 @@ export default function LeadsPage() {
     URL.revokeObjectURL(url);
   }
 
-  const rappelsDus = counts.rappels ?? 0;
+  const rappelsDus  = counts.rappels ?? 0;
+  const isFreeUser  = !loading && !planLoading && plan === "free";
+  const leadsLeft   = isFreeUser ? Math.max(0, 100 - leads.length) : null;
 
   return (
     <div className="flex flex-col h-screen">
@@ -120,6 +122,22 @@ export default function LeadsPage() {
       <header className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Leads</h1>
+          {/* Badge limite Free */}
+          {isFreeUser && leadsLeft !== null && (
+            <a href="/landing#pricing"
+              className={[
+                "flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium border transition-colors",
+                leadsLeft === 0
+                  ? "bg-red-500/10 border-red-500/25 text-red-400 hover:bg-red-500/20"
+                  : leadsLeft <= 20
+                  ? "bg-amber-500/10 border-amber-500/25 text-amber-400 hover:bg-amber-500/20"
+                  : "bg-white/[0.04] border-white/[0.08] text-slate-600 hover:text-slate-400",
+              ].join(" ")}
+              title={leadsLeft === 0 ? "Limite atteinte — passez Pro pour des leads illimités" : "Plan Free — 100 leads max"}
+            >
+              {leads.length}/100 leads
+            </a>
+          )}
           {rappelsDus > 0 && (
             <button onClick={() => setFilter("rappels")}
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-medium hover:bg-amber-500/20 transition-colors">
@@ -130,14 +148,30 @@ export default function LeadsPage() {
         </div>
         <div className="flex items-center gap-1.5">
           <EnrichButton leads={leads} onEnriched={loadLeads} plan={plan} />
-          <button onClick={() => setShowImport(true)}
-            className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
-            ↑ Import
-          </button>
-          <button onClick={exportCSV}
-            className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
-            ↓ Export
-          </button>
+          {/* Import — réservé Pro+ (show full button while plan loads to avoid flash) */}
+          {planLoading || plan === "pro" || plan === "agency" ? (
+            <button onClick={() => setShowImport(true)}
+              className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
+              ↑ Import
+            </button>
+          ) : (
+            <a href="/landing#pricing" title="Importer un CSV — réservé Pro"
+              className="h-7 px-3 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs text-slate-700 flex items-center gap-1 cursor-pointer hover:text-slate-500 transition-colors">
+              🔒 Import
+            </a>
+          )}
+          {/* Export — réservé Pro+ */}
+          {planLoading || plan === "pro" || plan === "agency" ? (
+            <button onClick={exportCSV}
+              className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
+              ↓ Export
+            </button>
+          ) : (
+            <a href="/landing#pricing" title="Exporter en CSV — réservé Pro"
+              className="h-7 px-3 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs text-slate-700 flex items-center gap-1 cursor-pointer hover:text-slate-500 transition-colors">
+              🔒 Export
+            </a>
+          )}
         </div>
       </header>
 
