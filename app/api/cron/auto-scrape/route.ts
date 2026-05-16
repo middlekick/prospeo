@@ -34,12 +34,18 @@ export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization") || "";
   const token      = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
 
-  if (!cronSecret || token !== cronSecret) {
+  if (!cronSecret) {
+    console.error("[CRON SCRAPE] CRON_SECRET non configurée — le cron ne peut pas s'exécuter. Ajoutez la variable sur Vercel.");
+    return NextResponse.json({ error: "CRON_SECRET non configurée" }, { status: 500 });
+  }
+  if (token !== cronSecret) {
+    console.warn("[CRON SCRAPE] Tentative d'accès non autorisée (token invalide)");
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
   const apiKey = process.env.SERPAPI_KEY || "";
   if (!apiKey) {
+    console.error("[CRON SCRAPE] SERPAPI_KEY manquante");
     return NextResponse.json({ error: "SERPAPI_KEY manquante" }, { status: 500 });
   }
 
@@ -49,8 +55,11 @@ export async function POST(req: NextRequest) {
   });
 
   if (!configs.length) {
+    console.warn("[CRON SCRAPE] Aucune config auto-scraping activée — rien à faire");
     return NextResponse.json({ ok: true, message: "Aucune config activée", results: [] });
   }
+
+  console.log(`[CRON SCRAPE] Démarrage — ${configs.length} config(s) activée(s)`);
 
   const today  = new Date().toISOString().slice(0, 10);
   const results: { metier: string; ville: string; added: number; skipped: number }[] = [];

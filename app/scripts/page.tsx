@@ -5,6 +5,7 @@ import Link                               from "next/link";
 import { usePlan }                        from "@/hooks/usePlan";
 import GoogleAdsScriptViewer              from "@/components/scripts/GoogleAdsScriptViewer";
 import { useToast }                       from "@/components/ui/Toast";
+import { useConfirm }                      from "@/components/ui/ConfirmModal";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -1060,6 +1061,7 @@ export default function ScriptsPage() {
   const [selected, setSelected] = useState<UserScript | null>(null);
   const [editing,  setEditing]  = useState<UserScript | undefined>(undefined);
   const { success, error: toastError, info } = useToast();
+  const confirm = useConfirm();
 
   // Chargement localStorage uniquement côté client après le mount
   // (évite le mismatch d'hydratation SSR)
@@ -1088,8 +1090,13 @@ export default function ScriptsPage() {
     success(exists ? "Script mis à jour" : "Script créé");
   }
 
-  function handleDelete(id: string) {
-    if (!confirm("Supprimer ce script ?")) return;
+  async function handleDelete(id: string) {
+    const ok = await confirm({
+      title:        "Supprimer ce script ?",
+      confirmLabel: "Supprimer",
+      danger:       true,
+    });
+    if (!ok) return;
     const updated = scripts.filter(s => s.id !== id);
     persist(updated);
     if (selected?.id === id) {

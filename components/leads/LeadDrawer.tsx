@@ -7,6 +7,7 @@ import { toWhatsAppUrl } from "@/lib/phone";
 import { usePlan } from "@/hooks/usePlan";
 import UpgradeGate from "@/components/ui/UpgradeGate";
 import { useToast } from "@/components/ui/Toast";
+import { useConfirm } from "@/components/ui/ConfirmModal";
 import VoiceButton from "@/components/ui/VoiceButton";
 
 interface Props {
@@ -290,6 +291,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
   const [activities, setActivities] = useState<Activity[]>([]);
   const { plan, loading: planLoading } = usePlan();
   const { success, error: toastError } = useToast();
+  const confirm = useConfirm();
 
   useEffect(() => {
     if (lead) {
@@ -338,13 +340,25 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
 
   async function deleteLead() {
     if (!lead) return;
-    if (!confirm(`Supprimer "${lead.nom}" ?`)) return;
-    await fetch("/api/leads/delete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nom: lead.nom, telephone: lead.telephone }),
+    const ok = await confirm({
+      title:        `Supprimer "${lead.nom}" ?`,
+      message:      "Le lead et son journal d'activité seront définitivement supprimés.",
+      confirmLabel: "Supprimer",
+      danger:       true,
     });
-    onDeleted(lead);
+    if (!ok) return;
+    try {
+      const res = await fetch("/api/leads/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nom: lead.nom, telephone: lead.telephone }),
+      });
+      if (!res.ok) throw new Error("Erreur suppression");
+      onDeleted(lead);
+      success("Lead supprimé");
+    } catch (e) {
+      toastError((e as Error).message);
+    }
   }
 
   function addService() {

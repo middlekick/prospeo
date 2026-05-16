@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useConfirm } from "@/components/ui/ConfirmModal";
 
 interface Config {
   id:             string;
@@ -35,6 +36,7 @@ export default function AutoScrapePage() {
   const [loading,    setLoading]    = useState(true);
   const [running,    setRunning]    = useState(false);
   const [lastResults, setLastResults] = useState<RunResult[] | null>(null);
+  const confirm = useConfirm();
 
   // Formulaire ajout
   const [metier,    setMetier]    = useState("");
@@ -100,7 +102,13 @@ export default function AutoScrapePage() {
 
   // ── Supprimer ───────────────────────────────────────────────────────────────
   async function handleDelete(id: string) {
-    if (!confirm("Supprimer cette config ?")) return;
+    const ok = await confirm({
+      title:        "Supprimer cette config ?",
+      message:      "Le scraping automatique associé sera arrêté.",
+      confirmLabel: "Supprimer",
+      danger:       true,
+    });
+    if (!ok) return;
     await fetch(`/api/auto-scrape?id=${id}`, { method: "DELETE" });
     await loadConfigs();
   }

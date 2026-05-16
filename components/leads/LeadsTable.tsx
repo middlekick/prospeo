@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Lead, TAG_COLORS, TAG_OPTIONS, TAG_LABEL, RDV_STATUT_COLORS, isRappelDue } from "./types";
 import { toWhatsAppUrl } from "@/lib/phone";
+import { useToast } from "@/components/ui/Toast";
 
 type SortKey = "nom" | "metier" | "emplacement" | "rappel" | "tag";
 type SortDir = "asc" | "desc";
@@ -113,6 +114,7 @@ const QUICK_ACTIONS = [
 // ── Table principale ──────────────────────────────────────────────────────────
 
 export default function LeadsTable({ leads, onOpen, onTagChange, selected, onToggleSelect, selectionMode }: Props) {
+  const { error: toastError } = useToast();
   const [sortKey, setSortKey] = useState<SortKey>("nom");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [tagPopover, setTagPopover] = useState<{ lead: Lead; rect: DOMRect } | null>(null);
@@ -138,27 +140,39 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
   async function handleTagSelect(lead: Lead, tag: string) {
     setTagPopover(null);
     if (lead.tag === tag) return;
-    onTagChange(lead, tag);
-    await fetch("/api/leads/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...lead, tag }),
-    });
-  }
-
-  // Log appel rapide — change le tag + log une activité "appel"
-  async function handleQuickLog(e: React.MouseEvent, lead: Lead, tag: string) {
-    e.stopPropagation();
-    const key = `${lead.nom}|${lead.telephone}`;
-    if (quickLogging === key) return;
-    setQuickLogging(key);
+    const previousTag = lead.tag;
     onTagChange(lead, tag); // mise à jour optimiste
     try {
-      await fetch("/api/leads/save", {
+      const res = await fetch("/api/leads/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...lead, tag }),
       });
+      if (!res.ok) throw new Error("Échec de la mise à jour du statut");
+    } catch (err) {
+      onTagChange(lead, previousTag); // rollback
+      toastError((err as Error).message);
+    }
+  }
+
+  // Log appel rapide — change le tag (l'activité est loggée côté serveur)
+  async function handleQuickLog(e: React.MouseEvent, lead: Lead, tag: string) {
+    e.stopPropagation();
+    const key = `${lead.nom}|${lead.telephone}`;
+    if (quickLogging === key) return;
+    const previousTag = lead.tag;
+    setQuickLogging(key);
+    onTagChange(lead, tag); // mise à jour optimiste
+    try {
+      const res = await fetch("/api/leads/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...lead, tag }),
+      });
+      if (!res.ok) throw new Error("Échec de l'enregistrement de l'appel");
+    } catch (err) {
+      onTagChange(lead, previousTag); // rollback
+      toastError((err as Error).message);
     } finally {
       setQuickLogging(null);
     }

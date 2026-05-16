@@ -14,6 +14,7 @@ import OnboardingModal  from "@/components/ui/OnboardingModal";
 import { Lead, TAGS, TagValue, TAG_OPTIONS, TAG_LABEL } from "@/components/leads/types";
 import { usePlan } from "@/hooks/usePlan";
 import { useToast } from "@/components/ui/Toast";
+import { useConfirm } from "@/components/ui/ConfirmModal";
 
 type ViewMode = "table" | "kanban";
 
@@ -130,6 +131,7 @@ export default function LeadsPage() {
 
   const { plan, loading: planLoading } = usePlan();
   const { success, error: toastError, warning } = useToast();
+  const confirm = useConfirm();
 
   // Afficher l'onboarding au 1er login
   useEffect(() => {
@@ -288,7 +290,13 @@ export default function LeadsPage() {
 
   async function handleBulkDelete() {
     if (selSet.size === 0) return;
-    if (!confirm(`Supprimer ${selSet.size} lead${selSet.size > 1 ? "s" : ""} ?`)) return;
+    const ok = await confirm({
+      title:        `Supprimer ${selSet.size} lead${selSet.size > 1 ? "s" : ""} ?`,
+      message:      "Cette action est irréversible.",
+      confirmLabel: "Supprimer",
+      danger:       true,
+    });
+    if (!ok) return;
     setBulkLoading(true);
     try {
       const selectedLeads = leads.filter(l => selSet.has(`${l.nom}|${l.telephone}`));

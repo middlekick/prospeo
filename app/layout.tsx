@@ -4,6 +4,7 @@ import { ClerkProvider }  from "@clerk/nextjs";
 import { frFR }           from "@clerk/localizations";
 import LayoutShell        from "@/components/layout/LayoutShell";
 import { ToastProvider }  from "@/components/ui/Toast";
+import { ConfirmProvider } from "@/components/ui/ConfirmModal";
 
 export const metadata: Metadata = {
   title: "Prospeo — CRM",
@@ -16,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="fr">
         <body className="bg-[#0b0d12]">
           <ToastProvider>
-            <LayoutShell>{children}</LayoutShell>
+            <ConfirmProvider>
+              <LayoutShell>{children}</LayoutShell>
+            </ConfirmProvider>
           </ToastProvider>
         </body>
       </html>

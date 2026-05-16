@@ -16,7 +16,7 @@ export default function ScrapeForm({ onDone }: Props) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<{ text: string; ok: boolean } | null>(null);
 
-  const { plan, scrapeUsed, scrapeMax, loading: planLoading } = usePlan();
+  const { plan, scrapeUsed, scrapeMax, loading: planLoading, refresh } = usePlan();
   const isFree       = !planLoading && plan === "free";
   const scrapeLeft   = scrapeMax !== null ? Math.max(0, scrapeMax - scrapeUsed) : null;
   const quotaReached = isFree && scrapeLeft !== null && scrapeLeft <= 0;
@@ -42,6 +42,8 @@ export default function ScrapeForm({ onDone }: Props) {
       }
       setMsg({ text: `✓ ${data.added} lead(s) ajouté(s) — total ${data.total}`, ok: true });
       onDone();
+      // Rafraîchir le quota plan (le badge "X scrapings restants" doit refléter l'usage)
+      refresh();
     } catch (e) {
       setMsg({ text: (e as Error).message, ok: false });
     } finally {

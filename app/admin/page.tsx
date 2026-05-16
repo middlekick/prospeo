@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useToast } from "@/components/ui/Toast";
+import { useConfirm } from "@/components/ui/ConfirmModal";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -85,6 +86,7 @@ export default function AdminPage() {
   const [filter,  setFilter]      = useState<"all"|"free"|"trial"|"pro"|"agency">("all");
   const [busy,    setBusy]        = useState<string | null>(null);  // user_id en cours d'action
   const { success, error: toastError, info } = useToast();
+  const confirm = useConfirm();
   const [expanded, setExpanded]   = useState<string | null>(null);  // user_id déplié
 
   const load = useCallback(() => {
@@ -142,7 +144,13 @@ export default function AdminPage() {
 
   async function deleteUser(user: UserRow) {
     const name = user.clerk ? `${user.clerk.firstName} ${user.clerk.lastName}`.trim() || user.clerk.email : user.user_id;
-    if (!confirm(`⚠️ Supprimer définitivement le compte de "${name}" ?\n\nCette action supprime :\n• Son compte Clerk (accès perdu)\n• Tous ses leads (${user.leadCount})\n• Son abonnement\n\nImpossible d'annuler.`)) return;
+    const ok = await confirm({
+      title:        `Supprimer le compte de "${name}" ?`,
+      message:      `Cette action supprime :\n• Son compte Clerk (accès perdu)\n• Tous ses leads (${user.leadCount})\n• Son abonnement\n\nImpossible d'annuler.`,
+      confirmLabel: "Supprimer définitivement",
+      danger:       true,
+    });
+    if (!ok) return;
     setBusy(user.user_id + "_delete");
     try {
       const res  = await fetch("/api/admin/delete-user", {
