@@ -7,6 +7,7 @@ import { toWhatsAppUrl } from "@/lib/phone";
 import { usePlan } from "@/hooks/usePlan";
 import UpgradeGate from "@/components/ui/UpgradeGate";
 import { useToast } from "@/components/ui/Toast";
+import VoiceButton from "@/components/ui/VoiceButton";
 
 interface Props {
   lead: Lead | null;
@@ -220,6 +221,10 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
           onKeyDown={e => e.key === "Enter" && addNote()}
           placeholder="Ajouter une note rapide…"
           className="input-base flex-1 text-xs"
+        />
+        <VoiceButton
+          onTranscript={t => setNote(prev => (prev ? prev + " " : "") + t)}
+          className="h-8 w-8 rounded-md border border-white/8"
         />
         <button
           onClick={addNote}

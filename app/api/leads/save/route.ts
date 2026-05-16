@@ -41,10 +41,17 @@ export async function POST(req: NextRequest) {
     ? (lead.activities as unknown as Activity[]) : [];
   let contacted_at = lead.contacted_at;
 
-  // Rappel automatique J+3 si passage en "Ne répond pas" et aucun rappel existant
+  // Relances multi-paliers : chaque passage en "Ne répond pas" escalade le délai
+  // 1ère relance → J+3 · 2ème → J+7 · 3ème et + → J+15
+  const RELANCE_PALIERS = [3, 7, 15];
   let autoRappel = rappel;
 
   if (tag !== undefined && tag !== lead.tag) {
+    // Compter les passages antérieurs en "Ne répond pas" (avant d'ajouter le nouveau)
+    const nbRelances = activities.filter(
+      a => a.type === "statut" && a.content === `Statut → ${TAG_NAMES["ne_repond_pas"]}`
+    ).length;
+
     activities.unshift({
       id:      Date.now().toString(),
       date:    new Date().toISOString().slice(0, 16),
@@ -55,15 +62,18 @@ export async function POST(req: NextRequest) {
     if (tag !== "non_appele" && lead.tag === "non_appele" && !lead.contacted_at) {
       contacted_at = new Date().toISOString().slice(0, 10);
     }
-    if (tag === "ne_repond_pas" && !lead.rappel && rappel === undefined) {
+    // Si l'utilisateur n'a pas fixé de rappel manuellement, on (re)crée le rappel escaladé
+    if (tag === "ne_repond_pas" && rappel === undefined) {
+      const jours = RELANCE_PALIERS[Math.min(nbRelances, RELANCE_PALIERS.length - 1)];
       const d = new Date();
-      d.setDate(d.getDate() + 3);
+      d.setDate(d.getDate() + jours);
       autoRappel = d.toISOString().slice(0, 10);
+      const palier = nbRelances === 0 ? "1ère" : nbRelances === 1 ? "2ème" : `${nbRelances + 1}ème`;
       activities.unshift({
         id:      (Date.now() + 1).toString(),
         date:    new Date().toISOString().slice(0, 16),
         type:    "note",
-        content: "Rappel automatique créé — relance dans 3 jours",
+        content: `Rappel automatique — ${palier} relance dans ${jours} jours`,
       });
     }
   }
