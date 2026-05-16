@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Lead } from "./types";
 import { toWhatsAppUrl } from "@/lib/phone";
 import { useToast } from "@/components/ui/Toast";
@@ -90,10 +91,14 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const startRef = useRef<number>(Date.now());
   const script = useRef<UserScript | null>(null);
 
   if (script.current === null) script.current = loadColdCallScript();
+
+  // Portal monté uniquement côté client
+  useEffect(() => { setMounted(true); }, []);
 
   const current = queue[idx];
 
@@ -148,12 +153,14 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished, handleOutcome, idx]);
 
+  if (!mounted) return null;
+
   // ── Écran de fin ────────────────────────────────────────────────────────────
   if (finished || !current) {
     const rate = stats.calls > 0 ? Math.round((stats.answered / stats.calls) * 100) : 0;
     const avgMs = stats.calls > 0 ? elapsed / stats.calls : 0;
-    return (
-      <div className="fixed inset-0 z-[60] bg-[#0b0d12] flex items-center justify-center p-6">
+    return createPortal(
+      <div className="fixed inset-0 z-[100] bg-[#0b0d12] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="w-16 h-16 mx-auto rounded-2xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center text-3xl">
             🎯
@@ -193,15 +200,16 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
             Terminer
           </button>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
   // ── Écran d'appel actif ─────────────────────────────────────────────────────
   const progress = Math.round((idx / queue.length) * 100);
 
-  return (
-    <div className="fixed inset-0 z-[60] bg-[#0b0d12] flex flex-col">
+  return createPortal(
+    <div className="fixed inset-0 z-[100] bg-[#0b0d12] flex flex-col">
       {/* Barre de progression + stats live */}
       <div className="shrink-0 border-b border-white/[0.06]">
         <div className="h-1 bg-white/[0.04]">
@@ -336,6 +344,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
           Raccourcis : 1-4 pour le résultat · S pour passer · Échap pour quitter
         </p>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
