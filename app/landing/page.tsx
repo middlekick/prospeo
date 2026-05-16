@@ -5,9 +5,10 @@ import Link          from "next/link";
 import { useUser }   from "@clerk/nextjs";
 import ContactModal  from "@/components/ui/ContactModal";
 import AnimatedDemo  from "@/components/landing/AnimatedDemo";
+import { useToast }  from "@/components/ui/Toast";
 
 // ─── Stripe ──────────────────────────────────────────────────────────────────
-async function startCheckout(plan: "pro" | "agency", email: string) {
+async function startCheckout(plan: "pro" | "agency", email: string, onError: (msg: string) => void) {
   const res  = await fetch("/api/checkout", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -18,7 +19,7 @@ async function startCheckout(plan: "pro" | "agency", email: string) {
   });
   const data = await res.json() as { url?: string; error?: string };
   if (data.url) window.location.href = data.url;
-  else alert(data.error || "Price ID manquant — configurez STRIPE_PRICE_ID_PRO dans .env");
+  else onError(data.error || "Price ID manquant — configurez STRIPE_PRICE_ID_PRO dans .env");
 }
 
 // ─── Hook : animations au scroll ─────────────────────────────────────────────
@@ -200,6 +201,7 @@ function FAQ({ q, a }: { q: string; a: string }) {
 export default function LandingPage() {
   const [email,          setEmail]          = useState("");
   const [loading,        setLoading]        = useState(false);
+  const { error: toastError } = useToast();
   const [modal,          setModal]          = useState(false);
   const [contactOpen,    setContactOpen]    = useState(false);
   const [contactSubject, setContactSubject] = useState("");
@@ -234,7 +236,7 @@ export default function LandingPage() {
     }
     if (!email) { setModal(true); return; }
     setLoading(true);
-    await startCheckout(plan, email);
+    await startCheckout(plan, email, toastError);
     setLoading(false);
   }, [email, isSignedIn]);
 

@@ -6,6 +6,7 @@ import { Activity } from "@/lib/db";
 import { toWhatsAppUrl } from "@/lib/phone";
 import { usePlan } from "@/hooks/usePlan";
 import UpgradeGate from "@/components/ui/UpgradeGate";
+import { useToast } from "@/components/ui/Toast";
 
 interface Props {
   lead: Lead | null;
@@ -112,6 +113,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
         meta:    to.trim(),
       });
       onClose();
+      // Toast succès géré par le parent via onSent
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -282,6 +284,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
   // Copie locale des activités pour mise à jour immédiate sans recharger
   const [activities, setActivities] = useState<Activity[]>([]);
   const { plan, loading: planLoading } = usePlan();
+  const { success, error: toastError } = useToast();
 
   useEffect(() => {
     if (lead) {
@@ -319,8 +322,9 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       } else {
         onSaved(form);
       }
+      success("Lead sauvegardé");
     } catch (e) {
-      alert((e as Error).message);
+      toastError((e as Error).message);
     } finally {
       setSaving(false);
     }
@@ -422,7 +426,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
           <EmailPanel
             lead={form}
             onClose={() => setEmailOpen(false)}
-            onSent={(a) => { handleActivityAdded(a); setEmailOpen(false); }}
+            onSent={(a) => { handleActivityAdded(a); setEmailOpen(false); success("Email envoyé ✓"); }}
           />
         )}
 

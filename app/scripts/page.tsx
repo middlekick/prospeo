@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import Link                               from "next/link";
 import { usePlan }                        from "@/hooks/usePlan";
 import GoogleAdsScriptViewer              from "@/components/scripts/GoogleAdsScriptViewer";
+import { useToast }                       from "@/components/ui/Toast";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -703,6 +704,7 @@ function ScriptList({
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [loadingExamples, setLoadingExamples] = useState<string | null>(null);
+  const { error: toastError } = useToast();
 
   async function loadExamples(type: "setting" | "closing") {
     setLoadingExamples(type);
@@ -714,7 +716,7 @@ function ScriptList({
       const imported = data.map(s => ({ ...s, id: genId(), updatedAt: now }));
       onImport(new File([JSON.stringify(imported)], "exemples.json", { type: "application/json" }));
     } catch {
-      alert("Impossible de charger les exemples");
+      toastError("Impossible de charger les exemples");
     } finally {
       setLoadingExamples(null);
     }
@@ -1057,6 +1059,7 @@ export default function ScriptsPage() {
   const [view,     setView]     = useState<View>("list");
   const [selected, setSelected] = useState<UserScript | null>(null);
   const [editing,  setEditing]  = useState<UserScript | undefined>(undefined);
+  const { success, error: toastError, info } = useToast();
 
   // Chargement localStorage uniquement côté client après le mount
   // (évite le mismatch d'hydratation SSR)
@@ -1082,6 +1085,7 @@ export default function ScriptsPage() {
     persist(updated);
     setSelected(script);
     setView("read");
+    success(exists ? "Script mis à jour" : "Script créé");
   }
 
   function handleDelete(id: string) {
@@ -1092,6 +1096,7 @@ export default function ScriptsPage() {
       setSelected(null);
       setView("list");
     }
+    info("Script supprimé");
   }
 
   function handleCreate() {
@@ -1130,9 +1135,9 @@ export default function ScriptsPage() {
         }));
         const updated = [...scripts, ...imported];
         persist(updated);
-        alert(`✓ ${imported.length} script(s) importé(s)`);
+        success(`${imported.length} script${imported.length > 1 ? "s" : ""} importé${imported.length > 1 ? "s" : ""}`);
       } catch {
-        alert("Fichier JSON invalide");
+        toastError("Fichier JSON invalide");
       }
     };
     reader.readAsText(file);

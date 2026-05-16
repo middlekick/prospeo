@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useToast } from "@/components/ui/Toast";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -83,6 +84,7 @@ export default function AdminPage() {
   const [search,  setSearch]      = useState("");
   const [filter,  setFilter]      = useState<"all"|"free"|"trial"|"pro"|"agency">("all");
   const [busy,    setBusy]        = useState<string | null>(null);  // user_id en cours d'action
+  const { success, error: toastError, info } = useToast();
   const [expanded, setExpanded]   = useState<string | null>(null);  // user_id déplié
 
   const load = useCallback(() => {
@@ -119,12 +121,12 @@ export default function AdminPage() {
           ? new Date(Date.now() + trialDays * 86400000).toISOString()
           : (plan === "free" ? null : u.trial_expires_at),
       }));
-    } catch (e) { alert(`Erreur : ${(e as Error).message}`); }
+    } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
   }
 
   async function sendResetEmail(user: UserRow) {
-    if (!user.clerk?.email) { alert("Email introuvable pour cet utilisateur"); return; }
+    if (!user.clerk?.email) { toastError("Email introuvable pour cet utilisateur"); return; }
     setBusy(user.user_id + "_reset");
     try {
       const res  = await fetch("/api/admin/reset-password", {
@@ -133,8 +135,8 @@ export default function AdminPage() {
       });
       const data = await res.json() as { success?: boolean; error?: string };
       if (!data.success) throw new Error(data.error || "Erreur");
-      alert(`✓ Email de connexion envoyé à ${user.clerk.email}`);
-    } catch (e) { alert(`Erreur : ${(e as Error).message}`); }
+      success(`Email de connexion envoyé à ${user.clerk.email}`);
+    } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
   }
 
@@ -150,7 +152,8 @@ export default function AdminPage() {
       const data = await res.json() as { success?: boolean; error?: string };
       if (!data.success) throw new Error(data.error || "Erreur");
       setUsers(prev => prev.filter(u => u.user_id !== user.user_id));
-    } catch (e) { alert(`Erreur : ${(e as Error).message}`); }
+      info("Compte supprimé");
+    } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
   }
 

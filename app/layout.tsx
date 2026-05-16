@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider }  from "@clerk/nextjs";
 import { frFR }           from "@clerk/localizations";
 import LayoutShell        from "@/components/layout/LayoutShell";
+import { ToastProvider }  from "@/components/ui/Toast";
 
 export const metadata: Metadata = {
   title: "Prospeo — CRM",
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider localization={frFR}>
       <html lang="fr">
         <body className="bg-[#0b0d12]">
-          <LayoutShell>{children}</LayoutShell>
+          <ToastProvider>
+            <LayoutShell>{children}</LayoutShell>
+          </ToastProvider>
         </body>
       </html>
     </ClerkProvider>
