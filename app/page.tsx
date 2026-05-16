@@ -61,7 +61,7 @@ function BulkBar({ count, onClear, onBulkTag, onBulkDelete, loading }: BulkBarPr
   }, []);
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2.5 bg-[#1a1d2e] border border-violet-500/30 rounded-2xl shadow-2xl shadow-violet-900/20">
+    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-3 md:px-4 py-2.5 bg-[#1a1d2e] border border-violet-500/30 rounded-2xl shadow-2xl shadow-violet-900/20 max-w-[calc(100vw-1.5rem)] overflow-x-auto">
       <span className="text-xs font-semibold text-violet-300">{count} sélectionné{count > 1 ? "s" : ""}</span>
       <div className="w-px h-4 bg-white/10 mx-1" />
 
@@ -338,7 +338,7 @@ export default function LeadsPage() {
       <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm overflow-x-auto">
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
         <div className="flex items-center gap-3 shrink-0">
           <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Leads</h1>
 
@@ -367,7 +367,7 @@ export default function LeadsPage() {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0 overflow-x-auto pb-0.5 md:pb-0">
           {/* Bouton Session d'appels */}
           <button
             onClick={startCallSession}
@@ -443,19 +443,21 @@ export default function LeadsPage() {
 
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-3 px-5 py-2.5 border-b border-white/[0.06] shrink-0">
-        <div className="relative">
+        <div className="relative w-full sm:w-52">
           <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Rechercher… (/ pour focus)"
+            placeholder="Rechercher…"
             id="search-input"
-            className="h-8 pl-8 pr-3 rounded-lg bg-white/[0.05] border border-white/[0.09] text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.07] transition-all w-52"
+            className="h-9 sm:h-8 pl-8 pr-3 rounded-lg bg-white/[0.05] border border-white/[0.09] text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.07] transition-all w-full"
           />
         </div>
-        <FilterPills active={filter} counts={counts} onChange={setFilter} />
+        <div className="w-full sm:w-auto overflow-x-auto">
+          <FilterPills active={filter} counts={counts} onChange={setFilter} />
+        </div>
 
         {/* Hint raccourcis */}
         <div className="ml-auto hidden lg:flex items-center gap-3 text-[10px] text-slate-700">

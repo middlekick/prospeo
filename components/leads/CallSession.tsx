@@ -215,32 +215,29 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
         <div className="h-1 bg-white/[0.04]">
           <div className="h-full bg-gradient-to-r from-violet-600 to-violet-400 transition-all duration-300" style={{ width: `${progress}%` }} />
         </div>
-        <div className="flex items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-500">
-              Lead <span className="text-slate-200 font-semibold">{idx + 1}</span> / {queue.length}
+        <div className="flex items-center justify-between gap-2 px-3 md:px-6 py-2.5 md:py-3">
+          <div className="flex items-center gap-2 md:gap-4 min-w-0">
+            <span className="text-xs text-slate-500 shrink-0">
+              <span className="text-slate-200 font-semibold">{idx + 1}</span>/{queue.length}
             </span>
-            <span className="text-xs mono text-slate-600">⏱ {fmtDuration(elapsed)}</span>
+            <span className="text-xs mono text-slate-600 shrink-0">⏱ {fmtDuration(elapsed)}</span>
+            <span className="text-xs text-cyan-400 shrink-0">✓ {stats.answered}</span>
+            <span className="text-xs text-green-400 shrink-0">📅 {stats.rdv}</span>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-slate-500">📞 <span className="text-slate-200 font-semibold">{stats.calls}</span></span>
-            <span className="text-cyan-400">✓ {stats.answered} décrochés</span>
-            <span className="text-green-400">📅 {stats.rdv} RDV</span>
-            <button
-              onClick={onClose}
-              className="ml-2 h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-slate-200 text-xs transition-all"
-            >
-              Quitter (Échap)
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="shrink-0 h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-slate-200 text-xs transition-all"
+          >
+            Quitter
+          </button>
         </div>
       </div>
 
       {/* Contenu : lead + script */}
-      <div className="flex-1 overflow-hidden grid grid-cols-[400px_1fr]">
+      <div className="flex-1 overflow-y-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-[380px_1fr]">
 
         {/* Colonne gauche — fiche lead + numéro */}
-        <div className="border-r border-white/[0.06] p-8 flex flex-col overflow-y-auto bg-white/[0.01]">
+        <div className="border-b md:border-b-0 md:border-r border-white/[0.06] p-5 md:p-8 flex flex-col md:overflow-y-auto bg-white/[0.01]">
           <div className="text-[10px] font-bold tracking-widest text-slate-700 uppercase mb-2">
             {current.metier || "Lead"} · {current.emplacement || "—"}
           </div>
@@ -309,7 +306,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
         </div>
 
         {/* Colonne droite — script */}
-        <div className="p-8 overflow-y-auto">
+        <div className="p-5 md:p-8 md:overflow-y-auto">
           {script.current?.blocks?.length ? (
             <ScriptBlocks blocks={script.current.blocks} lead={current} />
           ) : (
@@ -325,22 +322,22 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
       </div>
 
       {/* Barre d'actions — résultat de l'appel */}
-      <div className="shrink-0 border-t border-white/[0.06] px-6 py-4 bg-white/[0.01]">
-        <div className="flex items-center gap-3 max-w-3xl mx-auto">
-          <span className="text-xs text-slate-600 mr-1 shrink-0">Résultat :</span>
+      <div className="shrink-0 border-t border-white/[0.06] px-3 md:px-6 py-3 md:py-4 bg-white/[0.01]">
+        <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-3 max-w-3xl mx-auto">
+          <span className="hidden md:block text-xs text-slate-600 mr-1 shrink-0">Résultat :</span>
           {OUTCOMES.map(o => (
             <button
               key={o.tag}
               onClick={() => handleOutcome(o.tag, o.picked)}
               disabled={saving}
-              className={`flex-1 h-12 rounded-xl border text-sm font-semibold transition-all disabled:opacity-40 ${o.cls}`}
+              className={`md:flex-1 h-12 rounded-xl border text-sm font-semibold transition-all disabled:opacity-40 ${o.cls}`}
             >
-              <span className="opacity-50 text-xs mr-1.5">{o.key}</span>
+              <span className="opacity-50 text-xs mr-1.5 hidden md:inline">{o.key}</span>
               {o.label}
             </button>
           ))}
         </div>
-        <p className="text-center text-[10px] text-slate-700 mt-2">
+        <p className="hidden md:block text-center text-[10px] text-slate-700 mt-2">
           Raccourcis : 1-4 pour le résultat · S pour passer · Échap pour quitter
         </p>
       </div>

@@ -386,7 +386,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
 
       {/* Drawer */}
-      <aside className="fixed right-0 top-0 h-screen w-[480px] bg-[#0f1117] border-l border-white/8 z-50 flex flex-col">
+      <aside className="fixed right-0 top-0 h-screen w-full sm:w-[480px] bg-[#0f1117] border-l border-white/8 z-50 flex flex-col">
 
         {/* Header */}
         <div className="flex items-start justify-between p-5 border-b border-white/8">

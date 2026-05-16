@@ -52,47 +52,49 @@ export default function ScrapeForm({ onDone }: Props) {
   }
 
   return (
-    <form onSubmit={handleScrape} className="flex flex-wrap items-end gap-2">
-      <div className="flex flex-col gap-1">
+    <form onSubmit={handleScrape} className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-2">
+      <div className="flex flex-col gap-1 flex-1 sm:flex-none">
         <label className="text-xs text-slate-500">Métier</label>
         <input
           value={metier}
           onChange={e => setMetier(e.target.value)}
           placeholder="plombier, électricien…"
-          className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 w-44"
+          className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 w-full sm:w-44"
         />
       </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-xs text-slate-500">Ville</label>
-        <input
-          value={ville}
-          onChange={e => setVille(e.target.value)}
-          placeholder="Paris, Lyon…"
-          className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 w-36"
-        />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-xs text-slate-500">Pays</label>
-        <input
-          value={pays}
-          onChange={e => setPays(e.target.value)}
-          className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-28"
-        />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-xs text-slate-500">Nb leads</label>
-        <input
-          type="number"
-          value={nb}
-          min={1} max={200}
-          onChange={e => setNb(Number(e.target.value))}
-          className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-20 mono"
-        />
+      <div className="flex gap-2">
+        <div className="flex flex-col gap-1 flex-1 sm:flex-none">
+          <label className="text-xs text-slate-500">Ville</label>
+          <input
+            value={ville}
+            onChange={e => setVille(e.target.value)}
+            placeholder="Paris, Lyon…"
+            className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 w-full sm:w-36"
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-24 sm:w-28">
+          <label className="text-xs text-slate-500">Pays</label>
+          <input
+            value={pays}
+            onChange={e => setPays(e.target.value)}
+            className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-full"
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-20">
+          <label className="text-xs text-slate-500">Nb</label>
+          <input
+            type="number"
+            value={nb}
+            min={1} max={200}
+            onChange={e => setNb(Number(e.target.value))}
+            className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-full mono"
+          />
+        </div>
       </div>
       <button
         type="submit"
         disabled={loading || quotaReached}
-        className="h-8 px-4 rounded-md bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-sm font-medium text-white transition-colors"
+        className="h-9 sm:h-8 px-4 rounded-md bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-sm font-medium text-white transition-colors w-full sm:w-auto"
       >
         {loading ? "Scraping…" : "Scraper"}
       </button>

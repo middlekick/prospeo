@@ -91,7 +91,7 @@ function SortChip({
     <button
       onClick={() => onToggle(sortKey)}
       className={[
-        "flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-all font-medium",
+        "flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-all font-medium shrink-0",
         active
           ? "bg-violet-500/15 text-violet-300 border border-violet-500/25"
           : "text-slate-600 hover:text-slate-300 hover:bg-white/[0.05] border border-transparent",
@@ -195,8 +195,8 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
   return (
     <>
       {/* ── Barre de tri ─────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.05] bg-white/[0.01]">
-        <span className="text-[10px] text-slate-700 font-semibold tracking-wider uppercase mr-1">Trier par</span>
+      <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.05] bg-white/[0.01] overflow-x-auto">
+        <span className="text-[10px] text-slate-700 font-semibold tracking-wider uppercase mr-1 shrink-0">Trier</span>
         {(["nom", "metier", "emplacement", "tag", "rappel"] as SortKey[]).map(k => (
           <SortChip
             key={k}
@@ -225,11 +225,72 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
               key={`${lead.nom}-${lead.telephone}-${i}`}
               onClick={() => selectionMode && onToggleSelect ? onToggleSelect(leadKey) : onOpen(lead)}
               className={[
-                "group flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-all duration-100",
+                "group px-4 py-3.5 cursor-pointer transition-all duration-100",
                 due       ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.07]" : "hover:bg-white/[0.03]",
                 isSelected ? "bg-violet-500/[0.06] border-l-2 border-violet-500" : "",
               ].join(" ")}
             >
+              {/* ═══ Carte MOBILE (< md) ═══════════════════════════════════════ */}
+              <div className="flex md:hidden items-start gap-3">
+                {(selectionMode || selected) && (
+                  <div
+                    onClick={e => { e.stopPropagation(); onToggleSelect?.(leadKey); }}
+                    className={[
+                      "mt-0.5 w-5 h-5 rounded border shrink-0 flex items-center justify-center",
+                      isSelected ? "bg-violet-500 border-violet-500" : "border-white/25",
+                    ].join(" ")}
+                  >
+                    {isSelected && <span className="text-white text-[10px] font-bold">✓</span>}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full shrink-0 ${lead.site ? "bg-cyan-500" : "bg-white/10"}`} />
+                    <span className="text-sm font-semibold text-slate-100 truncate">{lead.nom || "—"}</span>
+                  </div>
+                  <div className="text-xs text-slate-600 truncate mt-0.5 ml-4">
+                    {lead.metier || "—"}{lead.emplacement ? ` · ${lead.emplacement}` : ""}
+                  </div>
+                  <div className="flex items-center gap-3 mt-2 ml-4">
+                    {lead.telephone ? (
+                      <>
+                        <a href={`tel:${lead.telephone.replace(/\s/g, "")}`}
+                           onClick={e => e.stopPropagation()}
+                           className="inline-flex items-center gap-1.5 h-7 px-3 rounded-lg bg-violet-600/90 text-white text-xs font-medium">
+                          📞 Appeler
+                        </a>
+                        <a href={toWhatsAppUrl(lead.telephone)} target="_blank" rel="noopener noreferrer"
+                           onClick={e => e.stopPropagation()}
+                           className="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-green-600/20 border border-green-600/30 text-green-400 text-xs font-medium">
+                          WhatsApp
+                        </a>
+                      </>
+                    ) : (
+                      <a href={`https://www.google.com/search?q=${encodeURIComponent(`${lead.nom} ${lead.emplacement} téléphone`)}`}
+                         target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                         className="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-white/[0.05] border border-white/[0.08] text-slate-400 text-xs">
+                        🔍 Trouver le numéro
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                  <button
+                    onClick={e => openTagPopover(e, lead)}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${tagCls}`}
+                  >
+                    {TAG_LABEL[lead.tag] || lead.tag}
+                  </button>
+                  {lead.rappel && (
+                    <span className={`text-[10px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
+                      {due && "⏰ "}{lead.rappel}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* ═══ Ligne DESKTOP (≥ md) ═════════════════════════════════════ */}
+              <div className="hidden md:flex items-center gap-4">
               {/* ── Checkbox de sélection (visible si selectionMode ou hover) ──── */}
               {(selectionMode || selected) && (
                 <div
@@ -347,6 +408,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
 
               {/* ── Flèche hover ─────────────────────────────────── */}
               <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0 ml-1">→</span>
+              </div>
             </div>
           );
         })}
