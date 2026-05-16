@@ -1,0 +1,212 @@
+{
+  "order": ["coldcall", "closing"],
+  "scripts": {
+    "coldcall": {
+      "id": "coldcall",
+      "type": "Cold Call",
+      "date": "15/05/2026",
+      "title": "Prise de RDV — Setting",
+      "blocks": [
+        {
+          "t": "mindset",
+          "label": "MINDSET AVANT D'APPELER",
+          "text": "Tu n'es pas un commercial qui cherche à vendre. Tu es un expert en acquisition client qui a déjà aidé des [METIER]s à remplir leur agenda. Tu appelles pour voir si tu peux l'aider lui — pas pour lui forcer la main.\n\nTon énergie : calme, direct, confiant. Pas pressé."
+        },
+        {
+          "t": "hook",
+          "label": "ACCROCHE — 1ère phrase",
+          "text": "Bonjour, je cherche [PRENOM] ? … Bonjour [PRENOM], c'est [TON PRENOM] — je travaille avec des [METIER]s en [ZONE GÉOGRAPHIQUE] sur leur acquisition client. Je vous appelle parce que j'ai une question rapide : est-ce que votre planning est complet en ce moment ou vous pouvez encore prendre des chantiers ?"
+        },
+        {
+          "t": "pause",
+          "label": "PAUSE — Laisse répondre",
+          "text": "Laisse le silence. C'est lui qui parle en premier.\n→ « Complet » : « Parfait, c'est justement les artisans comme vous que j'aide — à maintenir ce niveau même en basse saison. »\n→ « Ça manque un peu » : « C'est exactement pour ça que j'appelle. »\n→ « Pas intéressé » : Ne pas insister, remercier, raccrocher."
+        },
+        {
+          "t": "say",
+          "label": "TU DIS — Pitch expert (20 sec)",
+          "text": "Je me spécialise uniquement dans l'acquisition client pour les [METIER]s — je ne travaille qu'avec ce corps de métier. Concrètement, j'aide des [METIER]s à avoir des demandes de devis régulières sans avoir à chercher eux-mêmes.\n\nCe que je voudrais vous proposer c'est un échange de 15 minutes pour regarder votre situation — je vous dis franchement si je peux vous aider ou pas. Pas de blabla commercial."
+        },
+        {
+          "t": "pause",
+          "label": "PAUSE — Gestion des objections courantes",
+          "text": "→ « J'ai pas le temps » : « Je comprends, justement mon but c'est de vous faire gagner du temps à long terme. L'appel dure 15 min, je m'adapte à votre planning. »\n→ « J'ai déjà quelqu'un » : « Parfait — et ça vous amène des résultats concrets en ce moment ? » (Creuse.)\n→ « C'est quoi comme entreprise ? » : Réponds simplement, ne te perds pas dans les détails."
+        },
+        {
+          "t": "say",
+          "label": "CLOSING DE L'APPEL — Prise du RDV",
+          "text": "Vous avez un créneau cette semaine ou la semaine prochaine ? Je suis disponible le matin comme l'après-midi."
+        },
+        {
+          "t": "pause",
+          "label": "CONFIRMATION DU RDV",
+          "text": "Répète le jour et l'heure à voix haute pour confirmer.\nEnvoie un SMS dans les 10 minutes : « Bonjour [PRENOM], c'est [TON PRENOM]. RDV confirmé [JOUR] à [HEURE] — à tout à l'heure ! »"
+        }
+      ]
+    },
+    "closing": {
+      "id": "closing",
+      "type": "Closing",
+      "date": "15/05/2026",
+      "title": "Closing — Google Ads",
+      "steps": [
+        {
+          "emoji": "🧠",
+          "name": "Mindset avant l'appel",
+          "time": "⏱ Avant de décrocher",
+          "mindset": "Tu n'es pas là pour convaincre. Tu es là pour qualifier. Tu as l'offre la plus simple du monde — une semaine de test à 100€ de budget Google, zéro frais pour toi. Si ce n'est pas le bon moment pour lui, c'est ok. Cette posture détachée te rend 10x plus crédible.",
+          "say": [],
+          "pause": "",
+          "objections": []
+        },
+        {
+          "emoji": "🤝",
+          "name": "Brise-glace",
+          "time": "⏱ 1 min",
+          "mindset": "Tu appelles une société trouvée sur le RNE — tu n'as pas forcément le prénom. Demande le responsable par le nom de la société. Sois chaleureux et direct.",
+          "say": [
+            "Bonjour, je cherche le responsable de [NOM DE LA SOCIÉTÉ] ? … Bonjour, c'est [TON PRENOM]. Merci de prendre ce temps — vous avez 20 minutes devant vous ?"
+          ],
+          "pause": "Attends sa confirmation avant de continuer.",
+          "objections": [
+            {
+              "q": "Il est en chantier / pressé",
+              "a": "Pas de souci, on reporte à [JOUR] ? Je préfère qu'on soit tous les deux concentrés."
+            },
+            {
+              "q": "C'est pour quoi ?",
+              "a": "Je travaille avec des [METIER]s sur leur acquisition client — j'ai regardé votre société et j'ai une proposition concrète à vous faire. Ça prend 20 minutes."
+            }
+          ]
+        },
+        {
+          "emoji": "🧭",
+          "name": "Rappel du contexte",
+          "time": "⏱ 1-2 min",
+          "mindset": "Rappelle ce que tu sais de leur société : zone, type d'activité, ancienneté. Montre que tu as fait le travail avant d'appeler.",
+          "say": [
+            "La dernière fois vous m'avez parlé de votre activité — [NOM DE LA SOCIÉTÉ], [METIER] basée à [ZONE]. J'ai réfléchi à ça depuis — et je voulais vous montrer quelque chose de concret qu'on peut tester ensemble."
+          ],
+          "pause": "Laisse-le confirmer ou corriger. Ne continue pas avant qu'il ait validé.",
+          "objections": []
+        },
+        {
+          "emoji": "🎯",
+          "name": "Diagnostic — douleur",
+          "time": "⏱ 2-3 min",
+          "mindset": "Fais-le verbaliser le problème lui-même. Ce qu'il dit de sa propre bouche a 10x plus de poids que ce que tu pourrais dire à sa place.",
+          "say": [
+            "Aujourd'hui, vos nouveaux clients — ils viennent d'où principalement ?",
+            "Et sur l'année, vous avez des périodes où c'est plus tendu ?"
+          ],
+          "pause": "Écoute. Note ses mots exacts — tu les réutiliseras dans ta présentation.",
+          "objections": [
+            {
+              "q": "Ça va, j'ai assez de boulot",
+              "a": "C'est bien. Et si demain votre principale source de chantiers s'assèche — bouche à oreille, un gros client qui part — vous avez un plan B ?"
+            },
+            {
+              "q": "Je cherche pas à me développer",
+              "a": "Je comprends. Ce que je propose c'est pas de doubler votre volume — c'est de sécuriser une base régulière pour que vous choisissiez vos chantiers plutôt que de prendre tout ce qui passe."
+            }
+          ]
+        },
+        {
+          "emoji": "📣",
+          "name": "L'offre — Semaine gratuite",
+          "time": "⏱ 3-4 min",
+          "mindset": "Annonce l'offre avec calme — c'est une évidence pour toi, pas un cadeau désespéré. La semaine est gratuite côté honoraires : tu ne te fais pas payer. Le seul argent qui sort de sa poche va directement à Google. Insiste là-dessus.",
+          "say": [
+            "Ce que je vous propose c'est une semaine de test — zéro frais pour moi. Vous payez uniquement le budget publicitaire à Google directement : environ 10 à 15€ par jour, soit une centaine d'euros sur la semaine. Je monte la campagne, je la pilote, et vous voyez les résultats en direct.",
+            "Si la semaine ne produit rien — vous m'avez rien payé et vous n'avez rien perdu. Si ça marche, on en parle pour la suite."
+          ],
+          "pause": "Pause. Laisse le silence s'installer. Ne complète pas.",
+          "objections": [
+            {
+              "q": "C'est quoi l'arnaque ?",
+              "a": "Il n'y en a pas. Je travaille uniquement avec des [METIER]s. Si ça marche pour vous, vous continuez avec moi et là je me rémunère sur les mois suivants. Si ça ne marche pas, on s'arrête là — vous avez perdu 100€ de budget Google, c'est tout."
+            },
+            {
+              "q": "J'ai essayé Google Ads, ça marchait pas",
+              "a": "C'est souvent le cas quand c'est pas configuré pour votre secteur. Ce que je fais c'est différent — ciblage [METIER] + [ZONE] uniquement, pas du généraliste qui touche à tout."
+            },
+            {
+              "q": "Je fais pas de pub, mes clients viennent par le bouche à oreille",
+              "a": "Parfait — et la semaine de test ne change rien à ça. Elle vient en plus. Si elle amène rien, vous n'avez perdu que 100€ de budget."
+            },
+            {
+              "q": "100€ c'est pas gratuit",
+              "a": "Vous avez raison — les 100€ vont à Google, pas à moi. Ma prestation sur cette semaine, elle est à zéro. C'est moi qui prends le risque de mon côté."
+            }
+          ]
+        },
+        {
+          "emoji": "📊",
+          "name": "La preuve — Le paysagiste",
+          "time": "⏱ 2 min",
+          "mindset": "Donne les chiffres calmement, sans en faire trop. C'est une vraie histoire — tu l'as vécu. Les chiffres parlent seuls.",
+          "say": [
+            "Je vais vous donner un exemple concret. J'ai accompagné un paysagiste l'année dernière. On a lancé sa semaine de test — environ 100€ de budget Google. Cette semaine-là lui a généré 12 000€ de chiffre d'affaires.",
+            "Il a continué avec moi. Sur 3 mois, il a dépensé environ 3 000€ en budget publicitaire au total — et généré 150 000€ de CA.",
+            "C'est pas de la magie — c'est du ciblage précis. Les gens cherchent un [METIER] dans votre zone, ils tombent sur vous en premier."
+          ],
+          "pause": "Laisse le chiffre atterrir. S'il pose une question — réponds. S'il est silencieux — attends.",
+          "objections": [
+            {
+              "q": "C'est pas reproductible, c'était un cas particulier",
+              "a": "C'est une vraie question. Ce qui était particulier c'est son investissement — il a fait confiance au process. La mécanique, elle, est la même pour tous les artisans en local."
+            },
+            {
+              "q": "Je veux voir d'autres exemples",
+              "a": "Je peux vous mettre en contact avec lui directement. Il vous dira lui-même ce que ça lui a apporté."
+            },
+            {
+              "q": "150 000€ c'est exagéré",
+              "a": "C'est le chiffre exact sur 3 mois — je peux vous montrer les données de la campagne si vous le souhaitez."
+            }
+          ]
+        },
+        {
+          "emoji": "💰",
+          "name": "Closing — La décision",
+          "time": "⏱ 2 min",
+          "mindset": "Tu n'as plus rien à prouver. Tu as l'offre la plus simple du monde — une semaine de test à 100€ de budget. Reste calme. Le premier qui parle après la question a perdu.",
+          "say": [
+            "Alors — qu'est-ce qui vous retient d'essayer ?"
+          ],
+          "pause": "Silence total. Attends. Ne remplis pas le vide.",
+          "objections": [
+            {
+              "q": "C'est trop cher",
+              "a": "Je comprends. Pour être sûr — on parle bien des 100€ de budget Google ? Parce que moi je me facture rien sur la semaine de test."
+            },
+            {
+              "q": "Je dois y réfléchir",
+              "a": "Bien sûr. Qu'est-ce qui vous retient exactement — c'est le budget, le timing, ou vous avez un doute sur les résultats ?"
+            },
+            {
+              "q": "J'en parle à ma femme / mon associé",
+              "a": "Absolument. On peut prévoir un appel avec vous deux cette semaine ? Comme ça je réponds aux questions de tout le monde en même temps."
+            },
+            {
+              "q": "Je suis pas convaincu que ça marche pour moi",
+              "a": "C'est exactement pour ça que j'ai créé la semaine de test — pour que vous n'ayez pas à me croire sur parole. Vous le voyez vous-même en 7 jours."
+            }
+          ]
+        },
+        {
+          "emoji": "✅",
+          "name": "Confirmation & suite",
+          "time": "⏱ 1 min",
+          "mindset": "Une fois qu'il dit oui, ne continue pas à vendre. Passe à l'action immédiatement — ça rassure.",
+          "say": [
+            "Parfait. Je vous envoie un récapitulatif par email dans l'heure — vous y trouverez exactement comment fonctionne la semaine de test et les prochaines étapes pour [NOM DE LA SOCIÉTÉ].",
+            "Bienvenue — on va bien travailler ensemble."
+          ],
+          "pause": "",
+          "objections": []
+        }
+      ]
+    }
+  }
+}

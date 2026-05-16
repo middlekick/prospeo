@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// URL de connexion configurée dans prisma.config.ts (Prisma v7)
+// et DATABASE_URL / DIRECT_URL dans .env
+datasource db {
+  provider = "postgresql"
+}
+
+model Lead {
+  id      String @id @default(cuid())
+  user_id String
+
+  // Champs CRM
+  nom         String @default("")
+  metier      String @default("")
+  telephone   String @default("")
+  site        String @default("")
+  emplacement String @default("")
+  pays        String @default("France")
+  tag         String @default("non_appele")
+  rappel      String @default("")
+  note        String @default("")
+
+  // Timestamps de prospection (YYYY-MM-DD)
+  created_at   String @default("")
+  contacted_at String @default("")
+
+  // Suivi Google Ads
+  ads_prenom     String @default("")
+  ads_nomclient  String @default("")
+  ads_entreprise String @default("")
+  ads_tel        String @default("")
+  ads_email      String @default("")
+  ads_zone       String @default("")
+  ads_rayon      String @default("")
+  ads_statut     String @default("")
+  ads_budget     String @default("")
+  ads_type       String @default("")
+  ads_services   Json   @default("[]")
+  ads_notes      String @default("")
+
+  // RDV
+  rdv_date   String @default("")
+  rdv_heure  String @default("")
+  rdv_statut String @default("")
+  rdv_lieu   String @default("")
+  rdv_notes  String @default("")
+
+  // Journal d'activité (tableau JSON d'Activity)
+  activities Json @default("[]")
+
+  // Métadonnées DB
+  db_created_at DateTime @default(now())
+  db_updated_at DateTime @updatedAt
+
+  @@index([user_id])
+}
+
+// Abonnement Stripe par utilisateur Clerk
+model Subscription {
+  id                 String    @id @default(cuid())
+  user_id            String    @unique
+  plan               String    @default("free")   // "free" | "pro" | "agency"
+  stripe_customer_id String?
+  stripe_sub_id      String?
+  stripe_status      String?   // "active" | "canceled" | "past_due" | "trialing"
+  current_period_end DateTime?
+
+  // Compteur de scrapings (reset mensuel auto)
+  scrape_count    Int       @default(0)
+  scrape_reset_at DateTime?
+
+  // Trial par code d'invitation
+  trial_expires_at DateTime?  // null = pas de trial actif
+  trial_code_used  String?    // code utilisé pour activer le trial
+
+  db_created_at DateTime @default(now())
+  db_updated_at DateTime @updatedAt
+}

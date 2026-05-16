@@ -1,0 +1,256 @@
+[
+  {
+    "id": "closing-structure-001",
+    "type": "closing",
+    "title": "Closing — Structure en 6 étapes",
+    "createdAt": "2026-05-15T10:00:00.000Z",
+    "updatedAt": "2026-05-15T10:00:00.000Z",
+    "steps": [
+      {
+        "id": "s1",
+        "emoji": "🤝",
+        "name": "Ouverture & recontextualisation",
+        "time": "1–2 min",
+        "mindset": "Il a accepté ce rendez-vous parce qu'il est au moins curieux. Ton boulot ici c'est de le mettre à l'aise, pas de foncer. Commence par lui montrer que tu t'es préparé pour lui spécifiquement.",
+        "say": [
+          "Bonjour [Prénom], Téo à l'appareil. Merci d'avoir pris ce moment — je sais que vous avez un planning chargé. Je vais être direct et efficace, on a dit 20 minutes et on tiendra les 20 minutes.",
+          "Quand on s'est parlé, vous m'avez dit que vous étiez [métier] sur [zone]. J'ai regardé votre secteur avant l'appel — il y a un bon volume de recherches Google chaque mois sur vos prestations dans cette zone. C'est une bonne nouvelle, ça veut dire qu'il y a de la demande à capter."
+        ],
+        "pause": "Laisser réagir — il va confirmer ou corriger sa zone / ses prestations.\n→ Prendre note des infos qu'il donne : elles serviront pour personnaliser la suite",
+        "objections": []
+      },
+      {
+        "id": "s2",
+        "emoji": "🔍",
+        "name": "Qualifier la situation actuelle",
+        "time": "3–4 min",
+        "mindset": "Ne pas pitcher encore. Poser des questions, écouter vraiment. Plus il parle, plus tu comprends ce qui le fait vibrer — et plus ton closing sera précis.",
+        "say": [
+          "Avant de vous présenter quoi que ce soit, j'aimerais comprendre où vous en êtes. Aujourd'hui, comment vous trouvez vos chantiers ? Bouche à oreille, un site web, des plateformes comme Habitatpresto ?",
+          "Et dans une semaine type, vous recevez combien de demandes de devis qui correspondent vraiment à ce que vous cherchez ?"
+        ],
+        "pause": "Laisser parler. S'il dit 'pas assez' ou 'ça varie' → c'est ton signal.\n→ Reformuler : 'Donc si j'entends bien, l'enjeu c'est d'avoir un flux plus régulier et plus prévisible ?'\n→ Il doit dire OUI avant que tu passes à la suite",
+        "objections": [
+          {
+            "q": "J'ai déjà assez de travail pour l'instant.",
+            "a": "C'est une très bonne situation, tant mieux. La question c'est : est-ce que ce niveau d'activité est garanti dans 3 mois, ou ça dépend du bouche à oreille et de la saison ? Ce qu'on apporte c'est de la prévisibilité — pas juste du volume."
+          },
+          {
+            "q": "Je travaille surtout par recommandations.",
+            "a": "Le bouche à oreille c'est le meilleur canal qui soit — et Google Ads ne le remplace pas, il le complète. En gros, pour les mois creux ou les nouvelles prestations que vous voulez développer, vous avez une source de chantiers à la demande. Vous gardez vos recommandations, vous ajoutez un robinet que vous pouvez ouvrir ou fermer."
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "emoji": "💡",
+        "name": "Présentation de l'offre",
+        "time": "4–5 min",
+        "mindset": "Présenter l'offre APRÈS avoir compris sa situation — sinon c'est du pitch générique. Adapte les exemples à son métier et sa zone. La semaine test est ton atout principal : risque zéro pour lui.",
+        "say": [
+          "Voilà ce qu'on fait concrètement. On configure une campagne Google Ads ciblée exclusivement sur votre zone — [ville / département] — avec vos prestations principales. Quand quelqu'un cherche 'plombier urgence [ville]' ou 'électricien [quartier]' sur Google, c'est vous qui apparaissez en premier.",
+          "Sur la semaine de test, vous ne payez que le budget publicitaire directement à Google. Nous, on ne vous facture rien. On vous prouve les résultats d'abord, on parle argent ensuite. C'est notre façon de travailler.",
+          "Un exemple concret : un paysagiste sur le même principe a généré 12 000 euros de chiffre d'affaires sur la semaine de test avec 70 euros de budget journalier. Sur les trois mois suivants, 150 000 euros de CA pour 3 000 euros de budget Google au total. Ce sont ses chiffres à lui, vérifiables."
+        ],
+        "pause": "Pause de 3 secondes après le chiffre — laisser l'information atterrir.\n→ Ne pas enchaîner immédiatement\n→ Attendre qu'il réagisse ou pose une question",
+        "objections": [
+          {
+            "q": "Ça marche pour le bâtiment / mon métier ?",
+            "a": "On travaille avec des plombiers, électriciens, peintres, paysagistes, menuisiers — tous les métiers de service local fonctionnent bien. La logique est la même : quelqu'un a un besoin urgent, il tape sur Google, vous êtes là. C'est le comportement des gens aujourd'hui."
+          },
+          {
+            "q": "Combien je dois mettre de budget Google ?",
+            "a": "Sur la semaine test, on démarre souvent entre 50 et 100 euros par jour — c'est vous qui fixez le plafond, Google ne dépasse jamais. Ça fait 350 à 700 euros sur la semaine. Si vous n'êtes pas satisfait des résultats, vous coupez et il ne vous doit rien."
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "emoji": "🛡️",
+        "name": "Traitement des objections principales",
+        "time": "3–5 min",
+        "mindset": "Les objections sont des demandes d'informations déguisées. Ne les combats pas — creuse dessous. 'Qu'est-ce qui vous ferait changer d'avis ?' est souvent plus puissant que n'importe quelle réponse toute faite.",
+        "say": [],
+        "pause": "Cette étape est réactive — pas de monologue. Attendre les objections et répondre.",
+        "objections": [
+          {
+            "q": "C'est trop cher.",
+            "a": "Le budget Google, vous le contrôlez vous-même — vous mettez ce que vous voulez, même 30€/jour. Quant à nos honoraires, ils ne démarrent qu'à partir du deuxième mois, si vous continuez après la semaine test. Donc sur la semaine test, votre seule dépense c'est le budget pub que vous avez choisi vous-même."
+          },
+          {
+            "q": "J'ai peur de ne pas avoir assez de temps pour gérer les demandes.",
+            "a": "C'est un bon problème à avoir — mais c'est aussi gérable. On peut ajuster le budget journalier pour que le volume de demandes corresponde exactement à votre capacité. Si vous voulez 3 chantiers par semaine, on configure pour 3. C'est vous qui décidez du débit."
+          },
+          {
+            "q": "J'en parle à ma femme / mon comptable avant.",
+            "a": "Complètement normal. Ce que je vous propose : on bloque un créneau de lancement pour la semaine prochaine — si d'ici là votre femme ou votre comptable ont des questions, vous me rappeler et on en parle à trois si vous voulez. Le créneau, je peux le bloquer ce soir et l'annuler gratuitement jusqu'à 48h avant."
+          },
+          {
+            "q": "Je ne suis pas sûr que ça marche pour moi.",
+            "a": "C'est précisément pour ça que la semaine test existe — pour que vous le voyez par vous-même sans prendre de risque financier. Ce que je vous demande, ce n'est pas de me croire sur parole. C'est de tester. Et si au bout de la semaine les résultats ne vous convainquent pas, vous ne continuez pas. Qu'est-ce qui vous retient là ?"
+          },
+          {
+            "q": "J'ai déjà eu une mauvaise expérience avec une agence.",
+            "a": "Je comprends et c'est malheureusement fréquent. La différence ici c'est qu'on ne vous demande pas de payer notre prestation avant d'avoir eu des résultats. Vous payez Google directement — nous on ne touche rien sur la semaine test. Si ça ne marche pas, vous n'avez rien perdu d'autre que votre budget pub, que vous auriez de toute façon décidé vous-même."
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "emoji": "✅",
+        "name": "Close — Obtenir le oui",
+        "time": "2 min",
+        "mindset": "Ne pas sur-expliquer à ce stade. Poser une question fermée et se taire. Le silence après le close est ton allié — ne le comble pas. Celui qui parle en premier perd.",
+        "say": [
+          "On a fait le tour de l'essentiel. Est-ce que vous voulez qu'on lance la semaine test ?"
+        ],
+        "pause": "SILENCE — attendre sa réponse. Ne pas relancer.\n→ Si OUI : passer immédiatement à l'étape suivante\n→ Si HÉSITATION : 'Qu'est-ce qui vous retient encore ?'\n→ Si NON définitif : 'D'accord — qu'est-ce qui ferait que vous seriez intéressé dans 3 mois ?'",
+        "objections": [
+          {
+            "q": "Oui mais pas tout de suite.",
+            "a": "Je comprends. Quelle semaine vous conviendrait ? Je vous bloque le créneau maintenant et on peut ajuster si besoin — comme ça c'est dans l'agenda et ça ne se perd pas."
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "emoji": "🚀",
+        "name": "Onboarding — Collecter les infos",
+        "time": "3–4 min",
+        "mindset": "Il a dit oui. Reste détendu, professionnel. C'est le moment de lui montrer que la machine est rodée. Plus l'onboarding est fluide, plus il est rassuré sur son choix.",
+        "say": [
+          "Parfait. Pour configurer votre campagne, j'ai besoin de quelques infos — ça prend 5 minutes.",
+          "Votre prénom et nom complet pour le compte Google Ads ? Votre email professionnel ? Et le nom commercial de votre entreprise tel qu'il doit apparaître dans les annonces ?"
+        ],
+        "pause": "Remplir le formulaire Google Ads dans le CRM pendant l'appel.\n→ Zone d'intervention : quelle ville / rayon en km ?\n→ Prestations principales à mettre en avant (max 3)\n→ Budget journalier choisi\n→ Numéro de téléphone à afficher dans les annonces\n→ Envoyer un récap par SMS ou email dans l'heure",
+        "objections": [
+          {
+            "q": "C'est quoi la suite exactement ?",
+            "a": "Je configure la campagne dans les 24-48h. Vous recevrez un accès en lecture à votre tableau de bord Google Ads — vous verrez tout en temps réel. Les premières demandes arrivent généralement dans les 48h après le lancement. Je reste joignable tout au long de la semaine si vous avez des questions."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "closing-direct-001",
+    "type": "closing",
+    "title": "Closing — Méthode Directe",
+    "createdAt": "2026-05-15T10:00:00.000Z",
+    "updatedAt": "2026-05-15T10:00:00.000Z",
+    "steps": [
+      {
+        "id": "d1",
+        "emoji": "⚡",
+        "name": "Entrée directe — pas de blabla",
+        "time": "30 sec",
+        "mindset": "Pas de politesse excessive, pas de 'comment ça va'. Respect de son temps dès la première seconde. Les artisans travaillent de leurs mains — ils apprécient les gens qui vont droit au but. Tu as 20 minutes : utilise-les.",
+        "say": [
+          "Bonjour [Prénom], Téo. On avait 20 minutes, je tiens l'engagement. Je vais vous expliquer exactement ce qu'on fait, comment ça marche, ce que ça coûte, et ce que vous risquez. Ensuite vous décidez. Ça vous va ?"
+        ],
+        "pause": "Attendre le 'oui' ou le 'c'est parti' — il confirme qu'il est dans la conversation.\n→ Si ça bafouille ou hésite : c'est souvent qu'il est distrait. 'Vous êtes disponible là ou je vous rappelle dans 20 min ?'",
+        "objections": []
+      },
+      {
+        "id": "d2",
+        "emoji": "🎯",
+        "name": "L'offre en 3 phrases",
+        "time": "1–2 min",
+        "mindset": "Pas de jargon, pas de slides imaginaires. Trois phrases. Claires. Si tu as envie de rajouter une quatrième phrase, résiste.",
+        "say": [
+          "Voilà ce qu'on fait : on place votre entreprise en première position sur Google quand quelqu'un cherche votre métier dans votre secteur — et uniquement votre secteur.",
+          "Sur la semaine de test, vous payez uniquement le budget pub à Google — entre 50 et 100 euros par jour, vous choisissez. Nous on ne touche rien.",
+          "Si vous n'êtes pas satisfait des résultats à la fin de la semaine, vous ne continuez pas. Pas de contrat, pas de préavis. C'est aussi simple que ça."
+        ],
+        "pause": "Pause. Laisser l'info atterrir.\n→ S'il pose une question : bonne nouvelle, il est engagé\n→ S'il est silencieux : 'Des questions sur comment ça fonctionne ?'",
+        "objections": [
+          {
+            "q": "Et après la semaine test, c'est combien ?",
+            "a": "On en parle à la fin de la semaine, quand vous avez les résultats devant vous. En général c'est un forfait mensuel selon votre zone et vos objectifs. Mais là maintenant — le seul truc qui importe c'est : est-ce que ça marche pour vous ? C'est ce que la semaine test va nous dire."
+          }
+        ]
+      },
+      {
+        "id": "d3",
+        "emoji": "🔑",
+        "name": "La question qui qualifie",
+        "time": "1 min",
+        "mindset": "Cette étape élimine les perdants de temps. S'il répond 'non' à cette question, il ne signera pas de toute façon — autant le savoir maintenant.",
+        "say": [
+          "Une question directe : est-ce que vous avez besoin de plus de chantiers en ce moment, ou votre carnet est plein pour les 3 prochains mois ?"
+        ],
+        "pause": "→ Si carnet plein : 'Parfait. Et dans 4 mois quand ça se vide, vous faites quoi pour remplir rapidement ? C'est exactement à ça que ça sert.'\n→ Si besoin de chantiers : enchainer directement sur le close\n→ Si incertain : 'C'est quoi votre crainte principale ?'",
+        "objections": [
+          {
+            "q": "J'ai assez de travail.",
+            "a": "Super, c'est la meilleure situation. La question c'est dans 4 mois, quand votre chantier en cours se termine — vous avez quoi en pipeline ? Le bouche à oreille c'est formidable mais il a un délai. Google Ads c'est quasi immédiat. Beaucoup d'artisans qui marchent bien gardent les deux pour ne jamais se retrouver à sec."
+          }
+        ]
+      },
+      {
+        "id": "d4",
+        "emoji": "💶",
+        "name": "L'objection prix — la tuer simplement",
+        "time": "1–2 min",
+        "mindset": "Le prix est presque toujours une objection de façade. Derrière il y a souvent 'je ne te fais pas encore confiance' ou 'j'ai peur que ça ne marche pas'. Ton job : réduire le risque perçu à zéro.",
+        "say": [
+          "Je vais vous dire quelque chose d'honnête : 70 euros par jour de budget Google, si ça vous ramène un seul chantier de plomberie dans la semaine — vous êtes déjà dans les noirs. Un chantier de dépannage c'est souvent 200, 300, parfois 500 euros. Le rapport risque / gain est favorable dès le premier appel reçu."
+        ],
+        "pause": "→ Laisser le calcul faire son chemin\n→ Ne pas rajouter d'argument\n→ S'il hésite encore : 'Quel chiffre vous semblerait raisonnable pour tester ?'",
+        "objections": [
+          {
+            "q": "Je n'ai pas le budget en ce moment.",
+            "a": "On peut démarrer à 30 euros par jour si vous voulez — le volume sera plus faible mais vous verrez si ça génère des contacts. L'idée c'est que vous testiez dans des conditions que vous contrôlez entièrement. 30 euros par jour pendant 7 jours c'est 210 euros — moins qu'un approvisionnement de matériel."
+          },
+          {
+            "q": "J'ai eu une agence qui m'a pris 500€ sans résultats.",
+            "a": "Je comprends la méfiance. La différence ici c'est structurelle : vous payez Google directement — pas nous. Nous on ne touche rien sur la semaine test. Donc si ça ne marche pas, vous n'avez perdu que votre budget pub, que vous avez vous-même choisi. Pas un euro de nos honoraires."
+          },
+          {
+            "q": "C'est combien vos honoraires après ?",
+            "a": "On en parle après la semaine test — et seulement si vous continuez. Mais pour être transparent : c'est un forfait mensuel, pas un pourcentage sur votre CA. Et si vous avez les résultats de la semaine test devant vous, vous saurez exactement si ça vaut le coup ou pas. Là pour l'instant — combien de budget vous voulez mettre sur la semaine test ?"
+          }
+        ]
+      },
+      {
+        "id": "d5",
+        "emoji": "✍️",
+        "name": "Le close — une question, un silence",
+        "time": "30 sec",
+        "mindset": "Un seul mot de trop et tu relances ses doutes. Pose la question. Ferme ta gueule. Compte jusqu'à 10 dans ta tête si besoin. Celui qui parle en premier perd.",
+        "say": [
+          "On lance la semaine test ?"
+        ],
+        "pause": "SILENCE COMPLET — ne pas relancer.\n→ OUI : 'Parfait. On va collecter les infos et je configure dans les 24h.'\n→ SILENCE : attendre encore 5 secondes\n→ HÉSITATION : 'Qu'est-ce qui vous retient encore ?'\n→ NON : 'Entendu. Qu'est-ce qu'il faudrait qu'il se passe pour que vous soyez partant dans 3 mois ?'",
+        "objections": [
+          {
+            "q": "J'ai besoin d'y réfléchir.",
+            "a": "Je comprends. Pour vous aider à réfléchir — qu'est-ce qui n'est pas encore clair pour vous ? Parce que si c'est une information qui manque, autant la donner maintenant. Et si c'est juste une question de timing, on peut bloquer un créneau pour dans 2 semaines."
+          },
+          {
+            "q": "Je dois en parler à ma femme.",
+            "a": "Bien sûr. Vous voulez qu'on fasse un appel à trois cette semaine, que je lui explique directement ? Ça vous évite de jouer les intermédiaires et elle peut poser ses questions elle-même. Je suis disponible jeudi ou vendredi."
+          }
+        ]
+      },
+      {
+        "id": "d6",
+        "emoji": "📋",
+        "name": "Collecte des infos — rapide et pro",
+        "time": "3–4 min",
+        "mindset": "Il a dit oui. Accélère le rythme — l'énergie du oui est fragile, il ne faut pas la laisser refroidir. Chaque minute sans action augmente le risque de rétractation. Sois fluide, soyons efficace.",
+        "say": [
+          "Parfait. J'ai besoin de 5 informations et on a terminé.",
+          "Votre nom complet et le nom de votre société ? Votre email pro ? La zone sur laquelle on cible — ville principale et rayon en km ? Vos 2 ou 3 prestations phares ? Et le budget journalier que vous voulez mettre, entre 30 et 150 euros ?"
+        ],
+        "pause": "Remplir le formulaire Google Ads dans le CRM en temps réel.\n→ Répéter les infos pour confirmer : 'Donc [zone], [prestation], [budget]/jour — c'est bien ça ?'\n→ Conclure : 'Je vous envoie un récap par SMS dans l'heure. La campagne est en ligne dans 24 à 48h. Vous aurez accès à votre tableau de bord Google en lecture — vous verrez tout.'\n→ Taguer le lead : RDV pris → Closer",
+        "objections": [
+          {
+            "q": "Je peux changer le budget en cours de route ?",
+            "a": "Oui, à tout moment — même en pleine semaine. Vous m'appelez ou vous le faites directement dans l'interface Google Ads. Vous avez le contrôle total."
+          }
+        ]
+      }
+    ]
+  }
+]

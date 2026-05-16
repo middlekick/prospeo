@@ -1,0 +1,30 @@
+@import "@fontsource/syne/400.css";
+@import "@fontsource/syne/600.css";
+@import "@fontsource/syne/700.css";
+@import "@fontsource/dm-mono/400.css";
+
+@import "tailwindcss";
+
+:root {
+  --sidebar-w: 56px;
+  --cyan:   #22d3ee;
+  --coral:  #f87171;
+  --violet: #a78bfa;
+  --green:  #4ade80;
+  --orange: #fb923c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: #0b0d12;
+  color: #e2e8f0;
+  font-family: "Syne", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+.mono { font-family: "DM Mono", monospace; }

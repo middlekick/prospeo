@@ -1,0 +1,199 @@
+[
+  {
+    "id": "setting-formel-001",
+    "type": "cold_call",
+    "title": "Setting — Approche Formelle",
+    "createdAt": "2026-05-15T10:00:00.000Z",
+    "updatedAt": "2026-05-15T10:00:00.000Z",
+    "blocks": [
+      {
+        "id": "b1",
+        "type": "mindset",
+        "label": "MINDSET",
+        "text": "Tu n'appelles pas pour vendre — tu appelles pour qualifier. Ton objectif est d'obtenir un rendez-vous téléphonique de 20 minutes, rien de plus. Reste posé, articulé, sûr de toi. Tu apportes de la valeur, pas une interruption."
+      },
+      {
+        "id": "b2",
+        "type": "say",
+        "label": "OUVERTURE — Barrage secrétaire",
+        "text": "Bonjour, Téo Mikulic à l'appareil. Je souhaiterais parler à [Prénom du dirigeant], s'il vous plaît.",
+        "objections": [
+          {
+            "q": "C'est de la part de qui, et pourquoi ?",
+            "a": "Téo Mikulic, je travaille avec des artisans dans votre secteur sur leur développement commercial. C'est en rapport avec son activité, c'est assez court."
+          },
+          {
+            "q": "Il n'est pas disponible.",
+            "a": "Pas de souci — à quel moment serait-il le plus joignable, en matinée ou plutôt en fin d'après-midi ?"
+          }
+        ]
+      },
+      {
+        "id": "b3",
+        "type": "say",
+        "label": "VÉRIFICATION — Bon interlocuteur",
+        "text": "Bonjour [Prénom], Téo Mikulic à l'appareil. Je vous contacte directement parce que c'est vous qui gérez le développement de votre activité, c'est bien ça ?",
+        "objections": [
+          {
+            "q": "C'est ma femme / mon associé qui gère ça.",
+            "a": "Très bien, est-ce que je pourrais avoir son contact direct ? C'est pour une proposition qui concerne votre chiffre d'affaires."
+          }
+        ]
+      },
+      {
+        "id": "b4",
+        "type": "pause",
+        "label": "PAUSE — Laisser répondre",
+        "text": "Attendre la confirmation.\n→ S'il confirme : enchaîner sur l'accroche\n→ S'il est pressé : proposer de rappeler dans l'heure"
+      },
+      {
+        "id": "b5",
+        "type": "say",
+        "label": "ACCROCHE — Raison de l'appel",
+        "text": "Parfait. Je serai bref : je travaille avec des artisans — plombiers, électriciens, paysagistes — pour leur générer des demandes de devis qualifiées via Google Ads. Ce qui est particulier dans notre approche, c'est qu'on propose une semaine de test sans engagement, où vous ne payez que le budget publicitaire directement à Google. Nous, on ne prend rien sur cette période.",
+        "objections": [
+          {
+            "q": "J'ai déjà une agence / je fais déjà de la pub.",
+            "a": "Je comprends. Ce n'est pas forcément pour remplacer ce que vous faites — c'est pour vous donner un second avis avec des chiffres concrets. Une semaine de test vous permet de comparer directement. Qu'est-ce que vous obtenez actuellement en termes de demandes par semaine ?"
+          },
+          {
+            "q": "Ça ne marche pas, Google Ads.",
+            "a": "C'est souvent le cas quand les campagnes ne sont pas bien configurées pour les artisans locaux. Un de mes clients paysagiste a généré 12 000 euros de chiffre d'affaires sur une semaine de test avec seulement 70 euros de budget journalier. Ce qui change, c'est la précision du ciblage. C'est exactement ce dont on pourrait parler lors d'un échange de 20 minutes."
+          }
+        ]
+      },
+      {
+        "id": "b6",
+        "type": "say",
+        "label": "PREUVE SOCIALE",
+        "text": "Pour vous donner un exemple concret : un paysagiste dans le sud a généré 12 000 euros de chiffre d'affaires sur la semaine de test, puis 150 000 euros sur les trois mois suivants pour 3 000 euros de budget Google au total. Ce sont des résultats vérifiables.",
+        "objections": []
+      },
+      {
+        "id": "b7",
+        "type": "say",
+        "label": "CLOSE — Prise de rendez-vous",
+        "text": "Ce que je vous propose : un échange de 20 minutes cette semaine pour regarder ensemble si votre secteur et votre métier sont éligibles à ce type de campagne. Est-ce que vous seriez disponible plutôt en début ou en fin de semaine ?",
+        "objections": [
+          {
+            "q": "Je n'ai pas le temps.",
+            "a": "Je comprends tout à fait — c'est exactement pour ça que je vous propose 20 minutes et pas plus. Pas de présentation commerciale, juste une analyse de votre situation. Même jeudi ou vendredi en fin de journée, ça vous irait ?"
+          },
+          {
+            "q": "Envoyez-moi un email.",
+            "a": "Bien sûr, je vais vous envoyer quelques chiffres. Pour que ce soit pertinent, j'aurais besoin de connaître votre zone d'intervention et vos prestations principales — ça me prendra deux questions. Vous êtes sur quel secteur géographique ?"
+          },
+          {
+            "q": "Ça m'intéresse pas.",
+            "a": "C'est noté. Juste par curiosité — c'est plutôt que vous avez déjà suffisamment de chantiers, ou que vous n'avez pas confiance dans ce type de publicité ?"
+          },
+          {
+            "q": "C'est combien ?",
+            "a": "On en parle lors du rendez-vous — ça dépend de votre zone et de vos objectifs. Mais pour être transparent : sur la semaine de test, vous ne payez que le budget Google, pas nos honoraires. C'est le principe : on vous prouve la valeur avant de vous facturer quoi que ce soit."
+          }
+        ]
+      },
+      {
+        "id": "b8",
+        "type": "pause",
+        "label": "VALIDATION — Confirmer le RDV",
+        "text": "Confirmer la date, l'heure, et le moyen de contact (téléphone / Zoom).\n→ Envoyer un SMS de confirmation dans l'heure\n→ Ajouter dans le CRM avec tag RDV pris"
+      }
+    ]
+  },
+  {
+    "id": "setting-humour-001",
+    "type": "cold_call",
+    "title": "Setting — Accroche Décalée (Pizza)",
+    "createdAt": "2026-05-15T10:00:00.000Z",
+    "updatedAt": "2026-05-15T10:00:00.000Z",
+    "blocks": [
+      {
+        "id": "c1",
+        "type": "mindset",
+        "label": "MINDSET",
+        "text": "L'humour brise la glace MAIS il ne dure que les 10 premières secondes. Après la blague, tu redeviens sérieux et professionnel immédiatement. Si ça ne prend pas — il ne rit pas, il est froid — tu absorbes sans t'excuser et tu enchaînes normalement. L'objectif reste le RDV, pas de le faire rire."
+      },
+      {
+        "id": "c2",
+        "type": "say",
+        "label": "OUVERTURE DÉCALÉE — La blague pizza",
+        "text": "Bonjour ! J'aimerais commander une pizza et une carte fromage s'il vous plaît… Je plaisante, je sais bien que vous ne faites pas de pizzas. Je suis bien avec [Nom de l'entreprise] ?",
+        "objections": [
+          {
+            "q": "(Il rit)",
+            "a": "Parfait, ça part bien. Téo à l'appareil — je vous appelle pour quelque chose de bien plus rentable qu'une margherita."
+          },
+          {
+            "q": "(Il est froid, ne réagit pas)",
+            "a": "Téo à l'appareil — je vous contacte pour quelque chose qui concerne directement votre activité. Je serai bref."
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "type": "say",
+        "label": "PIVOT — Vers le vrai sujet",
+        "text": "Plus sérieusement, je travaille avec des artisans comme vous pour les aider à avoir plus de demandes de chantiers qualifiés chaque semaine — sans prospecter eux-mêmes. Et ce qui est sympa : la première semaine, c'est vous qui jugez les résultats avant de vous engager sur quoi que ce soit.",
+        "objections": [
+          {
+            "q": "C'est quoi exactement ?",
+            "a": "Google Ads ciblé sur votre zone — mais configuré spécifiquement pour les artisans, pas la version générique. Concrètement, vous recevez des appels de gens qui cherchent votre prestation dans votre secteur, maintenant. La semaine de test, vous ne payez que le budget pub directement à Google. Nous on ne touche rien tant que vous n'êtes pas convaincu."
+          },
+          {
+            "q": "Ça m'intéresse pas.",
+            "a": "C'est honnête. Juste une question — vous avez actuellement suffisamment de chantiers pour être à l'aise, ou c'est plutôt que vous n'avez pas confiance dans ce type de pub ?"
+          }
+        ]
+      },
+      {
+        "id": "c4",
+        "type": "say",
+        "label": "PREUVE — Le chiffre qui claque",
+        "text": "Pour que ce soit concret : un paysagiste a fait 12 000 euros de CA sur la semaine de test. Pas sur un mois — sur une semaine. Après il a continué, et il a atteint 150 000 euros en trois mois avec 3 000 euros de budget Google au total. C'est pour ça que je m'autorise à appeler des artisans que je ne connais pas.",
+        "objections": [
+          {
+            "q": "C'est pas mon secteur / mon métier.",
+            "a": "C'est une bonne remarque — c'est exactement ce qu'on vérifierait ensemble lors d'un échange rapide. Certains secteurs fonctionnent très bien, d'autres moins. Je vous dis ça honnêtement plutôt que de vous promettre les mêmes résultats sans vérifier."
+          },
+          {
+            "q": "J'ai déjà essayé et ça n'a pas marché.",
+            "a": "C'est souvent parce que les campagnes étaient mal configurées pour les artisans locaux. Y a des paramètres très spécifiques — si vous voulez, on regarde ça ensemble en 20 minutes, je vous explique pourquoi ça n'a pas fonctionné. Même si au final vous ne travaillez pas avec moi, vous comprendrez ce qui cloche."
+          }
+        ]
+      },
+      {
+        "id": "c5",
+        "type": "pause",
+        "label": "PAUSE — Lire la réaction",
+        "text": "Laisser un silence de 2-3 secondes après la preuve sociale.\n→ S'il pose des questions : c'est un signe d'intérêt, répondre et enchaîner vers le close\n→ S'il reste silencieux : poser directement la question du rendez-vous"
+      },
+      {
+        "id": "c6",
+        "type": "say",
+        "label": "CLOSE — La question simple",
+        "text": "Ce que je propose c'est simple : 20 minutes cette semaine, en vrai, pour regarder ensemble si ça peut marcher pour vous. Pas de PowerPoint, pas de blabla — juste une analyse de votre zone et de votre métier. Vous avez un créneau plutôt jeudi ou vendredi ?",
+        "objections": [
+          {
+            "q": "Je n'ai pas le temps.",
+            "a": "20 minutes et pas plus — je m'y engage. Si au bout de 10 minutes vous voyez que ça ne vous apporte rien, on raccroche et on reste bons. Même 12h30 le midi, ça me va."
+          },
+          {
+            "q": "Envoyez-moi un email d'abord.",
+            "a": "Pas de souci. Pour vous envoyer quelque chose de pertinent et pas du spam générique — votre zone d'intervention c'est quoi exactement, et vous faites quoi comme prestations principales ?"
+          },
+          {
+            "q": "C'est combien au final ?",
+            "a": "Franchement, ça dépend de votre zone et de vos objectifs — mais sur la semaine de test vous ne payez que le budget Google, et notre commission ne démarre qu'à partir du deuxième mois si vous continuez. On en parle en 20 minutes, et si les chiffres ne vous conviennent pas vous me dites non, c'est tout simple."
+          }
+        ]
+      },
+      {
+        "id": "c7",
+        "type": "pause",
+        "label": "VALIDATION FINALE",
+        "text": "Confirmer date + heure + numéro de rappel.\n→ Ajouter dans le CRM : tag RDV pris\n→ Envoyer SMS dans l'heure : \"Bonjour [Prénom], c'est Téo — je confirme notre échange [jour] à [heure]. À très vite !\""
+      }
+    ]
+  }
+]
