@@ -3,7 +3,7 @@
 /**
  * components/ui/UpgradeGate.tsx
  * Masque un contenu si le plan ne l'autorise pas.
- * Affiche un overlay "🔒 Fonctionnalité Pro" avec CTA vers /landing#pricing.
+ * Affiche un overlay "🔒 Fonctionnalité Pro" avec CTA vers /#pricing.
  */
 
 import Link from "next/link";
@@ -65,7 +65,7 @@ export default function UpgradeGate({ feature, plan, loading = false, children, 
           <p className="text-slate-500 text-xs mt-0.5">Disponible à partir du plan Pro</p>
         </div>
         <Link
-          href="/landing#pricing"
+          href="/#pricing"
           className="mt-1 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-colors"
         >
           Passer Pro →

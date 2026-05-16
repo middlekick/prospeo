@@ -22,11 +22,11 @@ interface LeadLite {
 
 // Pages navigables
 const NAV: NavItem[] = [
-  { id: "leads",      label: "Leads",          hint: "Gestion des prospects",      icon: "👥", href: "/" },
-  { id: "dashboard",  label: "Tableau de bord", hint: "Métriques & funnel",         icon: "📊", href: "/dashboard" },
-  { id: "inpi",       label: "Recherche INPI",  hint: "Sourcing entreprises",       icon: "🏛️", href: "/inpi" },
-  { id: "scripts",    label: "Scripts",         hint: "Téléprompter d'appel",       icon: "📜", href: "/scripts" },
-  { id: "autoscrape", label: "Auto-scraping",   hint: "Leads automatiques",         icon: "⚡", href: "/auto-scrape" },
+  { id: "leads",      label: "Leads",          hint: "Gestion des prospects",      icon: "👥", href: "/app" },
+  { id: "dashboard",  label: "Tableau de bord", hint: "Métriques & funnel",         icon: "📊", href: "/app/dashboard" },
+  { id: "inpi",       label: "Recherche INPI",  hint: "Sourcing entreprises",       icon: "🏛️", href: "/app/inpi" },
+  { id: "scripts",    label: "Scripts",         hint: "Téléprompter d'appel",       icon: "📜", href: "/app/scripts" },
+  { id: "autoscrape", label: "Auto-scraping",   hint: "Leads automatiques",         icon: "⚡", href: "/app/auto-scrape" },
 ];
 
 export default function CommandPalette() {
@@ -95,7 +95,7 @@ export default function CommandPalette() {
       router.push(navResults[globalIdx].href);
     } else {
       // Lead → page principale (la recherche reprend le contexte)
-      router.push("/");
+      router.push("/app");
     }
     setOpen(false);
   }, [navResults, router]);

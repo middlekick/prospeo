@@ -71,7 +71,7 @@ export default function ImportCSV({ onClose, onImported }: Props) {
       if (!res.ok) {
         // Message clair si plan free
         if (data.error === "upgrade_required") {
-          throw new Error("L'import CSV est réservé au plan Pro. Passez Pro sur /landing#pricing.");
+          throw new Error("L'import CSV est réservé au plan Pro. Passez Pro sur /#pricing.");
         }
         throw new Error(data.error || "Erreur import");
       }

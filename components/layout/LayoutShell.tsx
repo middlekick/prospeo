@@ -2,21 +2,21 @@
 
 /**
  * components/layout/LayoutShell.tsx
- * Wrapper client — masque la Sidebar sur les routes publiques (/landing, /sign-in…).
- * Fond sombre unifié + orbe violet ambiant.
+ * Affiche la Sidebar + CommandPalette UNIQUEMENT sur les routes du CRM (/app/*).
+ * Les routes publiques (landing "/", /sign-in, /sign-up, 404) sont rendues nues.
+ * Fond sombre unifié + orbe violet ambiant côté app.
  */
 
 import { usePathname }  from "next/navigation";
 import Sidebar          from "./Sidebar";
 import CommandPalette   from "@/components/ui/CommandPalette";
 
-const NO_SIDEBAR_ROUTES = ["/landing", "/sign-in", "/sign-up"];
-
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hideSidebar = NO_SIDEBAR_ROUTES.some(r => pathname.startsWith(r));
+  // Le CRM vit sous /app — partout ailleurs (landing, auth) : pas de chrome app
+  const isApp = pathname === "/app" || pathname.startsWith("/app/");
 
-  if (hideSidebar) {
+  if (!isApp) {
     return <>{children}</>;
   }
 

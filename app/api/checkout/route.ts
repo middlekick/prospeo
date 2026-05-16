@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       customer_email:       email,
       line_items:           [{ price: priceId, quantity: 1 }],
       success_url:          successUrl || `${origin}/?checkout=success`,
-      cancel_url:           cancelUrl  || `${origin}/landing?checkout=cancel`,
+      cancel_url:           cancelUrl  || `${origin}/?checkout=cancel`,
       // Métadonnées pour le webhook → mise à jour du plan en base
       metadata: {
         userId: userId ?? "",

@@ -49,7 +49,7 @@ export default function NotFound() {
 
       {/* CTA */}
       <Link
-        href="/"
+        href="/app"
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors mt-2"
       >
         ← Retour aux leads
@@ -57,9 +57,9 @@ export default function NotFound() {
 
       {/* Sous-liens */}
       <div className="flex items-center gap-4 text-xs text-slate-700">
-        <Link href="/dashboard" className="hover:text-slate-500 transition-colors">Dashboard</Link>
+        <Link href="/app/dashboard" className="hover:text-slate-500 transition-colors">Dashboard</Link>
         <span>·</span>
-        <Link href="/landing" className="hover:text-slate-500 transition-colors">Landing page</Link>
+        <Link href="/" className="hover:text-slate-500 transition-colors">Accueil</Link>
       </div>
     </div>
   );

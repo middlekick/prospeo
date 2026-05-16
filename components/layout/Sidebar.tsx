@@ -9,7 +9,7 @@ import TrialCodeModal  from "@/components/ui/TrialCodeModal";
 
 const NAV = [
   {
-    href:  "/",
+    href:  "/app",
     label: "Leads",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -21,7 +21,7 @@ const NAV = [
     ),
   },
   {
-    href:  "/dashboard",
+    href:  "/app/dashboard",
     label: "Dashboard",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -33,7 +33,7 @@ const NAV = [
     ),
   },
   {
-    href:  "/inpi",
+    href:  "/app/inpi",
     label: "INPI / RNE",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -43,7 +43,7 @@ const NAV = [
     ),
   },
   {
-    href:  "/scripts",
+    href:  "/app/scripts",
     label: "Scripts",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -56,7 +56,7 @@ const NAV = [
     ),
   },
   {
-    href:  "/auto-scrape",
+    href:  "/app/auto-scrape",
     label: "Auto-scraping",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

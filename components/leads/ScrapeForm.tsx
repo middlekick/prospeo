@@ -106,7 +106,7 @@ export default function ScrapeForm({ onDone }: Props) {
           scrapeLeft === 0 ? "text-red-400" : scrapeLeft === 1 ? "text-amber-400" : "text-slate-500",
         ].join(" ")}>
           {scrapeLeft === 0
-            ? <>Quota atteint &nbsp;·&nbsp; <Link href="/landing#pricing" className="underline hover:text-violet-400">Passer Pro</Link></>
+            ? <>Quota atteint &nbsp;·&nbsp; <Link href="/#pricing" className="underline hover:text-violet-400">Passer Pro</Link></>
             : `${scrapeLeft}/${scrapeMax} scraping${scrapeLeft > 1 ? "s" : ""} restant${scrapeLeft > 1 ? "s" : ""} ce mois`
           }
         </span>

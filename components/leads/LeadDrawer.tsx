@@ -414,7 +414,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               </button>
             ) : !planLoading ? (
               <a
-                href="/landing#pricing"
+                href="/#pricing"
                 title="Fonctionnalité Pro — Passer Pro"
                 className="h-8 px-3 rounded-md text-xs font-medium border border-white/10 bg-white/5 text-slate-600 flex items-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
               >

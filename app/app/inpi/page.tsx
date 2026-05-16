@@ -75,7 +75,7 @@ export default function INPIPage() {
           </p>
         </div>
         <Link
-          href="/landing#pricing"
+          href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(124,58,237,0.3)]"
         >
           Passer Pro — 19 €/mois →

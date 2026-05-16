@@ -2,10 +2,12 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 // Routes accessibles sans être connecté
 const isPublicRoute = createRouteMatcher([
+  "/",              // landing publique
+  "/landing(.*)",   // ancienne URL — redirige vers /
   "/sign-in(.*)",
   "/sign-up(.*)",
-  "/landing(.*)",
   "/api/webhook",   // Stripe webhook — pas de token d'auth
+  "/api/contact",   // formulaire contact de la landing
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

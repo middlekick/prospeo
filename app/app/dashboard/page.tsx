@@ -341,7 +341,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <Link
-          href="/landing#pricing"
+          href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(124,58,237,0.3)]"
         >
           Passer Pro — 19 €/mois →
@@ -608,7 +608,7 @@ export default function DashboardPage() {
                   const tagCls = TAG_COLORS[lead.tag] || "bg-slate-700 text-slate-300";
                   const isToday = lead.contacted_at === today;
                   return (
-                    <Link key={i} href="/"
+                    <Link key={i} href="/app"
                       className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/2 border border-white/5 hover:bg-white/[0.06] hover:border-white/[0.08] transition-all group"
                     >
                       <div className="flex-1 min-w-0">
