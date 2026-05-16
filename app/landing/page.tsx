@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link          from "next/link";
 import { useUser }   from "@clerk/nextjs";
 import ContactModal  from "@/components/ui/ContactModal";
+import AnimatedDemo  from "@/components/landing/AnimatedDemo";
 
 // ─── Stripe ──────────────────────────────────────────────────────────────────
 async function startCheckout(plan: "pro" | "agency", email: string) {
@@ -58,6 +59,34 @@ function CursorGlow() {
   );
 }
 
+// ─── Compteur animé au scroll ─────────────────────────────────────────────────
+function AnimatedCounter({ end, suffix = "", duration = 1600 }: { end: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref  = useRef<HTMLSpanElement>(null);
+  const done = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || done.current) return;
+      done.current = true;
+      const start = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setCount(Math.round(eased * end));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.6 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [end, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
 // ─── Composants ──────────────────────────────────────────────────────────────
 function Badge({ children }: { children: React.ReactNode }) {
   return (
@@ -71,57 +100,8 @@ function G({ children }: { children: React.ReactNode }) {
   return <span className="bg-gradient-to-r from-violet-400 via-purple-300 to-indigo-400 bg-clip-text text-transparent">{children}</span>;
 }
 
-// Mockup CRM
-function AppMockup() {
-  return (
-    <div className="relative w-full max-w-2xl mx-auto rounded-2xl overflow-hidden
-                    border border-white/10 bg-[#0f1117]"
-      style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 40px 120px rgba(124,58,237,0.28), 0 0 60px rgba(124,58,237,0.12)" }}>
-      {/* Ligne gradient en haut */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/60 to-transparent" />
-      <div className="flex items-center gap-2 px-4 py-3 bg-[#080a0f] border-b border-white/5">
-        <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-red-500/50"/><div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"/><div className="w-2.5 h-2.5 rounded-full bg-green-500/50"/></div>
-        <span className="ml-2 text-[11px] text-slate-500 font-mono">prospeo.app</span>
-      </div>
-      <div className="flex h-60">
-        <div className="w-12 bg-[#080a0f] border-r border-white/5 flex flex-col items-center py-3 gap-3">
-          <div className="w-7 h-7 rounded-lg bg-violet-500/20 flex items-center justify-center">
-            <span className="text-violet-400 text-xs font-bold">P</span>
-          </div>
-          {["◈","◉","🏛","◎"].map((ic, i) => (
-            <div key={i} className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${i===0?"bg-violet-500/20 text-violet-400":"text-slate-700"}`}>{ic}</div>
-          ))}
-        </div>
-        <div className="flex-1 p-3 space-y-2 overflow-hidden">
-          <div className="flex gap-2 mb-3">
-            {[{l:"Total",v:"179",c:"text-slate-300"},{l:"Rappels",v:"12",c:"text-amber-400"},{l:"Intéressés",v:"24",c:"text-emerald-400"},{l:"RDV",v:"6",c:"text-violet-400"}].map(s=>(
-              <div key={s.l} className="flex-1 bg-white/[0.06] rounded-lg p-2 border border-white/[0.10]">
-                <div className={`text-sm font-bold ${s.c}`}>{s.v}</div>
-                <div className="text-[10px] text-slate-600">{s.l}</div>
-              </div>
-            ))}
-          </div>
-          {[
-            {n:"Plomberie Martin",  t:"Intéressé",     c:"bg-emerald-500/15 text-emerald-400 border-emerald-500/20"},
-            {n:"Élec Dupont & Fils",t:"RDV pris",      c:"bg-violet-500/15 text-violet-400 border-violet-500/20"},
-            {n:"Peinture & Co",     t:"Non appelé",    c:"bg-slate-500/15 text-slate-400 border-slate-500/20"},
-            {n:"Maçonnerie Sud",    t:"Ne répond pas", c:"bg-amber-500/15 text-amber-400 border-amber-500/20"},
-          ].map((l,i)=>(
-            <div key={i} className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-white/[0.03] transition-colors group cursor-default">
-              <div className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center text-[10px] font-bold text-slate-500 group-hover:bg-violet-500/10 group-hover:text-violet-400 transition-colors">{l.n[0]}</div>
-              <span className="flex-1 text-xs text-slate-400 truncate">{l.n}</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${l.c}`}>{l.t}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0f1117] to-transparent pointer-events-none"/>
-    </div>
-  );
-}
-
-// Feature card avec glow au hover
-function FCard({ icon, title, desc, color = "violet" }: { icon: string; title: string; desc: string; color?: string }) {
+// Feature card avec glow + animation icône au hover
+function FCard({ icon, title, desc, color = "violet", iconAnim = "" }: { icon: string; title: string; desc: string; color?: string; iconAnim?: string }) {
   const hover: Record<string, string> = {
     violet: "group-hover:shadow-[0_0_40px_rgba(124,58,237,0.18)] group-hover:border-violet-500/35",
     cyan:   "group-hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]  group-hover:border-cyan-500/30",
@@ -141,7 +121,7 @@ function FCard({ icon, title, desc, color = "violet" }: { icon: string; title: s
   return (
     <div className={`group p-6 rounded-2xl border border-white/[0.08] bg-white/[0.03]
                     hover:bg-white/[0.055] transition-all duration-500 ${hover[color]}`}>
-      <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5 ${iconBg[color]}`}>
+      <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5 ${iconBg[color]} transition-transform duration-300 ${iconAnim}`}>
         {icon}
       </div>
       <h3 className="text-slate-100 font-semibold mb-2 text-[15px]">{title}</h3>
@@ -218,14 +198,28 @@ function FAQ({ q, a }: { q: string; a: string }) {
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 export default function LandingPage() {
-  const [email,        setEmail]        = useState("");
-  const [loading,      setLoading]      = useState(false);
-  const [modal,        setModal]        = useState(false);
-  const [contactOpen,  setContactOpen]  = useState(false);
+  const [email,          setEmail]          = useState("");
+  const [loading,        setLoading]        = useState(false);
+  const [modal,          setModal]          = useState(false);
+  const [contactOpen,    setContactOpen]    = useState(false);
   const [contactSubject, setContactSubject] = useState("");
+  const [bandeauVisible, setBandeauVisible] = useState(false);
+  const [showSticky,     setShowSticky]     = useState(false);
   const { isSignedIn } = useUser();
 
   useScrollReveal();
+
+  // Bandeau early adopter — persisté via localStorage
+  useEffect(() => {
+    if (!localStorage.getItem("bandeau-dismissed")) setBandeauVisible(true);
+  }, []);
+
+  // Sticky CTA — apparaît après 400px de scroll
+  useEffect(() => {
+    const onScroll = () => setShowSticky(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   function openContact(subject = "") {
     setContactSubject(subject);
@@ -246,6 +240,23 @@ export default function LandingPage() {
 
   return (
     <>
+      {/* Bandeau early adopter */}
+      {bandeauVisible && (
+        <div className="fixed top-0 left-0 right-0 z-[60] h-9 flex items-center justify-center gap-3
+                        bg-gradient-to-r from-violet-950/90 via-violet-900/90 to-violet-950/90
+                        border-b border-violet-500/20 backdrop-blur-md text-xs">
+          <span className="text-violet-300 font-medium">
+            ✦ Offre early adopter — accès à vie à tarif fondateur pour les 50 premiers
+          </span>
+          <span className="text-violet-500">·</span>
+          <span className="text-violet-400 font-semibold">23 places restantes</span>
+          <button onClick={() => { localStorage.setItem("bandeau-dismissed","1"); setBandeauVisible(false); }}
+            className="absolute right-4 text-violet-600 hover:text-violet-400 transition-colors text-base leading-none">
+            ×
+          </button>
+        </div>
+      )}
+
       {/* CSS scroll reveal */}
       <style>{`
         [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
@@ -274,7 +285,7 @@ export default function LandingPage() {
         <div className="relative z-10">
 
           {/* ── Navbar ────────────────────────────────────────────────────── */}
-          <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.05] bg-[#0b0d12]/75 backdrop-blur-2xl">
+          <nav className={`fixed left-0 right-0 z-50 border-b border-white/[0.05] bg-[#0b0d12]/75 backdrop-blur-2xl transition-[top] duration-300 ${bandeauVisible ? "top-9" : "top-0"}`}>
             <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/20 flex items-center justify-center">
@@ -354,22 +365,24 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* Mockup flottant */}
+              {/* Démo animée flottante */}
               <div data-reveal data-reveal-delay="2" className="animate-float">
-                <AppMockup />
+                <AnimatedDemo />
               </div>
 
-              {/* Social proof sous le mockup */}
+              {/* Stats animées sous le mockup */}
               <div data-reveal className="flex flex-wrap justify-center gap-8 mt-14 text-center">
                 {[
-                  {v:"179+",  l:"leads gérés"},
-                  {v:"12k€",  l:"générés en 1 semaine (test)"},
-                  {v:"150k€", l:"CA sur 3 mois"},
-                  {v:"0€",    l:"frais semaine test"},
+                  { end: 50,  suffix: "+",  label: "leads qualifiés en 1 clic" },
+                  { end: 100, suffix: "%",  label: "relances tracées automatiquement" },
+                  { end: 14,  suffix: "j",  label: "d'essai sans engagement" },
+                  { end: 0,   suffix: "€",  label: "pour commencer" },
                 ].map(s=>(
-                  <div key={s.l} className="px-5">
-                    <div className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">{s.v}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{s.l}</div>
+                  <div key={s.label} className="px-5">
+                    <div className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+                      {s.end === 0 ? "0€" : <AnimatedCounter end={s.end} suffix={s.suffix} />}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -437,21 +450,77 @@ export default function LandingPage() {
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {[
-                  {icon:"🗺️",title:"Scraping Google Maps",color:"violet",
+                  {icon:"🗺️",title:"Scraping Google Maps",color:"violet",  iconAnim:"group-hover:rotate-12",
                    desc:"Trouvez des leads qualifiés en secondes. Métier + ville → tableau rempli automatiquement avec nom, téléphone et site."},
-                  {icon:"🏛️",title:"Base INPI / RNE",color:"indigo",
+                  {icon:"🏛️",title:"Base INPI / RNE",     color:"indigo",  iconAnim:"group-hover:scale-110",
                    desc:"Accédez aux entreprises récemment créées. Filtres par département, code NAF, ancienneté. Import direct avec enrichissement auto."},
-                  {icon:"📋",title:"Scripts téléprompter",color:"cyan",
+                  {icon:"📋",title:"Scripts téléprompter", color:"cyan",    iconAnim:"group-hover:-translate-y-1",
                    desc:"Cold call et closing en plein écran. Objections, mindset, étapes de closing — tout visible pendant l'appel, sans quitter l'écran."},
-                  {icon:"📊",title:"Dashboard métriques",color:"emerald",
+                  {icon:"📊",title:"Dashboard métriques",  color:"emerald", iconAnim:"group-hover:scale-110",
                    desc:"Suivez vos vrais indicateurs. Seuls les contacts réels comptent — pas les leads importés. Funnel, graphiques, RDV à venir."},
-                  {icon:"📅",title:"RDV & rappels",color:"amber",
+                  {icon:"📅",title:"RDV & rappels",        color:"amber",   iconAnim:"group-hover:rotate-6",
                    desc:"Rappels en retard surlignés en rouge. RDV planifiés et suivis. Alertes visuelles pour ne plus jamais rater une relance."},
-                  {icon:"✉️",title:"Emails de prospection",color:"pink",
+                  {icon:"✉️",title:"Emails de prospection",color:"pink",    iconAnim:"group-hover:translate-x-1",
                    desc:"3 templates prêts : offre semaine gratuite, confirmation RDV, rappel J-1. Envoi depuis votre Gmail + log automatique dans le journal."},
                 ].map((f,i)=>(
                   <div key={i} data-reveal data-reveal-delay={String((i%3)+1)}>
                     <FCard {...f} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ── Comparatif ───────────────────────────────────────────────── */}
+          <section className="py-24 px-6 border-t border-white/[0.05]">
+            <div className="max-w-4xl mx-auto">
+              <div data-reveal className="text-center mb-14">
+                <Badge>✦ Comparatif</Badge>
+                <h2 className="text-3xl font-bold text-slate-100 tracking-tight mb-3">
+                  Pourquoi pas Excel ou HubSpot ?
+                </h2>
+                <p className="text-slate-500 text-sm max-w-lg mx-auto">
+                  Prospeo est le seul outil pensé de A à Z pour la prospection terrain d&apos;artisans et TPE locales.
+                </p>
+              </div>
+              <div data-reveal className="rounded-2xl border border-white/[0.08] overflow-hidden">
+                {/* En-tête */}
+                <div className="grid grid-cols-4 bg-white/[0.04] border-b border-white/[0.08]">
+                  <div className="p-4 text-xs text-slate-600 uppercase tracking-wider font-semibold">Fonctionnalité</div>
+                  {[
+                    { name: "Prospeo", highlight: true },
+                    { name: "Excel",   highlight: false },
+                    { name: "HubSpot", highlight: false },
+                  ].map(col => (
+                    <div key={col.name} className={`p-4 text-center text-sm font-semibold ${col.highlight ? "text-violet-300" : "text-slate-500"}`}>
+                      {col.highlight && <span className="mr-1.5">✦</span>}{col.name}
+                    </div>
+                  ))}
+                </div>
+                {/* Lignes */}
+                {[
+                  ["Sourcing leads intégré (Maps + INPI)", true,  false, false],
+                  ["Scripts d'appel téléprompter",        true,  false, false],
+                  ["Rappels automatiques J+3",            true,  false, true ],
+                  ["Journal d'activité automatique",      true,  false, true ],
+                  ["Import / Export CSV",                 true,  true,  true ],
+                  ["Dashboard analytique",                true,  false, true ],
+                  ["Prix mensuel",                        "19€", "0€",  "0€ (limité)"],
+                  ["Complexité d'utilisation",            "Faible","Faible","Élevée"],
+                ].map((row, i) => (
+                  <div key={i} className={`grid grid-cols-4 border-b border-white/[0.05] last:border-0 ${i % 2 === 0 ? "" : "bg-white/[0.015]"}`}>
+                    <div className="p-3.5 text-sm text-slate-400">{row[0] as string}</div>
+                    {[row[1], row[2], row[3]].map((val, j) => (
+                      <div key={j} className={`p-3.5 flex justify-center items-center text-sm ${j === 0 ? "bg-violet-500/[0.06]" : ""}`}>
+                        {typeof val === "boolean" ? (
+                          val
+                            ? <span className={`font-bold ${j === 0 ? "text-violet-400" : "text-emerald-500/60"}`}>✓</span>
+                            : <span className="text-slate-700">✗</span>
+                        ) : (
+                          <span className={`font-medium ${j === 0 ? "text-violet-300" : "text-slate-500"}`}>{val as string}</span>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -467,26 +536,30 @@ export default function LandingPage() {
                   <h2 data-reveal className="text-3xl font-bold text-slate-100 mb-10 tracking-tight">
                     De zéro à votre premier<br/><G>RDV en moins d&apos;une heure</G>
                   </h2>
-                  <div className="space-y-8">
-                    {[
-                      {n:"01",t:"Sourcez vos leads",
-                       d:"Scrapez Google Maps, importez depuis l'INPI ou chargez un CSV. Leads normalisés et prêts à appeler en quelques secondes."},
-                      {n:"02",t:"Appelez avec le script",
-                       d:"Ouvrez le téléprompter, appelez. Statut mis à jour en un clic. Chaque changement est loggé automatiquement dans le journal."},
-                      {n:"03",t:"Relancez et convertissez",
-                       d:"Rappels en retard visibles immédiatement. Emails de suivi en un clic. Le dashboard vous montre votre funnel en temps réel."},
-                    ].map((s,i)=>(
-                      <div key={i} data-reveal data-reveal-delay={String(i+1)} className="flex gap-5">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20
-                                        flex items-center justify-center text-violet-400 font-bold text-xs font-mono">
-                          {s.n}
+                  {/* Timeline animée */}
+                  <div className="relative">
+                    {/* Ligne verticale */}
+                    <div className="absolute left-5 top-5 bottom-5 w-px bg-gradient-to-b from-violet-500/60 via-violet-500/20 to-transparent" />
+                    <div className="space-y-10">
+                      {[
+                        {n:"01", t:"Sourcez vos leads",       color:"text-violet-400", bg:"bg-violet-500/10 border-violet-500/25",
+                         d:"Scrapez Google Maps, importez depuis l'INPI ou chargez un CSV. Leads normalisés et prêts à appeler en quelques secondes."},
+                        {n:"02", t:"Appelez avec le script",   color:"text-cyan-400",   bg:"bg-cyan-500/10 border-cyan-500/25",
+                         d:"Ouvrez le téléprompter, appelez. Statut mis à jour en un clic. Chaque changement est loggé automatiquement dans le journal."},
+                        {n:"03", t:"Relancez et convertissez", color:"text-emerald-400",bg:"bg-emerald-500/10 border-emerald-500/25",
+                         d:"Rappels J+3 créés automatiquement. Emails de suivi en un clic. Le dashboard vous montre votre funnel en temps réel."},
+                      ].map((s,i)=>(
+                        <div key={i} data-reveal data-reveal-delay={String(i+1)} className="flex gap-5 relative">
+                          <div className={`flex-shrink-0 w-10 h-10 rounded-xl border flex items-center justify-center font-bold text-xs font-mono z-10 ${s.bg} ${s.color}`}>
+                            {s.n}
+                          </div>
+                          <div className="pt-1.5">
+                            <h3 className="text-slate-100 font-semibold mb-1.5">{s.t}</h3>
+                            <p className="text-slate-500 text-sm leading-relaxed">{s.d}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-slate-100 font-semibold mb-1">{s.t}</h3>
-                          <p className="text-slate-500 text-sm leading-relaxed">{s.d}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -738,6 +811,36 @@ export default function LandingPage() {
             </div>
           </footer>
 
+        </div>
+
+        {/* Sticky CTA */}
+        <div className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-500 ${showSticky ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
+          <div className="mx-auto max-w-2xl mb-4 px-4">
+            <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#0f1117]/95 border border-violet-500/25 backdrop-blur-xl
+                            shadow-[0_0_40px_rgba(124,58,237,0.25),0_8px_32px_rgba(0,0,0,0.4)]">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-violet-500/20 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-violet-400 font-bold text-xs">P</span>
+                </div>
+                <div className="min-w-0">
+                  <span className="text-slate-200 font-semibold text-sm">Prospeo</span>
+                  <span className="text-slate-600 text-xs ml-2 hidden sm:inline">· Essai 14 jours gratuit</span>
+                </div>
+              </div>
+              <input type="email" value={email} onChange={e=>setEmail(e.target.value)}
+                placeholder="votre@email.com"
+                className="hidden sm:block flex-1 px-3 py-2 bg-white/[0.04] border border-white/[0.09] rounded-lg
+                           text-slate-200 placeholder-slate-600 text-xs
+                           focus:outline-none focus:border-violet-500/50 transition-colors max-w-[200px]" />
+              <button onClick={() => pay("pro")} disabled={loading}
+                className="px-4 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-xl
+                           text-xs font-semibold transition-all whitespace-nowrap
+                           shadow-[0_0_16px_rgba(124,58,237,0.4)] hover:shadow-[0_0_24px_rgba(124,58,237,0.55)]">
+                {loading ? "…" : "Commencer →"}
+              </button>
+              <button onClick={() => setShowSticky(false)} className="text-slate-700 hover:text-slate-500 transition-colors ml-1 text-lg leading-none flex-shrink-0">×</button>
+            </div>
+          </div>
         </div>
 
         {/* Modal contact */}

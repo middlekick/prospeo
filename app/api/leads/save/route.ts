@@ -41,6 +41,9 @@ export async function POST(req: NextRequest) {
     ? (lead.activities as unknown as Activity[]) : [];
   let contacted_at = lead.contacted_at;
 
+  // Rappel automatique J+3 si passage en "Ne répond pas" et aucun rappel existant
+  let autoRappel = rappel;
+
   if (tag !== undefined && tag !== lead.tag) {
     activities.unshift({
       id:      Date.now().toString(),
@@ -52,13 +55,24 @@ export async function POST(req: NextRequest) {
     if (tag !== "non_appele" && lead.tag === "non_appele" && !lead.contacted_at) {
       contacted_at = new Date().toISOString().slice(0, 10);
     }
+    if (tag === "ne_repond_pas" && !lead.rappel && rappel === undefined) {
+      const d = new Date();
+      d.setDate(d.getDate() + 3);
+      autoRappel = d.toISOString().slice(0, 10);
+      activities.unshift({
+        id:      (Date.now() + 1).toString(),
+        date:    new Date().toISOString().slice(0, 16),
+        type:    "note",
+        content: "Rappel automatique créé — relance dans 3 jours",
+      });
+    }
   }
 
   await prisma.lead.update({
     where: { id: lead.id },
     data: {
-      ...(tag    !== undefined && { tag }),
-      ...(rappel !== undefined && { rappel }),
+      ...(tag         !== undefined && { tag }),
+      ...(autoRappel  !== undefined && { rappel: autoRappel }),
       ...(note   !== undefined && { note }),
       ...(ads_prenom     !== undefined && { ads_prenom }),
       ...(ads_nomclient  !== undefined && { ads_nomclient }),

@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Claude Code local settings
 /.claude/
+
+# Backup données — numéros d'artisans réels, ne pas exposer
+/data/artisans.json
