@@ -137,6 +137,8 @@ export default function INPISearch({ onAddLeads }: Props) {
   const [dept,      setDept]     = useState("");
   const [naf,       setNaf]      = useState("");
   const [annees,    setAnnees]   = useState(5);
+  // 0 = utilise "annees" ; sinon ne garde que les créées dans les N derniers mois
+  const [moisMax,   setMoisMax]  = useState(0);
   const [rmOnly,    setRmOnly]   = useState(false);
   const [results,   setResults]  = useState<Entreprise[]>([]);
   const [total,     setTotal]    = useState(0);
@@ -156,6 +158,7 @@ export default function INPISearch({ onAddLeads }: Props) {
     setSelected(new Set());
     try {
       const params = new URLSearchParams({ annees: String(annees), page: String(p) });
+      if (moisMax > 0) params.set("moisMax", String(moisMax));
       if (q)      params.set("q", q);
       if (dept)   params.set("departement", dept);
       if (naf)    params.set("naf", naf);
@@ -294,10 +297,28 @@ export default function INPISearch({ onAddLeads }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-slate-500">Créées il y a (max ans)</label>
-            <input type="number" value={annees} min={1} max={10}
+            <label className="text-xs text-slate-500">Jeunes entreprises 🔥</label>
+            <div className="relative">
+              <select
+                value={moisMax}
+                onChange={e => setMoisMax(Number(e.target.value))}
+                className="h-8 pl-3 pr-7 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 appearance-none cursor-pointer [color-scheme:dark]"
+              >
+                <option value={0}>Toutes (par ans)</option>
+                <option value={3}>Créées &lt; 3 mois</option>
+                <option value={6}>Créées &lt; 6 mois</option>
+                <option value={12}>Créées &lt; 12 mois</option>
+                <option value={24}>Créées &lt; 24 mois</option>
+              </select>
+              <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▾</span>
+            </div>
+          </div>
+
+          <div className={`flex flex-col gap-1 ${moisMax > 0 ? "opacity-40" : ""}`}>
+            <label className="text-xs text-slate-500">Sinon : max ans</label>
+            <input type="number" value={annees} min={1} max={10} disabled={moisMax > 0}
               onChange={e => setAnnees(Number(e.target.value))}
-              className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-20 mono"
+              className="h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-violet-500/50 w-20 mono disabled:cursor-not-allowed"
             />
           </div>
 

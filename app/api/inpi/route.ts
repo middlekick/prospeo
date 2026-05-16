@@ -40,11 +40,15 @@ export async function GET(req: NextRequest) {
   const departement = searchParams.get("departement") || "";
   const naf         = searchParams.get("naf")         || "";
   const annees      = Number(searchParams.get("annees") || "5");
+  // moisMax : si fourni (> 0), ne garde que les entreprises créées dans les N derniers mois
+  // (prioritaire sur "annees" — cible les jeunes entreprises, leads les plus chauds)
+  const moisMax     = Number(searchParams.get("moisMax") || "0");
   const rmOnly      = searchParams.get("rmOnly")      === "1";
   const page        = Number(searchParams.get("page") || "1");
 
   const dateMin = new Date();
-  dateMin.setFullYear(dateMin.getFullYear() - annees);
+  if (moisMax > 0) dateMin.setMonth(dateMin.getMonth() - moisMax);
+  else             dateMin.setFullYear(dateMin.getFullYear() - annees);
   const dateMinStr = dateMin.toISOString().slice(0, 10);
 
   // ── Fetch en boucle jusqu'à avoir PAGE_SIZE résultats filtrés ────────────
@@ -107,6 +111,10 @@ export async function GET(req: NextRequest) {
         break;
       }
     }
+
+    // Tri par date de création décroissante : les entreprises les plus
+    // récentes (= prospects les plus chauds) apparaissent en premier
+    collected.sort((a, b) => (b.date_creation || "").localeCompare(a.date_creation || ""));
 
     const results = collected.slice(0, PAGE_SIZE);
     // Il y a une page suivante si on a rempli PAGE_SIZE ET que l'API n'est pas épuisée
