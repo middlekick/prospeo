@@ -237,10 +237,13 @@ export default function DashboardPage() {
     const rdvPris       = leads.filter(l => l.tag === "rdv_pris").length;
     const pasInteresse  = leads.filter(l => l.tag === "pas_interesse").length;
 
-    const tauxContact   = total     > 0 ? Math.round((contactes / total) * 100)                 : 0;
-    const tauxInteret   = contactes > 0 ? Math.round(((interesses + rdvPris) / contactes) * 100) : 0;
-    const tauxRdv       = (interesses + rdvPris) > 0
-      ? Math.round((rdvPris / (interesses + rdvPris)) * 100) : 0;
+    // "Vrais conversations" = ceux qui ont décroché et répondu (intéressé + RDV pris + pas intéressé)
+    // Ne répond pas n'est PAS compté dans le closing — ils n'ont pas eu de vraie conversation
+    const vraisConversations = interesses + rdvPris + pasInteresse;
+
+    const tauxContact   = total               > 0 ? Math.round((contactes          / total)               * 100) : 0;
+    const tauxInteret   = vraisConversations  > 0 ? Math.round(((interesses + rdvPris) / vraisConversations) * 100) : 0;
+    const tauxRdv       = vraisConversations  > 0 ? Math.round((rdvPris             / vraisConversations)   * 100) : 0;
 
     // ── Graphique 30 jours ───────────────────────────────────────────────
     const chart: ChartPoint[] = days30.map(d => ({
@@ -268,6 +271,7 @@ export default function DashboardPage() {
     return {
       contactedPeriod, addedPeriod, rdvPeriod, rappelsDus,
       total, nonContactes, contactes, neRepond, interesses, rdvPris, pasInteresse,
+      vraisConversations,
       tauxContact, tauxInteret, tauxRdv,
       chart, totalContacted30, bestDay,
       upcomingRdv, recentlyContacted,
@@ -467,43 +471,65 @@ export default function DashboardPage() {
           {/* Entonnoir */}
           <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
             <h2 className="text-sm font-semibold text-slate-100 mb-1">Entonnoir de conversion</h2>
-            <p className="text-xs text-slate-600 mb-5">Sur {stats.total} leads au total</p>
+            <p className="text-xs text-slate-600 mb-4">Sur {stats.total} leads au total</p>
 
             <div className="space-y-3">
+              {/* Niveau 1 — Tous les leads */}
               <FunnelBar label="Non contactés" count={stats.nonContactes}
                 total={stats.total} color="text-slate-500" bg="bg-slate-600/40" />
-              <FunnelBar label="Contactés" count={stats.contactes}
+              <FunnelBar label="Contactés (appelés)" count={stats.contactes}
                 total={stats.total} color="text-slate-300" bg="bg-slate-500/50" />
 
+              {/* Niveau 2 — Parmi les contactés */}
               <div className="border-t border-white/5 pt-3 space-y-2 pl-3">
+                <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
+                  Parmi les contactés
+                </p>
                 <FunnelBar label="Ne répond pas" count={stats.neRepond}
                   total={stats.contactes || 1} color="text-orange-400" bg="bg-orange-500/40"
-                  sub={`des contactés`} />
-                <FunnelBar label="Intéressés" count={stats.interesses}
-                  total={stats.contactes || 1} color="text-cyan-400" bg="bg-cyan-500/50"
-                  sub={`des contactés`} />
-                <FunnelBar label="RDV pris" count={stats.rdvPris}
-                  total={stats.contactes || 1} color="text-green-400" bg="bg-green-500/50"
-                  sub={`des contactés`} />
-                <FunnelBar label="Pas intéressé" count={stats.pasInteresse}
-                  total={stats.contactes || 1} color="text-red-400" bg="bg-red-500/30"
-                  sub={`des contactés`} />
+                  sub="des appelés" />
+
+                {/* Séparation : vrais conversations */}
+                <div className="border-t border-white/[0.04] pt-2">
+                  <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
+                    Vrais échanges ({stats.vraisConversations})
+                    <span className="ml-1 normal-case font-normal text-slate-700">— excl. sans réponse</span>
+                  </p>
+                  <FunnelBar label="Intéressés (à rappeler)" count={stats.interesses}
+                    total={stats.vraisConversations || 1} color="text-cyan-400" bg="bg-cyan-500/50"
+                    sub="des échanges réels" />
+                  <div className="mt-2">
+                    <FunnelBar label="RDV pris ✓" count={stats.rdvPris}
+                      total={stats.vraisConversations || 1} color="text-green-400" bg="bg-green-500/60"
+                      sub="des échanges réels" />
+                  </div>
+                  <div className="mt-2">
+                    <FunnelBar label="Pas intéressé" count={stats.pasInteresse}
+                      total={stats.vraisConversations || 1} color="text-red-400" bg="bg-red-500/30"
+                      sub="des échanges réels" />
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Taux clés */}
-            {stats.contactes > 0 && (
+            {/* Taux clés — recalculés sur les vrais échanges */}
+            {stats.vraisConversations > 0 && (
               <div className="mt-5 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
-                {[
-                  { label: "Contact",  value: stats.tauxContact,  color: "text-slate-300" },
-                  { label: "Intérêt",  value: stats.tauxInteret,  color: "text-cyan-400"  },
-                  { label: "→ RDV",    value: stats.tauxRdv,      color: "text-green-400" },
-                ].map(t => (
-                  <div key={t.label} className="text-center">
-                    <div className={`text-lg font-bold mono ${t.color}`}>{t.value}%</div>
-                    <div className="text-xs text-slate-700">{t.label}</div>
-                  </div>
-                ))}
+                <div className="text-center">
+                  <div className="text-lg font-bold mono text-slate-300">{stats.tauxContact}%</div>
+                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont décroché<br/>(sur total)</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold mono text-cyan-400">{stats.tauxInteret}%</div>
+                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont montré<br/>de l&apos;intérêt</div>
+                </div>
+                <div className="text-center relative">
+                  <div className="text-lg font-bold mono text-green-400">{stats.tauxRdv}%</div>
+                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">closing RDV<br/>(vrais échanges)</div>
+                  {stats.tauxRdv > 0 && (
+                    <div className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  )}
+                </div>
               </div>
             )}
           </div>
