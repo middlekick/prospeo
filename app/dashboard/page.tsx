@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import Link                               from "next/link";
 import { Lead, TAG_COLORS }              from "@/components/leads/types";
 import { usePlan }                        from "@/hooks/usePlan";
+import RdvCalendar                        from "@/components/dashboard/RdvCalendar";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -537,6 +538,9 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {/* ── Calendrier des RDV ── */}
+        <RdvCalendar leads={leads} />
 
         {/* ── Prochains RDV + Derniers contactés ── */}
         <div className="grid grid-cols-2 gap-4">

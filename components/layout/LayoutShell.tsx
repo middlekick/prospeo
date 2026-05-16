@@ -6,8 +6,9 @@
  * Fond sombre unifié + orbe violet ambiant.
  */
 
-import { usePathname } from "next/navigation";
-import Sidebar         from "./Sidebar";
+import { usePathname }  from "next/navigation";
+import Sidebar          from "./Sidebar";
+import CommandPalette   from "@/components/ui/CommandPalette";
 
 const NO_SIDEBAR_ROUTES = ["/landing", "/sign-in", "/sign-up"];
 
@@ -31,6 +32,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
       <Sidebar />
       <main className="relative z-10 ml-[220px] min-h-screen">{children}</main>
+      <CommandPalette />
     </>
   );
 }
