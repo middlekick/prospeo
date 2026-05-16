@@ -55,45 +55,64 @@ gestion des RDV, scripts d'appel, relances automatiques, journal d'activité —
 ```
 Prospeo/
 ├── app/
-│   ├── page.tsx                       # Page principale — gestion des leads
-│   ├── dashboard/page.tsx             # Dashboard métriques prospection
+│   ├── page.tsx                       # Page leads — table/kanban, session d'appels, bulk, raccourcis
+│   ├── dashboard/page.tsx             # Dashboard métriques + funnel + calendrier RDV + export CSV
 │   ├── inpi/page.tsx                  # Recherche INPI + import + auto-enrichissement
-│   ├── scripts/page.tsx               # Scripts d'appel (téléprompter)
+│   ├── scripts/page.tsx               # Scripts d'appel (téléprompter, CRUD localStorage)
+│   ├── auto-scrape/page.tsx           # Config auto-scraping quotidien + "lancer maintenant"
+│   ├── admin/page.tsx                 # Dashboard admin — users, plan, reset pwd, suppression
 │   ├── landing/page.tsx               # Landing page publique (marketing SaaS)
+│   ├── not-found.tsx                  # Page 404 custom dark theme
 │   ├── sign-in/[[...sign-in]]/page.tsx# Page login Clerk (dark theme)
-│   ├── layout.tsx                     # Layout racine — ClerkProvider + Sidebar
+│   ├── layout.tsx                     # Layout racine — ClerkProvider + ToastProvider + Shell
 │   ├── globals.css                    # Tailwind + fontes + scrollbar
 │   └── api/
 │       ├── leads/
 │       │   ├── route.ts               # GET — leads de l'user connecté (Prisma)
-│       │   ├── save/route.ts          # POST — update lead + log activité auto + rappel J+3
+│       │   ├── save/route.ts          # POST — update + log auto + relances multi-paliers + retour lead
 │       │   ├── import/route.ts        # POST — import en masse avec déduplication
 │       │   ├── delete/route.ts        # POST — suppression par nom+telephone
 │       │   └── activity/route.ts      # POST — ajout entrée manuelle au journal
-│       ├── scrape/route.ts            # POST — scrape Google Maps via SerpAPI
-│       ├── enrich/route.ts            # POST — enrichit les leads sans tel
+│       ├── scrape/route.ts            # POST — scrape Google Maps via SerpAPI (gated quota Free)
+│       ├── enrich/route.ts            # POST — enrichit les leads sans tel (Pro+)
 │       ├── inpi/route.ts              # GET — recherche RNE avec filtres serveur
 │       ├── email/route.ts             # POST — envoi email (3 templates) + log activité
-│       ├── checkout/route.ts          # POST — création session Stripe
-│       └── webhook/route.ts           # POST — webhook Stripe
+│       ├── plan/route.ts              # GET — plan + limites + quota scraping (hook usePlan)
+│       ├── trial/route.ts             # POST — activation trial par code d'invitation
+│       ├── checkout/route.ts          # POST — session Stripe (pro/agency)
+│       ├── webhook/route.ts           # POST — webhook Stripe (sub lifecycle)
+│       ├── contact/route.ts           # POST — formulaire contact landing
+│       ├── auto-scrape/route.ts       # CRUD configs auto-scraping (Clerk)
+│       ├── auto-scrape/run/route.ts   # POST — run manuel sécurisé Clerk (pas de secret exposé)
+│       ├── cron/auto-scrape/route.ts  # POST — cron Vercel 8h (Bearer CRON_SECRET)
+│       └── admin/*                    # users, plan, reset-password, delete-user (ADMIN_USER_IDS)
 ├── components/
 │   ├── layout/
 │   │   ├── Sidebar.tsx                # Sidebar 220px — nav + plan badge + UserButton Clerk
-│   │   └── LayoutShell.tsx            # Shell avec orbe violet + margin ml-[220px]
+│   │   └── LayoutShell.tsx            # Shell + orbe violet + CommandPalette globale
 │   ├── leads/
 │   │   ├── types.ts                   # re-export Lead + TAG_OPTIONS + TAG_LABEL + colors
-│   │   ├── LeadsTable.tsx             # Table flexbox + tag inline + tri + lien "Trouver"
-│   │   ├── LeadDrawer.tsx             # Drawer 480px — Suivi/Ads(gated)/RDV + EmailPanel + Journal
+│   │   ├── LeadsTable.tsx             # Table + tag inline + tri + log rapide hover + sélection multiple
+│   │   ├── KanbanView.tsx             # Vue kanban drag & drop natif par statut
+│   │   ├── CallSession.tsx            # Mode session d'appels plein écran (portal) + stats live
+│   │   ├── LeadDrawer.tsx             # Drawer — Suivi/Ads(gated)/RDV + EmailPanel + Journal + voix
 │   │   ├── FilterPills.tsx            # Filtres par statut + badge rappels pulsé
 │   │   ├── StatsBar.tsx               # Stats globales (total, rappels, intéressés, RDV…)
 │   │   ├── ScrapeForm.tsx             # Formulaire scraping + badge quota Free
 │   │   ├── ImportCSV.tsx              # Modal import CSV avec preview 3 lignes
 │   │   └── EnrichButton.tsx           # Enrichissement batch leads sans téléphone (Pro+ only)
+│   ├── dashboard/
+│   │   └── RdvCalendar.tsx            # Calendrier mensuel des RDV (pastilles par statut)
 │   ├── inpi/
 │   │   └── INPISearch.tsx             # Formulaire + table INPI (depts, NAF, RM, pagination)
+│   ├── scripts/
+│   │   └── GoogleAdsScriptViewer.tsx  # Viewer script closing Google Ads (étapes + objections)
 │   ├── landing/
 │   │   └── AnimatedDemo.tsx           # Démo animée 3 scènes en autoplay (Scraping→INPI→Scripts)
 │   └── ui/
+│       ├── Toast.tsx                  # Système de toasts (Context + useToast) — remplace alert()
+│       ├── CommandPalette.tsx         # Palette Cmd+K — navigation + recherche leads
+│       ├── VoiceButton.tsx            # Dictée vocale Web Speech API (fr-FR)
 │       ├── UpgradeGate.tsx            # Overlay 🔒 avec CTA vers /landing#pricing
 │       ├── OnboardingModal.tsx        # Modal 4 étapes au 1er login (localStorage)
 │       ├── TrialCodeModal.tsx         # Modal code d'invitation trial
@@ -116,7 +135,7 @@ Prospeo/
 │   ├── artisans.json                  # ⚠️ BACKUP + EXCLU DU GIT (données personnelles) — dans Neon
 │   └── scripts.json                   # Scripts d'appel (cold call + closing Google Ads)
 ├── prisma.config.ts                   # Config Prisma v7 (datasource.url via dotenv)
-├── middleware.ts                      # Clerk middleware — protège tout sauf /sign-in /sign-up /landing /api/webhook
+├── proxy.ts                           # Clerk middleware (convention Next.js 16) — protège tout sauf routes publiques
 ├── vercel.json                        # Config Vercel (timeout 60s sur scrape/enrich/inpi)
 ├── .env                               # Variables d'environnement (ne jamais committer)
 ├── next.config.ts                     # serverExternalPackages: nodemailer, serpapi
@@ -212,31 +231,42 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - Page `/sign-in` dark theme custom
 
 ### Page Leads (`/`)
+- **Vue table OU kanban** (toggle, raccourci `K`) — kanban en **drag & drop natif** entre colonnes de statut
 - Table triable (nom, métier, emplacement, statut, rappel)
 - Tag modifiable inline (popover sans ouvrir le drawer)
-- Rappels en retard surlignés en jaune + badge pulsé dans la sidebar
-- Filtre "Rappels" dédié
+- **Log appel rapide** : 3 boutons au hover sur chaque ligne (📵 / ⭐ / ✗)
+- **Sélection multiple + bulk actions** : changer le statut en masse, suppression groupée (barre flottante)
+- **Mode Session d'appels** (feature signature) : plein écran, enchaîne les non-appelés, numéro géant
+  cliquable (tel: + WhatsApp), script Cold Call avec variables remplacées, 4 résultats, raccourcis
+  `1-4`/`S`/`Échap`, stats live + écran de bilan (taux décrochage, rythme, à rappeler)
+- **Raccourcis clavier** : `K` (kanban), `/` (focus recherche), `Échap` (fermer/vider)
+- Rappels en retard surlignés + badge pulsé dans la sidebar, filtre "Rappels" dédié
 - Barre de stats (total, rappels dus, intéressés, RDV pris, RDV du jour, taux contact)
-- Scraping Google Maps direct (formulaire en haut de page)
-- Import CSV (modal, auto-détection colonnes et séparateur, preview 3 lignes)
-- Export CSV
-- Bouton enrichissement batch (leads sans téléphone → Google Maps)
-- Lien "Trouver" (Google search) pour les leads sans téléphone
-- **Rappel automatique J+3** : passage en `ne_repond_pas` → rappel créé automatiquement + log journal
+- Scraping Google Maps direct, Import/Export CSV (Pro+), enrichissement batch, lien "Trouver"
+- **Skeleton de chargement** animé
+- **Relances multi-paliers** : passage en `ne_repond_pas` → rappel auto escaladé (J+3 → J+7 → J+15)
 - **Drawer lead** : 3 onglets (Suivi / Google Ads / RDV)
   - Journal d'activité avec timeline (statuts, emails, notes, appels)
-  - Ajout note manuelle
+  - Ajout note manuelle + **dictée vocale** (Web Speech API fr-FR)
   - EmailPanel : 3 templates, champ email, envoi + log automatique
   - Onglet RDV : boutons raccourcis "Confirmer RDV" / "Rappel J-1"
   - Bouton WhatsApp direct
+  - **Save optimisé** : l'API retourne le lead mis à jour (pas de re-fetch global)
+
+### Palette de commandes (`Cmd/Ctrl+K`) — globale
+- Navigation rapide entre pages + recherche de leads, navigation clavier complète
 
 ### Page Dashboard (`/dashboard`)
-- Sélecteur de période : aujourd'hui / 7j / 30j
+- Sélecteur de période : aujourd'hui / 7j / 30j + **export CSV du bilan**
 - 4 KPI cards : contactés, ajoutés, RDV à venir, rappels en retard
 - Graphique barres 30j SVG (violet = contactés, cyan = ajoutés, fonds weekend)
-- Funnel de conversion avec barres en % et 3 taux
-- Liste des RDV à venir (6 prochains)
-- Liste des contacts récents (8 derniers)
+- **Funnel de conversion corrigé** : taux calculés sur les *vrais échanges*
+  (intéressé + RDV + pas intéressé), "ne répond pas" exclu du closing
+  - Taux de **décrochage** = vrais échanges / appelés
+  - Taux d'**intérêt** et **closing RDV** = sur vrais échanges
+- **Calendrier mensuel des RDV** (pastilles colorées par statut, clic → détail du jour)
+- Liste des RDV à venir + contacts récents (cliquables → page leads)
+- **Skeleton de chargement**
 - **Seules les actions réelles comptent** (`contacted_at` défini uniquement au 1er vrai contact)
 
 ### Page INPI (`/inpi`)
@@ -396,9 +426,27 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - [x] Modal onboarding 4 étapes au 1er login
 - [x] Scripts d'appel CRUD avec localStorage + import/export JSON
 - [x] Sidebar redesignée 220px avec labels + badge plan
-- [ ] **Déploiement Vercel** ← prochaine étape (git initialisé, repo GitHub à créer, variables d'env prêtes)
+- [x] **Déploiement Vercel** (prospeo-six.vercel.app, repo middlekick/prospeo, cron 8h actif)
+- [x] Auto-scraping quotidien (Vercel Cron) + run manuel sécurisé Clerk
+
+### Phase 4.5 — UX premium ✅ TERMINÉ
+- [x] Système de toasts (remplace tous les `alert()`)
+- [x] Vue Kanban avec drag & drop natif
+- [x] Mode Session d'appels plein écran + stats live (feature signature)
+- [x] Sélection multiple + bulk actions (tag/suppression en masse)
+- [x] Log appel rapide au hover sur les lignes
+- [x] Palette de commandes Cmd+K (navigation + recherche globale)
+- [x] Calendrier mensuel des RDV dans le dashboard
+- [x] Notes vocales (Web Speech API)
+- [x] Relances multi-paliers (J+3 → J+7 → J+15)
+- [x] Skeletons de chargement + raccourcis clavier
+- [x] Fix funnel conversion (taux sur vrais échanges)
+- [x] Perf : save API retourne le lead (pas de re-fetch global)
 
 ### Phase 5 — Post-lancement
+- [ ] PWA installable (prospecter depuis mobile)
+- [ ] Détection doublons fuzzy à l'import CSV
+- [ ] Onboarding interactif (tour guidé)
 - [ ] Stratégie acquisition : LinkedIn content + prospection directe freelances commerciaux
 - [ ] Tags personnalisables par user
 - [ ] Notifications rappels in-app
