@@ -1,6 +1,7 @@
 "use client";
 
-import { Lead, TAG_COLORS, TAG_LABEL, TAG_OPTIONS, isRappelDue } from "./types";
+import { useState } from "react";
+import { Lead, isRappelDue } from "./types";
 import { toWhatsAppUrl } from "@/lib/phone";
 
 interface Props {
@@ -9,16 +10,15 @@ interface Props {
   onTagChange: (lead: Lead, tag: string) => void;
 }
 
-// Colonnes kanban dans l'ordre souhaité
+// Colonnes kanban dans l'ordre du pipeline
 const COLUMNS = [
-  { value: "non_appele",    label: "Non appelé",     icon: "○" },
+  { value: "non_appele",    label: "Non appelé",     icon: "○"  },
   { value: "ne_repond_pas", label: "Ne répond pas",  icon: "📵" },
   { value: "interesse",     label: "Intéressé",       icon: "⭐" },
   { value: "rdv_pris",      label: "RDV pris",        icon: "📅" },
   { value: "pas_interesse", label: "Pas intéressé",  icon: "✗"  },
 ] as const;
 
-// Couleurs d'accent par colonne
 const COLUMN_ACCENT: Record<string, string> = {
   non_appele:    "border-slate-600",
   ne_repond_pas: "border-orange-500/50",
@@ -35,38 +35,50 @@ const COLUMN_COUNT_BG: Record<string, string> = {
   pas_interesse: "bg-red-900/40 text-red-400",
 };
 
-// ── Carte lead dans le kanban ─────────────────────────────────────────────────
+// Surbrillance de la colonne survolée pendant le drag
+const COLUMN_DROP_BG: Record<string, string> = {
+  non_appele:    "bg-slate-500/[0.08] border-slate-500/40",
+  ne_repond_pas: "bg-orange-500/[0.08] border-orange-500/40",
+  interesse:     "bg-cyan-500/[0.08] border-cyan-500/40",
+  rdv_pris:      "bg-green-500/[0.08] border-green-500/40",
+  pas_interesse: "bg-red-500/[0.08] border-red-500/40",
+};
 
-function KanbanCard({ lead, onOpen, onTagChange }: { lead: Lead; onOpen: (l: Lead) => void; onTagChange: (l: Lead, t: string) => void }) {
+// ── Carte lead ────────────────────────────────────────────────────────────────
+
+function KanbanCard({
+  lead, onOpen, dragging, onDragStart, onDragEnd,
+}: {
+  lead: Lead;
+  onOpen: (l: Lead) => void;
+  dragging: boolean;
+  onDragStart: () => void;
+  onDragEnd: () => void;
+}) {
   const due = isRappelDue(lead);
-
-  async function quickMove(e: React.MouseEvent, tag: string) {
-    e.stopPropagation();
-    onTagChange(lead, tag);
-    await fetch("/api/leads/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...lead, tag }),
-    });
-  }
 
   return (
     <div
+      draggable
+      onDragStart={e => { e.dataTransfer.effectAllowed = "move"; onDragStart(); }}
+      onDragEnd={onDragEnd}
       onClick={() => onOpen(lead)}
       className={[
-        "group relative bg-[#181b26] border rounded-xl p-3 cursor-pointer transition-all hover:bg-[#1e2130] hover:border-white/15",
+        "group relative bg-[#181b26] border rounded-xl p-3 cursor-grab active:cursor-grabbing transition-all hover:bg-[#1e2130] hover:border-white/15",
         due ? "border-amber-500/30 bg-amber-500/[0.03]" : "border-white/[0.07]",
+        dragging ? "opacity-40 scale-95 ring-2 ring-violet-500/50" : "",
       ].join(" ")}
     >
-      {/* Nom */}
-      <p className="text-xs font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1">
+      {/* Poignée de drag (indicateur visuel) */}
+      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-700 text-xs select-none">
+        ⠿
+      </div>
+
+      <p className="text-xs font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1 pr-4">
         {lead.nom || "—"}
       </p>
-
-      {/* Métier */}
       <p className="text-[11px] text-slate-600 truncate mb-2">{lead.metier || "—"}</p>
 
-      {/* Téléphone */}
       {lead.telephone ? (
         <a
           href={toWhatsAppUrl(lead.telephone)}
@@ -84,52 +96,73 @@ function KanbanCard({ lead, onOpen, onTagChange }: { lead: Lead; onOpen: (l: Lea
         <span className="text-[11px] text-slate-700">Pas de tel</span>
       )}
 
-      {/* Rappel */}
       {lead.rappel && (
         <div className={`mt-1.5 text-[10px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
           {due ? "⏰ " : "📅 "}{lead.rappel}
         </div>
       )}
-
-      {/* Flèche vers colonne suivante (apparaît au hover) */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
-        {/* Bouton → colonne suivante */}
-        {(() => {
-          const idx     = COLUMNS.findIndex(c => c.value === lead.tag);
-          const nextCol = idx >= 0 && idx < COLUMNS.length - 1 ? COLUMNS[idx + 1] : null;
-          if (!nextCol) return null;
-          return (
-            <button
-              onClick={e => quickMove(e, nextCol.value)}
-              title={`→ ${nextCol.label}`}
-              className="w-5 h-5 rounded bg-white/[0.06] hover:bg-white/[0.12] text-slate-500 hover:text-white text-[10px] transition-all flex items-center justify-center"
-            >
-              →
-            </button>
-          );
-        })()}
-      </div>
     </div>
   );
 }
 
-// ── Vue kanban complète ───────────────────────────────────────────────────────
+// ── Vue kanban avec drag & drop natif ─────────────────────────────────────────
 
 export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
+  // Lead en cours de déplacement
+  const [draggedKey, setDraggedKey] = useState<string | null>(null);
+  // Colonne survolée pendant le drag
+  const [dragOverCol, setDragOverCol] = useState<string | null>(null);
+
+  const draggedLead = draggedKey
+    ? leads.find(l => `${l.nom}|${l.telephone}` === draggedKey) ?? null
+    : null;
+
+  async function handleDrop(targetTag: string) {
+    setDragOverCol(null);
+    const lead = draggedLead;
+    setDraggedKey(null);
+    if (!lead || lead.tag === targetTag) return;
+
+    // Mise à jour optimiste
+    onTagChange(lead, targetTag);
+    try {
+      await fetch("/api/leads/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...lead, tag: targetTag }),
+      });
+    } catch {
+      // En cas d'erreur, on remet l'ancien tag
+      onTagChange(lead, lead.tag);
+    }
+  }
+
   return (
     <div className="flex gap-3 p-4 overflow-x-auto h-full">
       {COLUMNS.map(col => {
-        const colLeads = leads.filter(l => l.tag === col.value);
+        const colLeads  = leads.filter(l => l.tag === col.value);
         const accentCls = COLUMN_ACCENT[col.value];
         const countCls  = COLUMN_COUNT_BG[col.value];
+        const isDropTarget = dragOverCol === col.value && draggedLead && draggedLead.tag !== col.value;
 
         return (
           <div
             key={col.value}
-            className={`flex flex-col gap-2 min-w-[220px] w-[220px] shrink-0`}
+            onDragOver={e => { e.preventDefault(); setDragOverCol(col.value); }}
+            onDragLeave={e => {
+              // Ne réinitialiser que si on quitte vraiment la colonne (pas un enfant)
+              if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOverCol(null);
+            }}
+            onDrop={() => handleDrop(col.value)}
+            className={[
+              "flex flex-col gap-2 min-w-[230px] w-[230px] shrink-0 rounded-xl border transition-all",
+              isDropTarget
+                ? COLUMN_DROP_BG[col.value]
+                : "border-transparent",
+            ].join(" ")}
           >
             {/* En-tête colonne */}
-            <div className={`flex items-center gap-2 px-2 py-2 rounded-lg border-l-2 ${accentCls} bg-white/[0.02]`}>
+            <div className={`flex items-center gap-2 px-2 py-2 rounded-lg border-l-2 ${accentCls} bg-white/[0.02] m-1 mb-0`}>
               <span className="text-sm">{col.icon}</span>
               <span className="text-xs font-semibold text-slate-400 flex-1">{col.label}</span>
               <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${countCls}`}>
@@ -138,20 +171,39 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
             </div>
 
             {/* Cartes */}
-            <div className="flex flex-col gap-2 flex-1 overflow-y-auto pb-4">
+            <div className="flex flex-col gap-2 flex-1 overflow-y-auto px-1 pb-4">
               {colLeads.length === 0 ? (
-                <div className="flex items-center justify-center h-16 border border-dashed border-white/[0.06] rounded-xl">
-                  <p className="text-[10px] text-slate-700">Aucun lead</p>
+                <div
+                  className={[
+                    "flex items-center justify-center h-16 border border-dashed rounded-xl transition-all",
+                    isDropTarget ? "border-violet-500/50 bg-violet-500/[0.05]" : "border-white/[0.06]",
+                  ].join(" ")}
+                >
+                  <p className="text-[10px] text-slate-700">
+                    {isDropTarget ? "Déposer ici" : "Aucun lead"}
+                  </p>
                 </div>
               ) : (
-                colLeads.map((lead, i) => (
-                  <KanbanCard
-                    key={`${lead.nom}|${lead.telephone}|${i}`}
-                    lead={lead}
-                    onOpen={onOpen}
-                    onTagChange={onTagChange}
-                  />
-                ))
+                colLeads.map((lead, i) => {
+                  const key = `${lead.nom}|${lead.telephone}`;
+                  return (
+                    <KanbanCard
+                      key={`${key}|${i}`}
+                      lead={lead}
+                      onOpen={onOpen}
+                      dragging={draggedKey === key}
+                      onDragStart={() => setDraggedKey(key)}
+                      onDragEnd={() => { setDraggedKey(null); setDragOverCol(null); }}
+                    />
+                  );
+                })
+              )}
+
+              {/* Zone de dépôt en bas si la colonne a déjà des cartes */}
+              {colLeads.length > 0 && isDropTarget && (
+                <div className="flex items-center justify-center h-10 border border-dashed border-violet-500/50 bg-violet-500/[0.05] rounded-xl">
+                  <p className="text-[10px] text-violet-400">Déposer ici</p>
+                </div>
               )}
             </div>
           </div>

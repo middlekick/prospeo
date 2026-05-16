@@ -5,6 +5,7 @@ import FilterPills      from "@/components/leads/FilterPills";
 import LeadsTable       from "@/components/leads/LeadsTable";
 import KanbanView       from "@/components/leads/KanbanView";
 import LeadDrawer       from "@/components/leads/LeadDrawer";
+import CallSession      from "@/components/leads/CallSession";
 import ScrapeForm       from "@/components/leads/ScrapeForm";
 import ImportCSV        from "@/components/leads/ImportCSV";
 import StatsBar         from "@/components/leads/StatsBar";
@@ -122,6 +123,7 @@ export default function LeadsPage() {
   const [showImport,   setShowImport]   = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [viewMode,     setViewMode]     = useState<ViewMode>("table");
+  const [callSession,  setCallSession]  = useState<Lead[] | null>(null);
   // Sélection multiple
   const [selSet,       setSelSet]       = useState<Set<string>>(new Set());
   const [bulkLoading,  setBulkLoading]  = useState(false);
@@ -223,6 +225,28 @@ export default function LeadsPage() {
   function handleTagChange(lead: Lead, tag: string) {
     setLeads(prev => prev.map(l =>
       l.nom === lead.nom && l.telephone === lead.telephone ? { ...l, tag } : l
+    ));
+  }
+
+  // Lance une session d'appels : priorité aux non-appelés de la liste filtrée,
+  // sinon toute la liste filtrée actuelle (respecte la recherche + le filtre)
+  function startCallSession() {
+    const nonAppeles = filtered.filter(l => l.tag === "non_appele");
+    const pool = nonAppeles.length > 0 ? nonAppeles : filtered;
+    if (pool.length === 0) {
+      warning("Aucun lead à appeler dans cette vue");
+      return;
+    }
+    setSelected(null);
+    setCallSession(pool);
+  }
+
+  // Mise à jour optimiste pendant la session (sans fermer le flux)
+  function handleSessionUpdate(lead: Lead, tag: string) {
+    setLeads(prev => prev.map(l =>
+      l.nom === lead.nom && l.telephone === lead.telephone
+        ? { ...l, tag, contacted_at: l.contacted_at || new Date().toISOString().slice(0, 10) }
+        : l
     ));
   }
 
@@ -336,6 +360,16 @@ export default function LeadsPage() {
         </div>
 
         <div className="flex items-center gap-1.5">
+          {/* Bouton Session d'appels */}
+          <button
+            onClick={startCallSession}
+            title="Lancer une session d'appels enchaînés"
+            className="h-7 px-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 mr-1 shadow-[0_0_16px_rgba(124,58,237,0.25)]"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Session d&apos;appels
+          </button>
+
           {/* Toggle vue table / kanban */}
           <div className="flex items-center bg-white/[0.04] border border-white/[0.08] rounded-lg p-0.5 mr-1">
             <button
@@ -477,6 +511,15 @@ export default function LeadsPage() {
 
       {showOnboarding && (
         <OnboardingModal onClose={() => setShowOnboarding(false)} />
+      )}
+
+      {/* Mode Session d'appels — plein écran */}
+      {callSession && (
+        <CallSession
+          leads={callSession}
+          onClose={() => setCallSession(null)}
+          onLeadUpdated={handleSessionUpdate}
+        />
       )}
     </div>
   );
