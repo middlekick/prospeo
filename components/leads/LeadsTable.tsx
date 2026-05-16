@@ -18,6 +18,11 @@ interface Props {
   leads: Lead[];
   onOpen: (lead: Lead) => void;
   onTagChange: (lead: Lead, tag: string) => void;
+  // Sélection multiple
+  selected?: Set<string>;
+  onToggleSelect?: (key: string) => void;
+  onSelectAll?: () => void;
+  selectionMode?: boolean;
 }
 
 // ── Popover tag inline ────────────────────────────────────────────────────────
@@ -97,12 +102,21 @@ function SortChip({
   );
 }
 
+// ── Boutons log appel rapide ──────────────────────────────────────────────────
+
+const QUICK_ACTIONS = [
+  { tag: "ne_repond_pas", label: "📵", title: "Ne répond pas",  cls: "hover:bg-orange-500/20 hover:text-orange-400" },
+  { tag: "interesse",     label: "⭐", title: "Intéressé",       cls: "hover:bg-cyan-500/20 hover:text-cyan-400"    },
+  { tag: "pas_interesse", label: "✗",  title: "Pas intéressé",  cls: "hover:bg-red-500/20 hover:text-red-400"      },
+];
+
 // ── Table principale ──────────────────────────────────────────────────────────
 
-export default function LeadsTable({ leads, onOpen, onTagChange }: Props) {
+export default function LeadsTable({ leads, onOpen, onTagChange, selected, onToggleSelect, selectionMode }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>("nom");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [tagPopover, setTagPopover] = useState<{ lead: Lead; rect: DOMRect } | null>(null);
+  const [quickLogging, setQuickLogging] = useState<string | null>(null); // clé du lead en cours de log
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -130,6 +144,24 @@ export default function LeadsTable({ leads, onOpen, onTagChange }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...lead, tag }),
     });
+  }
+
+  // Log appel rapide — change le tag + log une activité "appel"
+  async function handleQuickLog(e: React.MouseEvent, lead: Lead, tag: string) {
+    e.stopPropagation();
+    const key = `${lead.nom}|${lead.telephone}`;
+    if (quickLogging === key) return;
+    setQuickLogging(key);
+    onTagChange(lead, tag); // mise à jour optimiste
+    try {
+      await fetch("/api/leads/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...lead, tag }),
+      });
+    } finally {
+      setQuickLogging(null);
+    }
   }
 
   if (leads.length === 0) {
@@ -167,24 +199,41 @@ export default function LeadsTable({ leads, onOpen, onTagChange }: Props) {
       {/* ── Liste de leads (card-rows) ────────────────────────────────────── */}
       <div className="divide-y divide-white/[0.04]">
         {sorted.map((lead, i) => {
-          const tagCls = TAG_COLORS[lead.tag] || "bg-slate-800/60 text-slate-400";
-          const rdvCls = lead.rdv_statut ? RDV_STATUT_COLORS[lead.rdv_statut] || "" : "";
-          const due    = isRappelDue(lead);
+          const tagCls  = TAG_COLORS[lead.tag] || "bg-slate-800/60 text-slate-400";
+          const rdvCls  = lead.rdv_statut ? RDV_STATUT_COLORS[lead.rdv_statut] || "" : "";
+          const due     = isRappelDue(lead);
+          const leadKey = `${lead.nom}|${lead.telephone}`;
+          const isLogging = quickLogging === leadKey;
+          const isSelected = selected?.has(leadKey) ?? false;
 
           return (
             <div
               key={`${lead.nom}-${lead.telephone}-${i}`}
-              onClick={() => onOpen(lead)}
+              onClick={() => selectionMode && onToggleSelect ? onToggleSelect(leadKey) : onOpen(lead)}
               className={[
                 "group flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-all duration-100",
-                due
-                  ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.07]"
-                  : "hover:bg-white/[0.03]",
+                due       ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.07]" : "hover:bg-white/[0.03]",
+                isSelected ? "bg-violet-500/[0.06] border-l-2 border-violet-500" : "",
               ].join(" ")}
             >
+              {/* ── Checkbox de sélection (visible si selectionMode ou hover) ──── */}
+              {(selectionMode || selected) && (
+                <div
+                  onClick={e => { e.stopPropagation(); onToggleSelect?.(leadKey); }}
+                  className={[
+                    "w-4 h-4 rounded border shrink-0 flex items-center justify-center transition-all",
+                    isSelected
+                      ? "bg-violet-500 border-violet-500"
+                      : "border-white/20 group-hover:border-white/40",
+                    selectionMode ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                  ].join(" ")}
+                >
+                  {isSelected && <span className="text-white text-[9px] font-bold">✓</span>}
+                </div>
+              )}
+
               {/* ── Indicateur + Nom ─────────────────────────────── */}
               <div className="flex items-center gap-3 min-w-0 w-[220px] shrink-0">
-                {/* Point coloré — site ou non */}
                 {lead.site ? (
                   <a href={lead.site} target="_blank" rel="noopener noreferrer"
                      onClick={e => e.stopPropagation()}
@@ -256,7 +305,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange }: Props) {
               </div>
 
               {/* ── Rappel ───────────────────────────────────────── */}
-              <div className="w-[90px] shrink-0 text-right">
+              <div className="w-[90px] shrink-0 text-right hidden sm:block">
                 {lead.rappel ? (
                   <span className={`text-[11px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
                     {due && "⏰ "}{lead.rappel}
@@ -264,8 +313,26 @@ export default function LeadsTable({ leads, onOpen, onTagChange }: Props) {
                 ) : null}
               </div>
 
+              {/* ── Actions rapides (hover) ────────────────────────── */}
+              <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                {isLogging ? (
+                  <div className="w-3 h-3 rounded-full border border-violet-500/50 border-t-violet-400 animate-spin" />
+                ) : (
+                  QUICK_ACTIONS.map(action => (
+                    <button
+                      key={action.tag}
+                      onClick={e => handleQuickLog(e, lead, action.tag)}
+                      title={action.title}
+                      className={`w-6 h-6 rounded-md text-slate-600 text-xs transition-all ${action.cls} flex items-center justify-center`}
+                    >
+                      {action.label}
+                    </button>
+                  ))
+                )}
+              </div>
+
               {/* ── Flèche hover ─────────────────────────────────── */}
-              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0">→</span>
+              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0 ml-1">→</span>
             </div>
           );
         })}

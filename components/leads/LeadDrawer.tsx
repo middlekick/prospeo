@@ -305,20 +305,21 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
     if (!form) return;
     setSaving(true);
     try {
-      const res = await fetch("/api/leads/save", {
+      const res  = await fetch("/api/leads/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Erreur sauvegarde");
-      // Recharge pour récupérer les activités auto-loggées côté serveur
-      const refreshed = await fetch("/api/leads").then(r => r.json());
-      const updated   = (refreshed.artisans as Lead[]).find(
-        l => l.nom === form.nom && l.telephone === form.telephone
-      );
-      if (updated) {
-        setActivities(updated.activities || []);
-        onSaved({ ...form, activities: updated.activities || [] });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur sauvegarde");
+
+      // Utiliser le lead retourné par l'API directement (pas de re-fetch global)
+      if (data.lead) {
+        const updatedActivities = Array.isArray(data.lead.activities)
+          ? (data.lead.activities as unknown as Activity[])
+          : [];
+        setActivities(updatedActivities);
+        onSaved({ ...form, activities: updatedActivities, rappel: data.lead.rappel ?? form.rappel });
       } else {
         onSaved(form);
       }

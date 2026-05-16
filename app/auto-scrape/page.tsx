@@ -106,18 +106,18 @@ export default function AutoScrapePage() {
   }
 
   // ── Lancer maintenant ───────────────────────────────────────────────────────
+  // Utilise /api/auto-scrape/run (protégé par Clerk) — pas de secret exposé
   async function handleRunNow() {
     setRunning(true);
     setLastResults(null);
     try {
-      const res  = await fetch("/api/cron/auto-scrape", {
-        method:  "POST",
-        headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_CRON_SECRET || ""}` },
-      });
-      const data = await res.json() as { ok: boolean; results?: RunResult[]; totalAdded?: number };
+      const res  = await fetch("/api/auto-scrape/run", { method: "POST" });
+      const data = await res.json() as { ok: boolean; results?: RunResult[]; totalAdded?: number; error?: string };
       if (data.ok) {
         setLastResults(data.results || []);
         await loadConfigs();
+      } else {
+        console.error("[auto-scrape] Erreur run:", data.error);
       }
     } finally {
       setRunning(false);

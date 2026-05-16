@@ -274,10 +274,45 @@ export default function DashboardPage() {
     };
   }, [leads, period, today, days30]);
 
+  // Export CSV du bilan
+  function exportDashboardCSV() {
+    const rows = [
+      ["Métrique", "Valeur"],
+      ["Total leads", stats.total],
+      ["Non contactés", stats.nonContactes],
+      ["Contactés", stats.contactes],
+      ["Ne répond pas", stats.neRepond],
+      ["Intéressés", stats.interesses],
+      ["RDV pris", stats.rdvPris],
+      ["Pas intéressés", stats.pasInteresse],
+      ["Taux de contact", `${stats.tauxContact}%`],
+      ["Taux d'intérêt", `${stats.tauxInteret}%`],
+      ["Taux RDV", `${stats.tauxRdv}%`],
+    ];
+    const csv  = rows.map(r => r.join(";")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = `prospeo_bilan_${today}.csv`; a.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (loading || planLoading) {
     return (
-      <div className="flex items-center justify-center h-screen text-slate-600 text-sm">
-        Chargement…
+      <div className="flex flex-col h-screen">
+        <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+        <div className="h-[52px] border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60" />
+        <div className="flex-1 px-6 py-6 max-w-[1200px] w-full mx-auto space-y-4 animate-pulse">
+          <div className="grid grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-28 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
+            ))}
+          </div>
+          <div className="grid grid-cols-[1fr_320px] gap-4">
+            <div className="h-52 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
+            <div className="h-52 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -328,22 +363,35 @@ export default function DashboardPage() {
             )}
           </p>
         </div>
-        {/* Sélecteur de période */}
-        <div className="flex gap-1 bg-white/[0.05] border border-white/[0.08] rounded-xl p-1">
-          {(["day", "week", "month"] as Period[]).map(p => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={[
-                "px-3 py-1 rounded-lg text-xs font-medium transition-all",
-                period === p
-                  ? "bg-violet-500/25 text-violet-200 shadow-[0_0_12px_rgba(124,58,237,0.15)]"
-                  : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.06]",
-              ].join(" ")}
-            >
-              {p === "day" ? "Auj." : p === "week" ? "7 jours" : "30 jours"}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          {/* Export CSV bilan */}
+          <button
+            onClick={exportDashboardCSV}
+            className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5"
+            title="Exporter le bilan en CSV"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export
+          </button>
+          {/* Sélecteur de période */}
+          <div className="flex gap-1 bg-white/[0.05] border border-white/[0.08] rounded-xl p-1">
+            {(["day", "week", "month"] as Period[]).map(p => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={[
+                  "px-3 py-1 rounded-lg text-xs font-medium transition-all",
+                  period === p
+                    ? "bg-violet-500/25 text-violet-200 shadow-[0_0_12px_rgba(124,58,237,0.15)]"
+                    : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.06]",
+                ].join(" ")}
+              >
+                {p === "day" ? "Auj." : p === "week" ? "7 jours" : "30 jours"}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
@@ -527,8 +575,8 @@ export default function DashboardPage() {
                   const tagCls = TAG_COLORS[lead.tag] || "bg-slate-700 text-slate-300";
                   const isToday = lead.contacted_at === today;
                   return (
-                    <div key={i}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/2 border border-white/5 hover:bg-white/4 transition-colors"
+                    <Link key={i} href="/"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/2 border border-white/5 hover:bg-white/[0.06] hover:border-white/[0.08] transition-all group"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
@@ -547,7 +595,8 @@ export default function DashboardPage() {
                           {isToday ? "aujourd'hui" : lead.contacted_at}
                         </div>
                       </div>
-                    </div>
+                      <span className="text-slate-700 group-hover:text-slate-500 transition-colors text-xs">→</span>
+                    </Link>
                   );
                 })}
               </div>

@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  await prisma.lead.update({
+  const updated = await prisma.lead.update({
     where: { id: lead.id },
     data: {
       ...(tag         !== undefined && { tag }),
@@ -96,5 +96,6 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ ok: true });
+  // Retourner le lead mis à jour pour éviter un re-fetch côté client
+  return NextResponse.json({ ok: true, lead: updated });
 }
