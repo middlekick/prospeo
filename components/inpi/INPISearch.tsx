@@ -30,9 +30,10 @@ interface Entreprise {
 }
 
 interface SearchResult {
-  results?: Entreprise[];
+  results?:       Entreprise[];
   total_results?: number;
-  error?: string;
+  has_more?:      boolean;
+  error?:         string;
 }
 
 // ── Données de référence ──────────────────────────────────────────────────────
@@ -143,6 +144,7 @@ export default function INPISearch({ onAddLeads }: Props) {
   const [loading,   setLoading]  = useState(false);
   const [searched,  setSearched] = useState(false);
   const [error,     setError]    = useState("");
+  const [hasMore,   setHasMore]  = useState(false);
   const [selected,  setSelected] = useState<Set<string>>(new Set());
   const [importing, setImporting] = useState(false);
   const [importMsg, setImportMsg] = useState("");
@@ -154,16 +156,16 @@ export default function INPISearch({ onAddLeads }: Props) {
     setSelected(new Set());
     try {
       const params = new URLSearchParams({ annees: String(annees), page: String(p) });
-      if (q)    params.set("q", q);
-      if (dept) params.set("departement", dept);
-      if (naf)  params.set("naf", naf);
+      if (q)      params.set("q", q);
+      if (dept)   params.set("departement", dept);
+      if (naf)    params.set("naf", naf);
+      if (rmOnly) params.set("rmOnly", "1");
       const res  = await fetch(`/api/inpi?${params}`);
       const data: SearchResult = await res.json();
       if (data.error) throw new Error(data.error);
-      let list = data.results || [];
-      if (rmOnly) list = list.filter(r => r.siege?.activite_principale_registre_metier);
-      setResults(list);
+      setResults(data.results || []);
       setTotal(data.total_results || 0);
+      setHasMore(data.has_more || false);
       setSearched(true);
     } catch (e) {
       setError((e as Error).message);
@@ -224,8 +226,6 @@ export default function INPISearch({ onAddLeads }: Props) {
     }
   }
 
-  const totalPages = Math.ceil(total / 25);
-
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -235,7 +235,12 @@ export default function INPISearch({ onAddLeads }: Props) {
             <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Recherche INPI — Entreprises récentes</h1>
             <p className="text-xs text-slate-600 mt-0.5">
               Source officielle : registre-entreprises.api.gouv.fr
-              {total > 0 && <span className="ml-2 text-violet-400 mono">{total.toLocaleString("fr-FR")} résultats</span>}
+              {total > 0 && (
+                <span className="ml-2 text-violet-400 mono">
+                  ~{total.toLocaleString("fr-FR")} dans l&apos;API
+                  {results.length > 0 && <span className="text-slate-600"> · {results.length} affichés</span>}
+                </span>
+              )}
             </p>
           </div>
           <div className="text-xs text-slate-600 bg-white/[0.04] rounded-xl px-3 py-2 border border-white/[0.08] max-w-xs shrink-0">
@@ -424,15 +429,15 @@ export default function INPISearch({ onAddLeads }: Props) {
         )}
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
+      {/* Pagination — basée sur has_more (résultats réels filtrés) */}
+      {(page > 1 || hasMore) && (
         <div className="flex items-center justify-center gap-3 px-6 py-3 border-t border-white/5 shrink-0">
           <button disabled={page <= 1} onClick={() => search(page - 1)}
             className="h-7 px-3 rounded-md bg-white/5 hover:bg-white/10 disabled:opacity-30 text-xs text-slate-400 transition-colors">
             ← Précédent
           </button>
-          <span className="mono text-xs text-slate-500">Page {page} / {totalPages}</span>
-          <button disabled={page >= totalPages} onClick={() => search(page + 1)}
+          <span className="mono text-xs text-slate-500">Page {page}</span>
+          <button disabled={!hasMore} onClick={() => search(page + 1)}
             className="h-7 px-3 rounded-md bg-white/5 hover:bg-white/10 disabled:opacity-30 text-xs text-slate-400 transition-colors">
             Suivant →
           </button>
