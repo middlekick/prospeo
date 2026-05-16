@@ -1,7 +1,14 @@
 {
   "functions": {
-    "app/api/scrape/route.ts": { "maxDuration": 60 },
-    "app/api/enrich/route.ts": { "maxDuration": 60 },
-    "app/api/inpi/route.ts":   { "maxDuration": 30 }
-  }
+    "app/api/scrape/route.ts":            { "maxDuration": 60 },
+    "app/api/enrich/route.ts":            { "maxDuration": 60 },
+    "app/api/inpi/route.ts":              { "maxDuration": 30 },
+    "app/api/cron/auto-scrape/route.ts":  { "maxDuration": 300 }
+  },
+  "crons": [
+    {
+      "path":     "/api/cron/auto-scrape",
+      "schedule": "0 7 * * *"
+    }
+  ]
 }

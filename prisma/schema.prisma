@@ -58,6 +58,26 @@ model Lead {
   @@index([user_id])
 }
 
+// Configuration de scraping automatique (cron quotidien 8h)
+model AutoScrapeConfig {
+  id         String   @id @default(cuid())
+  user_id    String
+
+  metier     String              // ex: "plombier"
+  ville      String              // ex: "Paris"
+  pays       String   @default("France")
+  nb_per_run Int      @default(20)    // leads à scraper par exécution
+  enabled    Boolean  @default(true)
+
+  // Stats dernière exécution
+  last_run_at    DateTime?
+  last_run_added Int?
+
+  created_at DateTime @default(now())
+
+  @@index([user_id])
+}
+
 // Abonnement Stripe par utilisateur Clerk
 model Subscription {
   id                 String    @id @default(cuid())

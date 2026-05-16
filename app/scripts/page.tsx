@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link                               from "next/link";
 import { usePlan }                        from "@/hooks/usePlan";
+import GoogleAdsScriptViewer              from "@/components/scripts/GoogleAdsScriptViewer";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -689,6 +690,7 @@ function ScriptList({
   onDelete,
   onImport,
   onExportAll,
+  onOpenGads,
 }: {
   scripts: UserScript[];
   onOpen:      (s: UserScript) => void;
@@ -697,6 +699,7 @@ function ScriptList({
   onDelete:    (id: string) => void;
   onImport:    (file: File) => void;
   onExportAll: () => void;
+  onOpenGads:  () => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [loadingExamples, setLoadingExamples] = useState<string | null>(null);
@@ -841,6 +844,15 @@ function ScriptList({
             </button>
           )}
 
+          {/* Script Google Ads intégré */}
+          <button
+            onClick={onOpenGads}
+            className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-orange-500/15 border border-orange-500/25
+                       text-xs text-orange-300 font-medium hover:bg-orange-500/25 transition-all"
+          >
+            🎯 Google Ads
+          </button>
+
           {/* Créer */}
           <button
             onClick={onCreate}
@@ -867,7 +879,11 @@ function ScriptList({
                 Créez votre premier script Cold Call ou Closing. Vous pouvez aussi importer un fichier JSON partagé par un autre utilisateur.
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button onClick={onOpenGads}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-orange-500/15 border border-orange-500/25 text-orange-300 text-sm font-semibold transition-all hover:bg-orange-500/25">
+                🎯 Script Google Ads
+              </button>
               <button onClick={onCreate}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(124,58,237,0.25)]">
                 + Créer un script
@@ -888,6 +904,36 @@ function ScriptList({
           </div>
         ) : (
           <div className="max-w-2xl mx-auto space-y-6">
+
+            {/* Carte script Google Ads intégré */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs font-bold tracking-widest text-orange-500/80 uppercase">Intégré</span>
+                <span className="text-[10px] mono text-slate-700">Formation</span>
+              </div>
+              <div
+                onClick={onOpenGads}
+                className="group relative flex items-center gap-4 px-4 py-4 rounded-xl border border-orange-500/20
+                           bg-orange-500/[0.04] hover:bg-orange-500/[0.08] hover:border-orange-500/30 cursor-pointer transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 bg-orange-500/10 border border-orange-500/20">
+                  🎯
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-slate-200 group-hover:text-white truncate transition-colors">
+                    Script Google Ads — Setting & Closing
+                  </div>
+                  <div className="text-xs text-slate-600 mt-0.5">
+                    <span className="font-medium text-orange-500/80">Formation 10kchallenge</span>
+                    <span className="mx-1.5">·</span>
+                    <span>Phase 1 : Prospection (6 étapes)</span>
+                    <span className="mx-1.5">·</span>
+                    <span>Phase 2 : Closing (8 étapes)</span>
+                  </div>
+                </div>
+                <span className="text-slate-700 group-hover:text-orange-400 transition-colors text-xs shrink-0">→</span>
+              </div>
+            </section>
 
             {/* Cold Call */}
             {coldCalls.length > 0 && (
@@ -1003,7 +1049,7 @@ function ScriptReader({
 // Page principale
 // ─────────────────────────────────────────────────────────────────────────────
 
-type View = "list" | "read" | "edit";
+type View = "list" | "read" | "edit" | "gads";
 
 export default function ScriptsPage() {
   const [scripts,  setScripts]  = useState<UserScript[]>([]);
@@ -1051,6 +1097,10 @@ export default function ScriptsPage() {
   function handleCreate() {
     setEditing(undefined);
     setView("edit");
+  }
+
+  function handleOpenGads() {
+    setView("gads");
   }
 
   function handleEdit(script: UserScript) {
@@ -1136,6 +1186,10 @@ export default function ScriptsPage() {
   }
 
   // ── Routage interne ──────────────────────────────────────────────────────
+  if (view === "gads") {
+    return <GoogleAdsScriptViewer onBack={() => setView("list")} />;
+  }
+
   if (view === "edit") {
     return (
       <ScriptEditor
@@ -1165,6 +1219,7 @@ export default function ScriptsPage() {
       onDelete={handleDelete}
       onImport={handleImport}
       onExportAll={handleExportAll}
+      onOpenGads={handleOpenGads}
     />
   );
 }
