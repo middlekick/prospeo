@@ -9,23 +9,26 @@
 
 **Prospeo** est un CRM de prospection commerciale développé et utilisé par **Téo Mikulic**.
 
-### Activité de Téo
-- Acquisition client pour **artisans français** (plombiers, électriciens, paysagistes, peintres…)
-- Offre principale : **campagnes Google Ads locales**, semaine de test offerte
+### Cible principale du SaaS
+**Commerciaux indépendants, freelances en acquisition, et petites agences** qui prospectent des artisans et TPE locales (plombiers, électriciens, paysagistes, peintres…). Ils ont besoin de sourcer des leads, suivre leurs appels, gérer leurs RDV et relances — le tout centralisé. Prospeo est le seul outil qui intègre le sourcing (Google Maps + INPI) **et** le suivi CRM en un seul endroit.
+
+### Activité personnelle de Téo (parenthèse sur la landing)
+- Acquisition client pour **artisans français** via **campagnes Google Ads locales**, semaine de test offerte
   - Le prospect paie uniquement le budget Google (~100€/semaine, 10-15€/jour) **directement à Google**
   - Téo ne se facture rien sur la semaine de test — il se rémunère sur les mois suivants
 - **Preuve sociale clé** : un paysagiste a généré 12 000€ de CA sur la semaine de test,
   puis 150 000€ de CA sur 3 mois pour 3 000€ de budget Google total
+- Cette activité est présentée dans une section dédiée de la landing — elle est **secondaire** par rapport au SaaS
 
 ### Objectif du CRM
 Centraliser la prospection : sourcing de leads (Google Maps + INPI), suivi des appels,
-gestion des RDV, scripts d'appel, relances, journal d'activité — le tout sur une interface unique.
+gestion des RDV, scripts d'appel, relances automatiques, journal d'activité — le tout sur une interface unique.
 
 ### Vision long terme
 - SaaS multi-utilisateurs avec abonnements Stripe ✅ **système de plans complet**
 - Auth Clerk déjà en place
 - DB PostgreSQL (Neon) déjà en place
-- Déploiement Vercel ← **prochaine étape** (CLI installé, git init fait, instructions prêtes)
+- Déploiement Vercel ← **en cours** (git initialisé, 3 commits, repo GitHub à créer)
 
 ---
 
@@ -43,7 +46,7 @@ gestion des RDV, scripts d'appel, relances, journal d'activité — le tout sur 
 | Recherche entreprises | **API publique RNE** — `recherche-entreprises.api.gouv.fr` |
 | Email | **Nodemailer** — transport Gmail (3 templates HTML redesignés) |
 | Paiements | **Stripe** — route checkout + webhook prêts |
-| Déploiement | En local — prêt pour Vercel |
+| Déploiement | Local — git initialisé, prêt pour Vercel |
 
 ---
 
@@ -63,7 +66,7 @@ Prospeo/
 │   └── api/
 │       ├── leads/
 │       │   ├── route.ts               # GET — leads de l'user connecté (Prisma)
-│       │   ├── save/route.ts          # POST — update lead + log activité auto
+│       │   ├── save/route.ts          # POST — update lead + log activité auto + rappel J+3
 │       │   ├── import/route.ts        # POST — import en masse avec déduplication
 │       │   ├── delete/route.ts        # POST — suppression par nom+telephone
 │       │   └── activity/route.ts      # POST — ajout entrée manuelle au journal
@@ -89,7 +92,7 @@ Prospeo/
 │   ├── inpi/
 │   │   └── INPISearch.tsx             # Formulaire + table INPI (depts, NAF, RM, pagination)
 │   ├── landing/
-│   │   └── AnimatedDemo.tsx           # Démo animée pour la landing page
+│   │   └── AnimatedDemo.tsx           # Démo animée 3 scènes en autoplay (Scraping→INPI→Scripts)
 │   └── ui/
 │       ├── UpgradeGate.tsx            # Overlay 🔒 avec CTA vers /landing#pricing
 │       ├── OnboardingModal.tsx        # Modal 4 étapes au 1er login (localStorage)
@@ -110,7 +113,7 @@ Prospeo/
 ├── scripts/
 │   └── migrate-json-to-db.ts          # Script one-shot : artisans.json → PostgreSQL
 ├── data/
-│   ├── artisans.json                  # ⚠️ BACKUP UNIQUEMENT — données migrées vers Neon
+│   ├── artisans.json                  # ⚠️ BACKUP + EXCLU DU GIT (données personnelles) — dans Neon
 │   └── scripts.json                   # Scripts d'appel (cold call + closing Google Ads)
 ├── prisma.config.ts                   # Config Prisma v7 (datasource.url via dotenv)
 ├── middleware.ts                      # Clerk middleware — protège tout sauf /sign-in /sign-up /landing /api/webhook
@@ -219,6 +222,7 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - Export CSV
 - Bouton enrichissement batch (leads sans téléphone → Google Maps)
 - Lien "Trouver" (Google search) pour les leads sans téléphone
+- **Rappel automatique J+3** : passage en `ne_repond_pas` → rappel créé automatiquement + log journal
 - **Drawer lead** : 3 onglets (Suivi / Google Ads / RDV)
   - Journal d'activité avec timeline (statuts, emails, notes, appels)
   - Ajout note manuelle
@@ -248,14 +252,22 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - Toggle "Mindset" global (masqué par défaut)
 
 ### Landing page (`/landing`) — publique
-- Navbar fixe avec ancres
-- Hero avec mockup app + CTA email inline
-- Section stats rapides
-- 6 features cards
-- "Comment ça marche" (3 étapes) + témoignage chiffré
+- Navbar fixe avec ancres — se décale sous le bandeau automatiquement
+- **Bandeau early adopter** : barre fixe violet, dismissable, persisté localStorage
+- Hero avec démo animée 3 scènes en autoplay (`AnimatedDemo`) :
+  - Scène 1 : Scraping Google Maps (typing → leads → drawer → tag)
+  - Scène 2 : Recherche INPI (typing → résultats → sélection → import)
+  - Scène 3 : Téléprompter scripts (texte défile → objection slide-in)
+- **Compteurs animés** au scroll : 50+ / 100% / 14j / 0€
+- Section "Pourquoi" (avant/après/résultat)
+- 6 feature cards avec **micro-animations hover** sur les icônes
+- **Tableau comparatif** Prospeo vs Excel vs HubSpot (8 critères)
+- Timeline animée "Comment ça marche" (3 étapes colorées, ligne gradient)
+- Témoignage chiffré (12k€ / 150k€)
 - Section artisans (mailto Téo)
-- Pricing 15€/mois, 14j gratuit → Stripe checkout
-- **Effet curseur lumineux** : orbe violet 600px interpolé (rAF 6%)
+- Pricing 0€ / 19€ / 49€ → Stripe checkout
+- **Sticky CTA** : barre flottante bas de page après 400px de scroll
+- Effet curseur lumineux (orbe violet 600px interpolé rAF 6%)
 - Grille de fond subtile à 3% d'opacité
 
 ### Emails (3 templates)
@@ -299,7 +311,7 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 ### Stripe
 - Route `POST /api/checkout` — crée session Stripe subscription
 - Route `POST /api/webhook` — webhook Stripe
-- Activer : créer un produit sur dashboard.stripe.com → copier Price ID dans `NEXT_PUBLIC_STRIPE_PRICE_ID`
+- Activer : créer un produit sur dashboard.stripe.com → copier Price ID dans `.env`
 
 ---
 
@@ -334,7 +346,7 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - Pas de commits sans message clair
 - Pas de suppression de fichier sans audit préalable
 - Ne pas ajouter `etat_administratif` ou `date_creation_min` à l'API RNE (paramètres invalides)
-- Ne pas toucher à `data/artisans.json` — c'est un backup, les données sont dans Neon
+- Ne pas toucher à `data/artisans.json` — backup exclu du git, données dans Neon
 - Ne pas mettre `url=` dans `prisma/schema.prisma` (Prisma v7 — se fait dans `prisma.config.ts`)
 
 ---
@@ -370,13 +382,13 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - [x] Journal d'activité par lead (timeline)
 - [x] Envoi email depuis le drawer (3 templates)
 - [x] Boutons SMS/appel dans les emails
-- [x] Scripts : closing mis à jour (nom société, pas prénom)
+- [x] Rappel automatique J+3 sur passage en "Ne répond pas"
 
 ### Phase 4 — SaaS ✅ TERMINÉ
 - [x] Auth Clerk multi-utilisateurs
 - [x] Migration PostgreSQL (Prisma v7 + Neon)
 - [x] Plans d'abonnement Stripe (routes checkout + webhook opérationnels)
-- [x] Landing page publique avec effet curseur + pricing 0€/19€/49€
+- [x] Landing page publique enrichie (démo animée, comparatif, timeline, sticky CTA, bandeau)
 - [x] Système de plans Free/Pro/Agence avec gates API + UI
 - [x] Trial par code d'invitation (FORMATION2025, 7 jours)
 - [x] Dashboard admin (/admin) : gestion users, plan, reset password, suppression
@@ -384,9 +396,10 @@ Tags : `non_appele` | `ne_repond_pas` | `interesse` | `rdv_pris` | `pas_interess
 - [x] Modal onboarding 4 étapes au 1er login
 - [x] Scripts d'appel CRUD avec localStorage + import/export JSON
 - [x] Sidebar redesignée 220px avec labels + badge plan
-- [ ] **Déploiement Vercel** ← prochaine étape (CLI installé, `vercel` à lancer)
+- [ ] **Déploiement Vercel** ← prochaine étape (git initialisé, repo GitHub à créer, variables d'env prêtes)
 
 ### Phase 5 — Post-lancement
+- [ ] Stratégie acquisition : LinkedIn content + prospection directe freelances commerciaux
 - [ ] Tags personnalisables par user
 - [ ] Notifications rappels in-app
 - [ ] Import LinkedIn (CSV Sales Navigator)
