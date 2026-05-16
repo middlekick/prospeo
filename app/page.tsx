@@ -1,20 +1,30 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Link          from "next/link";
-import { useUser }   from "@clerk/nextjs";
-import ContactModal  from "@/components/ui/ContactModal";
-import AnimatedDemo  from "@/components/landing/AnimatedDemo";
-import { useToast }  from "@/components/ui/Toast";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import Link         from "next/link";
+import { useUser }  from "@clerk/nextjs";
+import ContactModal from "@/components/ui/ContactModal";
+import AnimatedDemo from "@/components/landing/AnimatedDemo";
+import { useToast } from "@/components/ui/Toast";
 
-// ─── Stripe ──────────────────────────────────────────────────────────────────
-async function startCheckout(plan: "pro" | "agency", email: string, onError: (m: string) => void) {
+// ─── Stripe ───────────────────────────────────────────────────────────────────
+async function startCheckout(
+  plan: "pro" | "agency",
+  email: string,
+  onError: (m: string) => void,
+) {
   const res = await fetch("/api/checkout", {
-    method: "POST", headers: { "Content-Type": "application/json" },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       plan, email,
       successUrl: `${window.location.origin}/app?checkout=success`,
-      cancelUrl:  `${window.location.origin}/#pricing`,
+      cancelUrl:  `${window.location.origin}/?cancel`,
     }),
   });
   const data = await res.json() as { url?: string; error?: string };
@@ -22,13 +32,30 @@ async function startCheckout(plan: "pro" | "agency", email: string, onError: (m:
   else onError(data.error || "Configuration Stripe manquante (STRIPE_PRICE_ID_PRO).");
 }
 
+// ─── Lenis smooth scroll ──────────────────────────────────────────────────────
+function useLenis() {
+  useEffect(() => {
+    // Import dynamique pour éviter les erreurs SSR
+    let raf: number;
+    import("lenis").then(({ default: Lenis }) => {
+      const lenis = new Lenis({ lerp: 0.075 });
+      function loop(time: number) { lenis.raf(time); raf = requestAnimationFrame(loop); }
+      raf = requestAnimationFrame(loop);
+      return () => { lenis.destroy(); cancelAnimationFrame(raf); };
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+}
+
 // ─── Scroll reveal ────────────────────────────────────────────────────────────
 function useScrollReveal() {
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]");
     const obs = new IntersectionObserver(
-      es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("revealed"); obs.unobserve(e.target); } }),
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      es => es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("revealed"); obs.unobserve(e.target); }
+      }),
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
@@ -36,10 +63,12 @@ function useScrollReveal() {
 }
 
 // ─── Compteur animé ───────────────────────────────────────────────────────────
-function Counter({ end, suffix = "", duration = 1700 }: { end: number; suffix?: string; duration?: number }) {
-  const [n, setN] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const done = useRef(false);
+function Counter({ end, suffix = "", duration = 1800 }: {
+  end: number; suffix?: string; duration?: number;
+}) {
+  const [n, setN]  = useState(0);
+  const ref        = useRef<HTMLSpanElement>(null);
+  const done       = useRef(false);
   useEffect(() => {
     const el = ref.current; if (!el) return;
     const obs = new IntersectionObserver(([e]) => {
@@ -60,24 +89,177 @@ function Counter({ end, suffix = "", duration = 1700 }: { end: number; suffix?: 
 }
 
 // ─── Gradient text ────────────────────────────────────────────────────────────
-function G({ children }: { children: React.ReactNode }) {
+function G({ children, cyan }: { children: React.ReactNode; cyan?: boolean }) {
   return (
-    <span className="bg-gradient-to-br from-violet-300 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+    <span className={`bg-clip-text text-transparent ${
+      cyan
+        ? "bg-gradient-to-r from-cyan-300 to-sky-400"
+        : "bg-gradient-to-br from-violet-300 via-fuchsia-200 to-cyan-300"
+    }`}>
       {children}
     </span>
   );
 }
 
-// ─── Eyebrow ──────────────────────────────────────────────────────────────────
-function Eyebrow({ children }: { children: React.ReactNode }) {
+// ─── Eyebrow / kicker ────────────────────────────────────────────────────────
+function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-medium tracking-widest uppercase
-                     text-violet-300/80 border border-violet-400/15 bg-violet-500/[0.06]">
+    <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full
+                     font-mono text-[10px] tracking-widest uppercase
+                     ${cyan
+                       ? "text-cyan-400/80 border border-cyan-400/15 bg-cyan-500/[0.06]"
+                       : "text-violet-300/80 border border-violet-400/15 bg-violet-500/[0.06]"}`}>
       {children}
     </span>
   );
 }
 
+// ─── Carte 3D hero ────────────────────────────────────────────────────────────
+const FAKE_LEADS = [
+  { nom: "Dupont Plomberie", metier: "Plombier",    badge: "Intéressé",   col: "violet" },
+  { nom: "Élec Martin",      metier: "Électricien", badge: "RDV pris",    col: "cyan"   },
+  { nom: "Jardins Léa",      metier: "Paysagiste",  badge: "Ne rép. pas", col: "slate"  },
+  { nom: "Peinture Sohier",  metier: "Peintre",     badge: "Intéressé",   col: "violet" },
+];
+const badgeClass = (c: string) =>
+  c === "violet" ? "text-violet-400 bg-violet-500/15 border-violet-400/20"
+  : c === "cyan" ? "text-cyan-400  bg-cyan-500/15  border-cyan-400/20"
+  :                "text-slate-500  bg-slate-500/10  border-slate-500/15";
+
+function HeroCard3D() {
+  const wrap   = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotX   = useSpring(mouseY, { stiffness: 80, damping: 18 });
+  const rotY   = useSpring(mouseX, { stiffness: 80, damping: 18 });
+
+  function onMove(e: React.MouseEvent) {
+    const r = wrap.current!.getBoundingClientRect();
+    mouseX.set(((e.clientX - r.left)  / r.width  - 0.5) * 22);
+    mouseY.set(-((e.clientY - r.top) / r.height - 0.5) * 18);
+  }
+  const onLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  return (
+    <div ref={wrap} onMouseMove={onMove} onMouseLeave={onLeave}
+         className="relative select-none" style={{ perspective: "1100px" }}>
+
+      {/* Lueur dynamique */}
+      <div className="absolute inset-0 -z-10 rounded-3xl blur-[90px] opacity-50 pointer-events-none"
+           style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.35) 0%, rgba(6,182,212,0.12) 55%, transparent 75%)" }} />
+
+      <motion.div style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}>
+
+        {/* ── Interface principale ── */}
+        <div className="rounded-2xl border border-white/[0.09] bg-[#090b11]/95 backdrop-blur-md overflow-hidden
+                        shadow-[0_40px_100px_-20px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
+
+          {/* Barre navigateur */}
+          <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.025]">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
+            <div className="ml-3 h-5 w-[170px] rounded-md bg-white/[0.04] flex items-center px-2 gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/60" />
+              <span className="text-[10px] text-slate-600 font-mono">prospeo.app/app</span>
+            </div>
+          </div>
+
+          {/* Stats bar */}
+          <div className="grid grid-cols-3 gap-2 p-3">
+            {[
+              { l: "Leads totaux", v: "48",  c: "text-slate-100"   },
+              { l: "Intéressés",   v: "12",  c: "text-violet-300"  },
+              { l: "RDV à venir",  v: "3",   c: "text-cyan-400"    },
+            ].map(s => (
+              <div key={s.l} className="bg-white/[0.03] rounded-xl p-2 border border-white/[0.05] text-center">
+                <div className={`text-base font-bold leading-none ${s.c}`}>{s.v}</div>
+                <div className="text-[9px] text-slate-600 uppercase tracking-wide mt-1">{s.l}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Table mini */}
+          <div className="px-3 pb-3">
+            <div className="grid grid-cols-[1fr_72px_68px] gap-1.5 px-2 pb-1.5 border-b border-white/[0.05]">
+              {["Prospect", "Métier", "Statut"].map(h => (
+                <span key={h} className="text-[9px] text-slate-600 uppercase tracking-wider">{h}</span>
+              ))}
+            </div>
+            {FAKE_LEADS.map((l, i) => (
+              <div key={i}
+                   className="grid grid-cols-[1fr_72px_68px] gap-1.5 items-center py-1.5
+                              border-b border-white/[0.03] last:border-0 px-2">
+                <span className="text-[11px] text-slate-200 font-medium truncate">{l.nom}</span>
+                <span className="text-[10px] text-slate-500 truncate">{l.metier}</span>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-full border text-center truncate ${badgeClass(l.col)}`}>
+                  {l.badge}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Badge orbital RDV ── */}
+        <motion.div
+          style={{ translateZ: 60, transformStyle: "preserve-3d" } as React.CSSProperties}
+          animate={{ y: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className="absolute -top-5 -right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                     bg-[#0c0e16]/95 border border-cyan-400/25
+                     shadow-[0_0_20px_rgba(6,182,212,0.18)] text-[11px] whitespace-nowrap"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.9)]" />
+          <span className="text-cyan-300 font-medium">RDV pris · 14h30</span>
+        </motion.div>
+
+        {/* ── Badge orbital email ── */}
+        <motion.div
+          style={{ translateZ: 50, transformStyle: "preserve-3d" } as React.CSSProperties}
+          animate={{ y: [0, 7, 0] }}
+          transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut", delay: 1.5 }}
+          className="absolute -bottom-5 -left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                     bg-[#0c0e16]/95 border border-violet-400/25
+                     shadow-[0_0_18px_rgba(124,58,237,0.18)] text-[11px] whitespace-nowrap"
+        >
+          <span className="text-xs">✉️</span>
+          <span className="text-violet-300 font-medium">Offre envoyée</span>
+        </motion.div>
+
+        {/* ── Badge orbital session ── */}
+        <motion.div
+          style={{ translateZ: 45, transformStyle: "preserve-3d" } as React.CSSProperties}
+          animate={{ y: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 6.5, ease: "easeInOut", delay: 2.5 }}
+          className="absolute top-[40%] -right-12 flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                     bg-[#0c0e16]/95 border border-emerald-400/20
+                     shadow-[0_0_14px_rgba(52,211,153,0.12)] text-[10px] whitespace-nowrap"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-emerald-300 font-mono">Session active</span>
+        </motion.div>
+
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── FAQ item ─────────────────────────────────────────────────────────────────
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-white/[0.06] rounded-xl bg-white/[0.015] overflow-hidden">
+      <button onClick={() => setOpen(o => !o)}
+              className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group">
+        <span className="text-[14px] text-slate-200 font-medium group-hover:text-white transition-colors">{q}</span>
+        <span className={`text-slate-500 text-lg flex-shrink-0 transition-transform duration-200 ${open ? "rotate-45" : ""}`}>+</span>
+      </button>
+      {open && <p className="px-5 pb-5 -mt-1 text-sm text-slate-500 leading-relaxed">{a}</p>}
+    </div>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Landing() {
   const [email,       setEmail]       = useState("");
   const [loading,     setLoading]     = useState(false);
@@ -89,18 +271,25 @@ export default function Landing() {
   const { isSignedIn } = useUser();
   const { error: toastError } = useToast();
 
+  useLenis();
   useScrollReveal();
 
   useEffect(() => {
-    const onScroll = () => { setScrolled(window.scrollY > 24); setShowSticky(window.scrollY > 720); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => {
+      setScrolled(window.scrollY > 24);
+      setShowSticky(window.scrollY > 800);
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  function openContact(subject = "") { setContactSubj(subject); setContactOpen(true); }
+  const openContact = (subject = "") => { setContactSubj(subject); setContactOpen(true); };
 
   const pay = useCallback(async (plan: "pro" | "agency" = "pro") => {
-    if (!isSignedIn) { window.location.href = `/sign-up?redirect_url=${encodeURIComponent("/#pricing")}`; return; }
+    if (!isSignedIn) {
+      window.location.href = `/sign-up?redirect_url=${encodeURIComponent("/#pricing")}`;
+      return;
+    }
     if (!email) { setEmailModal(true); return; }
     setLoading(true);
     await startCheckout(plan, email, toastError);
@@ -110,63 +299,75 @@ export default function Landing() {
   return (
     <>
       <style>{`
-        [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+        :root { color-scheme: dark; }
+        [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
         [data-reveal].revealed{opacity:1;transform:none}
-        [data-rd="1"]{transition-delay:.08s}[data-rd="2"]{transition-delay:.16s}
-        [data-rd="3"]{transition-delay:.24s}[data-rd="4"]{transition-delay:.32s}
-        @keyframes auroraMove{0%,100%{transform:translate3d(-6%,0,0) scale(1)}50%{transform:translate3d(6%,3%,0) scale(1.12)}}
-        @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-        .aurora{animation:auroraMove 18s ease-in-out infinite}
+        [data-rd="1"]{transition-delay:.07s}[data-rd="2"]{transition-delay:.14s}
+        [data-rd="3"]{transition-delay:.21s}[data-rd="4"]{transition-delay:.28s}
+        @keyframes aurora{0%,100%{transform:translate3d(-6%,0,0)scale(1)}50%{transform:translate3d(6%,4%,0)scale(1.14)}}
+        @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+        .aurora{animation:aurora 22s ease-in-out infinite}
         .floaty{animation:floaty 7s ease-in-out infinite}
-        .grain:before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.4;
-          background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")}
+        .grain:before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
+          background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+          opacity:.5}
+        html{scroll-behavior:auto!important}
       `}</style>
 
-      <div className="grain relative min-h-screen bg-[#060608] text-slate-300 overflow-x-hidden antialiased">
+      <div className="grain relative min-h-screen bg-[#050508] text-slate-300 overflow-x-hidden antialiased">
 
-        {/* ── Fond atmosphérique ─────────────────────────────────────────── */}
+        {/* ── Atmosphère ────────────────────────────────────────────────────── */}
         <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-          <div className="aurora absolute -top-[20%] left-1/2 -translate-x-1/2 w-[1100px] h-[700px] rounded-full blur-[160px]"
-               style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.22), transparent 65%)" }} />
-          <div className="absolute top-[40%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[150px]"
-               style={{ background: "radial-gradient(circle, rgba(79,70,229,0.10), transparent 70%)" }} />
-          <div className="absolute bottom-0 right-0 w-[600px] h-[500px] rounded-full blur-[150px]"
-               style={{ background: "radial-gradient(circle, rgba(168,85,247,0.08), transparent 70%)" }} />
+          <div className="aurora absolute -top-[25%] left-1/2 -translate-x-1/2 w-[1200px] h-[800px] rounded-full blur-[180px]"
+               style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.20) 0%, rgba(6,182,212,0.06) 50%, transparent 70%)" }} />
+          <div className="absolute top-[45%] -left-[15%] w-[700px] h-[700px] rounded-full blur-[160px]"
+               style={{ background: "radial-gradient(circle, rgba(79,70,229,0.09), transparent 70%)" }} />
+          <div className="absolute bottom-0 right-[-5%] w-[600px] h-[500px] rounded-full blur-[150px]"
+               style={{ background: "radial-gradient(circle, rgba(6,182,212,0.06), transparent 70%)" }} />
           <div className="absolute inset-0"
-               style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.022) 1px,transparent 1px)", backgroundSize: "64px 64px", maskImage: "radial-gradient(ellipse at 50% 0%, black, transparent 75%)" }} />
+               style={{
+                 backgroundImage: "linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px, transparent 1px)",
+                 backgroundSize: "72px 72px",
+                 maskImage: "radial-gradient(ellipse at 50% 0%, black 0%, transparent 72%)",
+               }} />
         </div>
 
         <div className="relative z-10">
 
-          {/* ── Nav ──────────────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              NAV
+          ══════════════════════════════════════════════════════════════════ */}
           <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300
-            ${scrolled ? "bg-[#060608]/80 backdrop-blur-xl border-b border-white/[0.06]" : "bg-transparent"}`}>
+            ${scrolled ? "bg-[#050508]/80 backdrop-blur-xl border-b border-white/[0.06]" : "bg-transparent"}`}>
             <div className="max-w-6xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
+
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.5)]">
+                <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center shadow-[0_0_18px_rgba(124,58,237,0.5)]">
                   <span className="text-white font-bold text-sm">P</span>
                 </div>
                 <span className="text-slate-100 font-semibold tracking-tight text-[15px]">Prospeo</span>
               </Link>
-              <div className="hidden md:flex items-center gap-9 text-[13px] text-slate-500">
-                {[["#produit","Produit"],["#features","Fonctionnalités"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l])=>(
+
+              <div className="hidden md:flex items-center gap-8 text-[13px] text-slate-500">
+                {[["#produit","Produit"],["#features","Fonctionnalités"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l]) => (
                   <a key={h} href={h} className="hover:text-slate-200 transition-colors">{l}</a>
                 ))}
               </div>
+
               <div className="flex items-center gap-2.5">
                 {isSignedIn ? (
                   <Link href="/app"
-                    className="flex items-center gap-1.5 text-[13px] font-medium bg-white text-[#0b0d12] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
+                    className="flex items-center gap-1.5 text-[13px] font-medium bg-white text-[#050508] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
                     Ouvrir l&apos;app →
                   </Link>
                 ) : (
                   <>
-                    <Link href="/sign-in" className="hidden sm:block text-[13px] text-slate-400 hover:text-slate-100 transition-colors px-3">
+                    <Link href="/sign-in"
+                      className="hidden sm:block text-[13px] text-slate-400 hover:text-slate-100 transition-colors px-3">
                       Connexion
                     </Link>
                     <a href="#pricing"
-                      className="text-[13px] font-medium bg-white text-[#0b0d12] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
+                      className="text-[13px] font-medium bg-white text-[#050508] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
                       Essai gratuit
                     </a>
                   </>
@@ -175,109 +376,123 @@ export default function Landing() {
             </div>
           </nav>
 
-          {/* ── Hero ─────────────────────────────────────────────────────── */}
-          <section className="relative px-5 sm:px-6 pt-36 sm:pt-44 pb-20">
-            <div className="max-w-5xl mx-auto text-center">
-              <div data-reveal>
-                <Eyebrow>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                  CRM de prospection · 14 jours offerts
-                </Eyebrow>
-              </div>
+          {/* ══════════════════════════════════════════════════════════════════
+              §00 — HERO
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid lg:grid-cols-[1fr_480px] gap-12 lg:gap-16 items-center">
 
-              <h1 data-reveal data-rd="1"
-                className="mt-7 text-[clamp(2.6rem,8vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.03em] text-slate-50">
-                Trouve. Appelle.
-                <br />
-                <G>Signe.</G>
-              </h1>
+                {/* ── Colonne texte ── */}
+                <div>
+                  <div data-reveal>
+                    <Eyebrow>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                      §00 — Preuve · 14 jours offerts
+                    </Eyebrow>
+                  </div>
 
-              <p data-reveal data-rd="2"
-                className="mt-7 text-base sm:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
-                Le CRM qui réunit le sourcing de leads, le téléprompter d&apos;appel,
-                le suivi des RDV et les relances — dans un seul flux pensé pour
-                le terrain. De la donnée brute au deal signé.
-              </p>
+                  {/* Claim B — le chiffre qui ancre */}
+                  <div data-reveal data-rd="1" className="mt-8">
+                    <p className="font-mono text-[11px] text-slate-600 uppercase tracking-[0.18em] mb-3">
+                      Étude de cas · Paysagiste · France
+                    </p>
+                    <h1 className="text-[clamp(3.5rem,10vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.04em] text-slate-50">
+                      150 000€
+                    </h1>
+                    <p className="mt-2 text-[clamp(1.1rem,3vw,1.5rem)] text-slate-400 font-light tracking-[-0.01em]">
+                      Un artisan. Trois mois.
+                    </p>
+                  </div>
 
-              <div data-reveal data-rd="3" className="mt-9 flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <button onClick={() => pay("pro")} disabled={loading}
-                  className="group relative w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-[#0b0d12] text-sm font-semibold
-                             transition-all hover:scale-[1.02] disabled:opacity-50
-                             shadow-[0_0_40px_rgba(124,58,237,0.35)]">
-                  {loading ? "Redirection…" : "Commencer gratuitement"}
-                  <span className="ml-1.5 inline-block transition-transform group-hover:translate-x-0.5">→</span>
-                </button>
-                <a href="#produit"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-white/15 text-slate-300 text-sm font-medium
-                             hover:bg-white/[0.04] hover:border-white/25 transition-all">
-                  Voir le produit
-                </a>
-              </div>
-              <p data-reveal data-rd="4" className="mt-4 text-xs text-slate-600">
-                Sans carte bancaire · résiliable à tout moment
-              </p>
-            </div>
+                  {/* Claim A — la promesse outil */}
+                  <div data-reveal data-rd="2" className="mt-8">
+                    <p className="text-[clamp(1rem,2.5vw,1.25rem)] font-mono text-slate-500 tracking-tight">
+                      <G>Trouve.</G>{" "}<G>Appelle.</G>{" "}<G>Signe.</G>
+                    </p>
+                    <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
+                      Le CRM qui réunit le sourcing Maps + INPI, le téléprompter d&apos;appel,
+                      les relances et le suivi RDV — dans un seul flux pensé pour le terrain.
+                    </p>
+                  </div>
 
-            {/* Démo produit encadrée — cinématique */}
-            <div data-reveal data-rd="2" className="relative max-w-5xl mx-auto mt-16 sm:mt-20">
-              <div className="absolute -inset-x-10 -top-10 bottom-0 -z-10 blur-3xl opacity-60"
-                   style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.30), transparent 60%)" }} />
-              <div className="floaty rounded-2xl border border-white/[0.08] bg-[#0b0d12]/80 backdrop-blur-sm overflow-hidden
-                              shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
-                <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.02]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
-                  <span className="ml-3 text-[11px] text-slate-600 font-mono">prospeo.app/app</span>
+                  <div data-reveal data-rd="3" className="mt-8 flex flex-col sm:flex-row gap-3">
+                    <button onClick={() => pay("pro")} disabled={loading}
+                      className="group relative w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-[#050508]
+                                 text-sm font-semibold transition-all hover:scale-[1.02] disabled:opacity-50
+                                 shadow-[0_0_40px_rgba(124,58,237,0.30)]">
+                      {loading ? "Redirection…" : "Commencer gratuitement"}
+                      <span className="ml-1.5 inline-block transition-transform group-hover:translate-x-0.5">→</span>
+                    </button>
+                    <a href="#produit"
+                      className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-white/[0.12]
+                                 text-slate-300 text-sm font-medium hover:bg-white/[0.04]
+                                 hover:border-white/25 transition-all text-center">
+                      Voir le produit
+                    </a>
+                  </div>
+                  <p data-reveal data-rd="4" className="mt-3 text-xs text-slate-700">
+                    Sans carte bancaire · résiliable à tout moment
+                  </p>
                 </div>
-                <AnimatedDemo />
-              </div>
-            </div>
 
-            {/* Métriques */}
-            <div data-reveal className="max-w-3xl mx-auto mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-              {[
-                { v: <Counter end={50} suffix="+" />, l: "leads en 1 clic" },
-                { v: <Counter end={100} suffix="%" />, l: "relances tracées" },
-                { v: <Counter end={14} suffix="j" />, l: "d'essai offert" },
-                { v: "0€", l: "pour démarrer" },
-              ].map((s, i) => (
-                <div key={i}>
-                  <div className="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight">{s.v}</div>
-                  <div className="text-xs text-slate-600 mt-1">{s.l}</div>
+                {/* ── Carte 3D ── */}
+                <div data-reveal data-rd="2" className="hidden lg:block">
+                  <HeroCard3D />
                 </div>
-              ))}
+              </div>
+
+              {/* Métriques */}
+              <div data-reveal className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center border-t border-white/[0.05] pt-14">
+                {[
+                  { v: <Counter end={50}  suffix="+" />, l: "leads en 1 clic",       c: "text-slate-100" },
+                  { v: <Counter end={100} suffix="%" />, l: "relances tracées",       c: "text-violet-300" },
+                  { v: <Counter end={14}  suffix="j" />, l: "d'essai offert",         c: "text-cyan-400"   },
+                  { v: "0€",                             l: "pour démarrer",          c: "text-slate-100"  },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <div className={`text-2xl sm:text-3xl font-bold tracking-tight ${s.c}`}>{s.v}</div>
+                    <div className="text-xs text-slate-600 mt-1">{s.l}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
-          {/* ── Problème → Solution ──────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §02 — PROBLEM
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="produit" className="px-5 sm:px-6 py-24 sm:py-32">
             <div className="max-w-5xl mx-auto">
-              <div data-reveal className="text-center mb-16">
-                <Eyebrow>Le constat</Eyebrow>
+              <div data-reveal className="text-center mb-14">
+                <Eyebrow>§02 — Le constat</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Le tableur ne t&apos;a jamais<br />rappelé un seul client.
                 </h2>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {[
-                  { t: "Avant", tone: "bad", items: ["Leads éparpillés dans Excel", "Scripts sur un bout de papier", "Rappels oubliés", "Zéro visibilité conversion"] },
-                  { t: "Avec Prospeo", tone: "mid", items: ["Sourcing auto Maps + INPI", "Téléprompter en direct", "Rappels visuels + alertes", "Funnel temps réel"] },
-                  { t: "Le résultat", tone: "good", items: ["2× plus de leads qualifiés", "Meilleur taux de closing", "0 relance oubliée", "Décisions sur données"] },
+                  { t: "Avant",         tone: "bad", items: ["Leads éparpillés dans Excel", "Scripts sur un bout de papier", "Rappels oubliés systématiquement", "Zéro visibilité sur la conversion"] },
+                  { t: "Avec Prospeo",  tone: "mid", items: ["Sourcing auto Maps + INPI", "Téléprompter en direct d'appel", "Rappels visuels + alertes auto", "Funnel temps réel"] },
+                  { t: "Le résultat",   tone: "good", items: ["2× plus de leads qualifiés", "Meilleur taux de closing", "0 relance oubliée", "Décisions basées sur les données"] },
                 ].map((c, i) => (
                   <div key={i} data-reveal data-rd={String(i + 1)}
                     className={`p-7 rounded-2xl border backdrop-blur-sm transition-all
                       ${c.tone === "bad"  ? "border-white/[0.06] bg-white/[0.02]"
-                      : c.tone === "mid"  ? "border-violet-400/25 bg-violet-500/[0.07] shadow-[0_0_60px_-20px_rgba(124,58,237,0.5)]"
-                      :                     "border-emerald-400/20 bg-emerald-500/[0.05]"}`}>
-                    <div className={`text-xs font-semibold uppercase tracking-widest mb-5
-                      ${c.tone === "bad" ? "text-slate-600" : c.tone === "mid" ? "text-violet-300" : "text-emerald-300"}`}>
+                      : c.tone === "mid"  ? "border-violet-400/25 bg-violet-500/[0.06] shadow-[0_0_60px_-20px_rgba(124,58,237,0.45)]"
+                      :                     "border-cyan-400/20 bg-cyan-500/[0.04]"}`}>
+                    <div className={`text-[10px] font-mono uppercase tracking-widest mb-5
+                      ${c.tone === "bad" ? "text-slate-600" : c.tone === "mid" ? "text-violet-300" : "text-cyan-400"}`}>
                       {c.t}
                     </div>
                     <ul className="space-y-3">
                       {c.items.map(it => (
-                        <li key={it} className={`flex items-start gap-2.5 text-sm ${c.tone === "bad" ? "text-slate-500" : "text-slate-300"}`}>
-                          <span className={c.tone === "bad" ? "text-slate-700" : c.tone === "mid" ? "text-violet-400" : "text-emerald-400"}>
+                        <li key={it} className={`flex items-start gap-2.5 text-sm
+                          ${c.tone === "bad" ? "text-slate-500" : "text-slate-300"}`}>
+                          <span className={
+                            c.tone === "bad"  ? "text-slate-700" :
+                            c.tone === "mid"  ? "text-violet-400" : "text-cyan-400"
+                          }>
                             {c.tone === "bad" ? "✕" : "✓"}
                           </span>
                           {it}
@@ -290,48 +505,94 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── Fonctionnalités (bento) ──────────────────────────────────── */}
-          <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
-            <div className="max-w-6xl mx-auto">
-              <div data-reveal className="text-center mb-16">
-                <Eyebrow>Fonctionnalités</Eyebrow>
+          {/* ══════════════════════════════════════════════════════════════════
+              §03 — PRODUCT (démo animée)
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
+            <div className="max-w-5xl mx-auto">
+              <div data-reveal className="text-center mb-14">
+                <Eyebrow cyan>§03 — Produit</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Tout le pipeline.<br /><G>Un seul écran.</G>
                 </h2>
               </div>
+              <div data-reveal data-rd="1" className="relative">
+                <div className="absolute -inset-x-8 -top-8 bottom-0 -z-10 blur-3xl opacity-50"
+                     style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.30), transparent 60%)" }} />
+                <div className="floaty rounded-2xl border border-white/[0.08] bg-[#0a0b10]/80 backdrop-blur-sm overflow-hidden
+                                shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
+                  <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.02]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
+                    <span className="ml-3 text-[11px] text-slate-600 font-mono">prospeo.app/app</span>
+                  </div>
+                  <AnimatedDemo />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ══════════════════════════════════════════════════════════════════
+              §04 — FEATURES (bento)
+          ══════════════════════════════════════════════════════════════════ */}
+          <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
+            <div className="max-w-6xl mx-auto">
+              <div data-reveal className="text-center mb-14">
+                <Eyebrow>§04 — Fonctionnalités</Eyebrow>
+                <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
+                  Six outils.<br /><G>Une interface.</G>
+                </h2>
+              </div>
 
               <div className="grid md:grid-cols-3 gap-4">
-                {/* Grande carte */}
-                <div data-reveal className="md:col-span-2 md:row-span-2 group relative p-8 rounded-3xl border border-white/[0.08]
-                                bg-gradient-to-br from-violet-500/[0.09] to-transparent overflow-hidden
+                {/* Grande carte sourcing */}
+                <div data-reveal className="md:col-span-2 group relative p-8 rounded-3xl border border-white/[0.08]
+                                bg-gradient-to-br from-violet-500/[0.08] to-transparent overflow-hidden
                                 hover:border-violet-400/30 transition-all">
-                  <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity"
-                       style={{ background: "radial-gradient(circle,rgba(124,58,237,0.4),transparent 70%)" }} />
+                  <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full blur-3xl opacity-35 group-hover:opacity-60 transition-opacity"
+                       style={{ background: "radial-gradient(circle,rgba(124,58,237,0.45),transparent 70%)" }} />
                   <div className="relative">
                     <div className="text-3xl mb-5">🗺️</div>
                     <h3 className="text-xl font-semibold text-slate-50 mb-2">Sourcing automatique</h3>
                     <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-                      Métier + ville → un tableau de leads qualifiés en quelques secondes
-                      via Google Maps. Plus l&apos;accès à l&apos;INPI/RNE pour cibler les
-                      entreprises récemment créées, avec enrichissement automatique des numéros.
+                      Métier + ville → tableau de leads qualifiés en quelques secondes via Google Maps.
+                      Plus l&apos;accès à l&apos;INPI/RNE pour cibler les entreprises récemment créées,
+                      avec enrichissement automatique des numéros.
                     </p>
                     <div className="mt-6 flex flex-wrap gap-2">
-                      {["Google Maps", "INPI / RNE", "Enrichissement", "Auto-scraping 8h"].map(t => (
-                        <span key={t} className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-slate-400">{t}</span>
+                      {["Google Maps", "INPI / RNE", "Enrichissement auto", "Cron 8h"].map(t => (
+                        <span key={t} className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.04]
+                                                  border border-white/[0.07] text-slate-400">{t}</span>
                       ))}
                     </div>
                   </div>
                 </div>
 
+                {/* Carte INPI cyan */}
+                <div data-reveal data-rd="1" className="group relative p-7 rounded-3xl border border-cyan-400/15
+                                bg-cyan-500/[0.04] overflow-hidden hover:border-cyan-400/30 transition-all">
+                  <div className="absolute -right-8 -top-8 w-48 h-48 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity"
+                       style={{ background: "radial-gradient(circle,rgba(6,182,212,0.40),transparent 70%)" }} />
+                  <div className="relative">
+                    <div className="text-2xl mb-4">🏛️</div>
+                    <h3 className="text-[15px] font-semibold text-slate-100 mb-1.5">Recherche INPI</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed">
+                      Cible les entreprises créées il y a moins de 3 mois.
+                      Les leads les plus chauds du marché, triés par date de création.
+                    </p>
+                  </div>
+                </div>
+
                 {[
-                  { i: "📞", t: "Mode session d'appels", d: "Enchaîne les leads en plein écran : numéro géant, script affiché, résultat en 1 touche." },
-                  { i: "📋", t: "Scripts téléprompter", d: "Cold call & closing en direct. Objections et étapes visibles pendant l'appel." },
-                  { i: "📊", t: "Dashboard réel", d: "Seuls les vrais contacts comptent. Funnel, taux de décrochage, RDV à venir." },
-                  { i: "✉️", t: "Emails & relances", d: "3 templates, envoi depuis ton Gmail, relances multi-paliers automatiques." },
+                  { i: "📞", t: "Mode session d'appels",   d: "Plein écran, numéro géant, script live, résultat en 1 touche." },
+                  { i: "📋", t: "Scripts téléprompter",    d: "Cold call + closing. Objections et étapes visibles pendant l'appel." },
+                  { i: "📊", t: "Dashboard de conversion", d: "Funnel basé sur les vrais échanges. Taux de décrochage réel." },
+                  { i: "✉️", t: "Emails & relances auto",  d: "3 templates, Gmail, relances multi-paliers J+3 → J+7 → J+15." },
                 ].map((f, i) => (
-                  <div key={i} data-reveal data-rd={String((i % 2) + 1)}
-                    className="group p-7 rounded-3xl border border-white/[0.07] bg-white/[0.02]
-                               hover:bg-white/[0.04] hover:border-white/15 transition-all">
+                  <div key={i} data-reveal data-rd={String((i % 3) + 1)}
+                    className="group p-7 rounded-3xl border border-white/[0.06] bg-white/[0.02]
+                               hover:bg-white/[0.04] hover:border-white/[0.12] transition-all">
                     <div className="text-2xl mb-4 transition-transform group-hover:scale-110">{f.i}</div>
                     <h3 className="text-[15px] font-semibold text-slate-100 mb-1.5">{f.t}</h3>
                     <p className="text-slate-500 text-sm leading-relaxed">{f.d}</p>
@@ -341,26 +602,31 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── Comment ça marche ────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §05 — HOW
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-16">
-                <Eyebrow>En pratique</Eyebrow>
+                <Eyebrow cyan>§05 — En pratique</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Zéro à ton premier RDV<br /><G>en moins d&apos;une heure.</G>
                 </h2>
               </div>
               <div className="grid md:grid-cols-3 gap-5 relative">
-                <div className="hidden md:block absolute top-7 left-[16%] right-[16%] h-px bg-gradient-to-r from-violet-500/40 via-violet-500/20 to-violet-500/40" />
+                <div className="hidden md:block absolute top-7 left-[16%] right-[16%] h-px
+                                bg-gradient-to-r from-violet-500/30 via-cyan-500/20 to-violet-500/30" />
                 {[
-                  { n: "01", t: "Source", d: "Scrape Maps, importe l'INPI ou un CSV. Leads normalisés, prêts à appeler." },
-                  { n: "02", t: "Appelle", d: "Lance une session : script affiché, résultat en 1 touche, journal auto." },
-                  { n: "03", t: "Convertis", d: "Relances multi-paliers automatiques, emails de suivi, funnel temps réel." },
+                  { n: "01", t: "Source",    d: "Scrape Maps, importe l'INPI ou un CSV. Leads normalisés, prêts à appeler.", col: "violet" },
+                  { n: "02", t: "Appelle",   d: "Lance une session : script affiché, résultat en 1 touche, journal auto.", col: "cyan"   },
+                  { n: "03", t: "Convertis", d: "Relances multi-paliers automatiques, emails de suivi, funnel temps réel.", col: "violet" },
                 ].map((s, i) => (
                   <div key={i} data-reveal data-rd={String(i + 1)} className="relative text-center md:text-left">
-                    <div className="inline-flex w-14 h-14 rounded-2xl items-center justify-center font-mono font-bold
-                                    bg-[#0b0d12] border border-violet-400/30 text-violet-300 mb-5 relative z-10
-                                    shadow-[0_0_30px_-8px_rgba(124,58,237,0.6)]">
+                    <div className={`inline-flex w-14 h-14 rounded-2xl items-center justify-center font-mono font-bold
+                                    bg-[#050508] border relative z-10 mb-5
+                                    ${s.col === "cyan"
+                                      ? "border-cyan-400/30 text-cyan-300 shadow-[0_0_28px_-8px_rgba(6,182,212,0.5)]"
+                                      : "border-violet-400/30 text-violet-300 shadow-[0_0_28px_-8px_rgba(124,58,237,0.5)]"}`}>
                       {s.n}
                     </div>
                     <h3 className="text-lg font-semibold text-slate-100 mb-2">{s.t}</h3>
@@ -371,23 +637,26 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── Témoignage spotlight ─────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §06 — SOCIAL (témoignage spotlight)
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-36 relative overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[800px] h-[400px] rounded-full blur-[140px] opacity-50"
-                   style={{ background: "radial-gradient(ellipse,rgba(124,58,237,0.2),transparent 65%)" }} />
+              <div className="w-[800px] h-[500px] rounded-full blur-[160px] opacity-40"
+                   style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.22) 0%, rgba(6,182,212,0.10) 50%, transparent 70%)" }} />
             </div>
             <div data-reveal className="relative max-w-3xl mx-auto text-center">
               <div className="flex justify-center gap-1 mb-8">
-                {Array(5).fill(0).map((_, i) => <span key={i} className="text-amber-400">★</span>)}
+                {Array(5).fill(0).map((_, i) => <span key={i} className="text-amber-400 text-lg">★</span>)}
               </div>
-              <blockquote className="text-2xl sm:text-4xl font-medium text-slate-100 leading-[1.3] tracking-[-0.01em]">
+              <blockquote className="text-2xl sm:text-[2.2rem] font-medium text-slate-100 leading-[1.3] tracking-[-0.01em]">
                 « Sur la semaine de test, le client a généré{" "}
                 <G>12 000 €</G> de CA. Sur les 3 mois suivants,{" "}
                 <G>150 000 €</G> — pour 3 000 € de budget Google. »
               </blockquote>
               <div className="mt-10 flex items-center justify-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center text-white font-bold">T</div>
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-500 to-indigo-700
+                                flex items-center justify-center text-white font-bold">T</div>
                 <div className="text-left">
                   <div className="text-sm font-semibold text-slate-100">Téo Mikulic</div>
                   <div className="text-xs text-slate-500">Acquisition · Google Ads pour artisans</div>
@@ -396,52 +665,64 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── Comparatif ───────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              Comparatif
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-4xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>Comparatif</Eyebrow>
+                <Eyebrow>§06 — Comparatif</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Pourquoi pas Excel ou HubSpot&nbsp;?
                 </h2>
               </div>
-              <div data-reveal className="rounded-2xl border border-white/[0.08] overflow-hidden backdrop-blur-sm bg-white/[0.015]">
-                <div className="grid grid-cols-4 border-b border-white/[0.08] bg-white/[0.03]">
-                  <div className="p-4 text-[11px] text-slate-600 uppercase tracking-widest font-semibold">Critère</div>
-                  {[["Prospeo", true], ["Excel", false], ["HubSpot", false]].map(([n, h]) => (
-                    <div key={n as string} className={`p-4 text-center text-sm font-semibold ${h ? "text-violet-300" : "text-slate-500"}`}>
-                      {h && "✦ "}{n as string}
-                    </div>
-                  ))}
-                </div>
-                {[
-                  ["Sourcing intégré (Maps + INPI)", true, false, false],
-                  ["Téléprompter d'appel", true, false, false],
-                  ["Relances multi-paliers auto", true, false, true],
-                  ["Journal d'activité auto", true, false, true],
-                  ["Dashboard de conversion", true, false, true],
-                  ["Prix mensuel", "19€", "0€", "0€ (limité)"],
-                  ["Prise en main", "Minutes", "Minutes", "Élevée"],
-                ].map((r, i) => (
-                  <div key={i} className={`grid grid-cols-4 border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.012]" : ""}`}>
-                    <div className="p-3.5 text-sm text-slate-400">{r[0] as string}</div>
-                    {[r[1], r[2], r[3]].map((v, j) => (
-                      <div key={j} className={`p-3.5 flex justify-center items-center text-sm ${j === 0 ? "bg-violet-500/[0.07]" : ""}`}>
-                        {typeof v === "boolean"
-                          ? (v ? <span className={j === 0 ? "text-violet-300 font-bold" : "text-emerald-500/60"}>✓</span> : <span className="text-slate-700">✕</span>)
-                          : <span className={j === 0 ? "text-violet-200 font-medium" : "text-slate-500"}>{v as string}</span>}
-                      </div>
+              <div data-reveal className="rounded-2xl border border-white/[0.08] overflow-x-auto backdrop-blur-sm bg-white/[0.012]">
+                <table className="w-full min-w-[520px]">
+                  <thead>
+                    <tr className="border-b border-white/[0.07] bg-white/[0.025]">
+                      <th className="p-4 text-left text-[11px] text-slate-600 uppercase tracking-widest font-semibold w-[40%]">Critère</th>
+                      {[["✦ Prospeo", true], ["Excel", false], ["HubSpot", false]].map(([n, h]) => (
+                        <th key={n as string} className={`p-4 text-center text-sm font-semibold ${h ? "text-violet-300" : "text-slate-500"}`}>
+                          {n as string}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["Sourcing intégré (Maps + INPI)", true, false, false],
+                      ["Téléprompter d'appel", true, false, false],
+                      ["Relances multi-paliers auto", true, false, true],
+                      ["Journal d'activité auto", true, false, true],
+                      ["Dashboard de conversion", true, false, true],
+                      ["Prix mensuel", "19€", "0€", "0€ (limité)"],
+                      ["Prise en main", "< 1h", "Rapide", "Élevée"],
+                    ].map((r, i) => (
+                      <tr key={i} className={`border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.01]" : ""}`}>
+                        <td className="p-3.5 text-sm text-slate-400">{r[0] as string}</td>
+                        {[r[1], r[2], r[3]].map((v, j) => (
+                          <td key={j} className={`p-3.5 text-center text-sm ${j === 0 ? "bg-violet-500/[0.05]" : ""}`}>
+                            {typeof v === "boolean"
+                              ? (v
+                                  ? <span className={j === 0 ? "text-violet-300 font-bold" : "text-emerald-500/60"}>✓</span>
+                                  : <span className="text-slate-700">✕</span>)
+                              : <span className={j === 0 ? "text-violet-200 font-medium" : "text-slate-500"}>{v as string}</span>}
+                          </td>
+                        ))}
+                      </tr>
                     ))}
-                  </div>
-                ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
 
-          {/* ── Artisans ─────────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              Artisans
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24">
-            <div data-reveal className="max-w-5xl mx-auto rounded-3xl border border-violet-400/15 overflow-hidden
-                            bg-gradient-to-br from-violet-500/[0.07] to-transparent p-8 sm:p-14">
+            <div data-reveal className="max-w-5xl mx-auto rounded-3xl border border-violet-400/[0.12] overflow-hidden
+                            bg-gradient-to-br from-violet-500/[0.06] to-transparent p-8 sm:p-14">
               <div className="grid md:grid-cols-2 gap-10 items-center">
                 <div>
                   <Eyebrow>Pour les artisans</Eyebrow>
@@ -454,15 +735,16 @@ export default function Landing() {
                     aucun frais d&apos;agence sur la semaine de test.
                   </p>
                   <button onClick={() => openContact("Intéressé par une campagne Google Ads")}
-                    className="mt-7 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#0b0d12]
+                    className="mt-7 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#050508]
                                text-sm font-semibold hover:bg-slate-200 transition-colors">
                     Contacter Téo →
                   </button>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {[["🔨","Plombiers"],["⚡","Électriciens"],["🌿","Paysagistes"],["🎨","Peintres"],["🧱","Maçons"],["🏠","Couvreurs"]].map(([ic, lb]) => (
-                    <div key={lb} className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.07]">
-                      <span className="text-lg">{ic}</span><span className="text-sm text-slate-300">{lb}</span>
+                    <div key={lb} className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                      <span className="text-lg">{ic}</span>
+                      <span className="text-sm text-slate-300">{lb}</span>
                     </div>
                   ))}
                 </div>
@@ -470,45 +752,60 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── Tarifs ───────────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §07 — PRICING
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="pricing" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-12">
-                <Eyebrow>Tarifs</Eyebrow>
+                <Eyebrow>§07 — Tarifs</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em]">
                   Simple. <G>Transparent.</G>
                 </h2>
                 <div className="mt-8 max-w-sm mx-auto">
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  <input
+                    type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="votre@email.com"
                     className="w-full px-4 py-3 bg-white/[0.04] border border-white/[0.09] rounded-xl text-center
-                               text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-violet-500/50 transition-colors" />
+                               text-slate-200 placeholder-slate-600 text-sm focus:outline-none
+                               focus:border-violet-500/50 transition-colors" />
                   <p className="text-xs text-slate-600 mt-2">Saisissez votre email puis choisissez un plan</p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-3 gap-5 items-start">
                 {[
-                  { name: "Gratuit", price: "0€", desc: "Pour découvrir et faire ses premiers appels.",
+                  {
+                    name: "Gratuit", price: "0€",
+                    desc: "Pour découvrir et faire ses premiers appels.",
                     feats: ["100 leads max", "3 scrapings Maps/mois", "Rappels & RDV", "Journal d'activité"],
-                    cta: "Créer un compte", onClick: () => { window.location.href = "/sign-up"; }, hl: false },
-                  { name: "Pro", price: "19€", desc: "La prospection systématique, sans limite.",
+                    cta: "Créer un compte", onClick: () => { window.location.href = "/sign-up"; }, hl: false,
+                  },
+                  {
+                    name: "Pro", price: "19€",
+                    desc: "La prospection systématique, sans limite.",
                     feats: ["Leads illimités", "Maps + INPI illimités", "Mode session d'appels", "Scripts téléprompter", "Dashboard + funnel", "Emails & relances auto", "Import / Export CSV"],
-                    cta: "Commencer 14j gratuit", onClick: () => pay("pro"), hl: true },
-                  { name: "Agence", price: "49€", desc: "Pour les équipes à fort volume.",
+                    cta: "Commencer 14j gratuit", onClick: () => pay("pro"), hl: true,
+                  },
+                  {
+                    name: "Agence", price: "49€",
+                    desc: "Pour les équipes à fort volume.",
                     feats: ["Tout Pro inclus", "5 utilisateurs", "Leads partagés", "Onboarding dédié", "Support prioritaire"],
-                    cta: "Nous contacter", onClick: () => openContact("Plan Agence Prospeo"), hl: false },
+                    cta: "Nous contacter", onClick: () => openContact("Plan Agence Prospeo"), hl: false,
+                  },
                 ].map(p => (
                   <div key={p.name} data-reveal
                     className={`relative flex flex-col p-7 rounded-3xl border transition-all
-                      ${p.hl ? "border-violet-400/40 bg-gradient-to-b from-violet-500/[0.12] to-transparent shadow-[0_0_80px_-20px_rgba(124,58,237,0.6)] md:-mt-3 md:pb-10"
-                             : "border-white/[0.08] bg-white/[0.02]"}`}>
+                      ${p.hl
+                        ? "border-violet-400/40 bg-gradient-to-b from-violet-500/[0.12] to-transparent shadow-[0_0_80px_-20px_rgba(124,58,237,0.55)] md:-mt-3 md:pb-10"
+                        : "border-white/[0.07] bg-white/[0.02]"}`}>
                     {p.hl && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[11px] font-semibold bg-white text-[#0b0d12]">
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full
+                                       text-[11px] font-semibold bg-white text-[#050508]">
                         Le plus populaire
                       </span>
                     )}
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest">{p.name}</div>
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500">{p.name}</div>
                     <div className="mt-3 flex items-end gap-1">
                       <span className="text-4xl font-bold text-slate-50">{p.price}</span>
                       {p.price !== "0€" && <span className="text-slate-500 mb-1 text-sm">/mois</span>}
@@ -517,14 +814,15 @@ export default function Landing() {
                     <ul className="mt-6 space-y-2.5 flex-1">
                       {p.feats.map(f => (
                         <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                          <span className="text-violet-400 mt-0.5">✓</span>{f}
+                          <span className="text-violet-400 mt-0.5 shrink-0">✓</span>{f}
                         </li>
                       ))}
                     </ul>
                     <button onClick={p.onClick} disabled={loading && p.hl}
                       className={`mt-7 w-full py-3 rounded-full text-sm font-semibold transition-all
-                        ${p.hl ? "bg-white text-[#0b0d12] hover:bg-slate-200 disabled:opacity-50"
-                               : "border border-white/15 text-slate-200 hover:bg-white/[0.05]"}`}>
+                        ${p.hl
+                          ? "bg-white text-[#050508] hover:bg-slate-200 disabled:opacity-50"
+                          : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
                       {loading && p.hl ? "Redirection…" : p.cta}
                     </button>
                   </div>
@@ -536,13 +834,15 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── FAQ ──────────────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §08 — FAQ
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="faq" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-2xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>FAQ</Eyebrow>
+                <Eyebrow>§08 — FAQ</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
-                  Questions fréquentes
+                  Questions directes.
                 </h2>
               </div>
               <div data-reveal className="space-y-1">
@@ -558,32 +858,40 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ── CTA final ────────────────────────────────────────────────── */}
-          <section className="px-5 sm:px-6 py-28 sm:py-40 relative overflow-hidden">
+          {/* ══════════════════════════════════════════════════════════════════
+              §09 — CTA FINAL
+          ══════════════════════════════════════════════════════════════════ */}
+          <section className="px-5 sm:px-6 py-28 sm:py-44 relative overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[900px] h-[450px] rounded-full blur-[150px] opacity-60"
-                   style={{ background: "radial-gradient(ellipse,rgba(124,58,237,0.28),transparent 60%)" }} />
+              <div className="w-[1000px] h-[550px] rounded-full blur-[180px] opacity-50"
+                   style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.25) 0%, rgba(6,182,212,0.08) 50%, transparent 70%)" }} />
             </div>
             <div data-reveal className="relative max-w-2xl mx-auto text-center">
-              <h2 className="text-4xl sm:text-6xl font-bold text-slate-50 tracking-[-0.03em] leading-[1.05]">
+              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09 — Commence maintenant</p>
+              <h2 className="text-4xl sm:text-6xl font-bold text-slate-50 tracking-[-0.03em] leading-[1.04]">
                 Prospecte comme<br /><G>un closer.</G>
               </h2>
               <p className="mt-6 text-slate-400">Structure ta prospection. Mesure tes résultats. Signe plus.</p>
               <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                <input
+                  type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="votre@email.com"
-                  className="flex-1 px-4 py-3.5 bg-white/[0.04] border border-white/[0.09] rounded-full text-center sm:text-left
-                             text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-violet-500/50 transition-colors" />
+                  className="flex-1 px-4 py-3.5 bg-white/[0.04] border border-white/[0.09] rounded-full
+                             text-center sm:text-left text-slate-200 placeholder-slate-600 text-sm
+                             focus:outline-none focus:border-violet-500/50 transition-colors" />
                 <button onClick={() => pay("pro")} disabled={loading}
-                  className="px-7 py-3.5 rounded-full bg-white text-[#0b0d12] text-sm font-semibold
-                             hover:scale-[1.02] transition-all disabled:opacity-50 shadow-[0_0_40px_rgba(124,58,237,0.4)] whitespace-nowrap">
+                  className="px-7 py-3.5 rounded-full bg-white text-[#050508] text-sm font-semibold
+                             hover:scale-[1.02] transition-all disabled:opacity-50
+                             shadow-[0_0_40px_rgba(124,58,237,0.35)] whitespace-nowrap">
                   {loading ? "…" : "Commencer →"}
                 </button>
               </div>
             </div>
           </section>
 
-          {/* ── Footer ───────────────────────────────────────────────────── */}
+          {/* ══════════════════════════════════════════════════════════════════
+              FOOTER
+          ══════════════════════════════════════════════════════════════════ */}
           <footer className="border-t border-white/[0.05] px-5 sm:px-6 py-14">
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10">
               <div className="max-w-xs">
@@ -594,82 +902,87 @@ export default function Landing() {
                   <span className="text-slate-100 font-semibold">Prospeo</span>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Le CRM des prospecteurs terrain et des artisans. Trouve, appelle, signe.
+                  Le CRM des prospecteurs terrain et des artisans.<br />
+                  Trouve, appelle, signe.
                 </p>
               </div>
               <div className="flex gap-14 sm:gap-20">
                 <div>
-                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-3">Produit</div>
+                  <div className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Produit</div>
                   <div className="space-y-2.5">
-                    {[["#features","Fonctionnalités"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l])=>(
+                    {[["#features","Fonctionnalités"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l]) => (
                       <a key={h} href={h} className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">{l}</a>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-3">Compte</div>
+                  <div className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Compte</div>
                   <div className="space-y-2.5">
                     <Link href="/sign-in" className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">Connexion</Link>
-                    <Link href="/app" className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">Ouvrir l&apos;app</Link>
-                    <button onClick={() => openContact()} className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">Contact</button>
+                    <Link href="/app"     className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">Ouvrir l&apos;app</Link>
+                    <button onClick={() => openContact()}
+                      className="block text-sm text-slate-600 hover:text-slate-300 transition-colors">Contact</button>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row justify-between gap-2 text-xs text-slate-700">
+            <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/[0.04]
+                            flex flex-col sm:flex-row justify-between gap-2 text-xs text-slate-700">
               <span>© 2026 Prospeo. Tous droits réservés.</span>
               <span>Conçu par Téo Mikulic</span>
             </div>
           </footer>
-        </div>
 
-        {/* Sticky CTA */}
-        <div className={`fixed bottom-0 inset-x-0 z-40 transition-all duration-500 ${showSticky ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
+        </div>{/* /relative z-10 */}
+
+        {/* ── Sticky CTA ────────────────────────────────────────────────────── */}
+        <div className={`fixed bottom-0 inset-x-0 z-40 transition-all duration-500
+          ${showSticky ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
           <div className="mx-auto max-w-xl mb-4 px-4">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#0d0f15]/95 border border-violet-400/20 backdrop-blur-xl
-                            shadow-[0_0_40px_rgba(124,58,237,0.2),0_8px_32px_rgba(0,0,0,0.5)]">
-              <span className="text-sm text-slate-300 font-medium flex-1 min-w-0 truncate">Essai 14 jours gratuit</span>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#0c0e18]/95 border border-violet-400/20 backdrop-blur-xl
+                            shadow-[0_0_40px_rgba(124,58,237,0.18),0_8px_32px_rgba(0,0,0,0.6)]">
+              <span className="text-sm text-slate-300 font-medium flex-1 min-w-0 truncate">
+                Essai 14 jours — gratuit
+              </span>
               <button onClick={() => pay("pro")} disabled={loading}
-                className="px-4 py-2 rounded-full bg-white text-[#0b0d12] text-xs font-semibold hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
+                className="px-4 py-2 rounded-full bg-white text-[#050508] text-xs font-semibold
+                           hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
                 {loading ? "…" : "Commencer →"}
               </button>
-              <button onClick={() => setShowSticky(false)} className="text-slate-600 hover:text-slate-400 text-lg leading-none">×</button>
+              <button onClick={() => setShowSticky(false)}
+                className="text-slate-600 hover:text-slate-400 text-xl leading-none">×</button>
             </div>
           </div>
         </div>
 
-        {contactOpen && <ContactModal defaultSubject={contactSubj} onClose={() => setContactOpen(false)} />}
+        {/* ── Modals ────────────────────────────────────────────────────────── */}
+        {contactOpen && (
+          <ContactModal defaultSubject={contactSubj} onClose={() => setContactOpen(false)} />
+        )}
 
         {emailModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setEmailModal(false)}>
-            <div className="bg-[#0d0f15] border border-white/10 rounded-2xl p-8 max-w-sm w-full" onClick={e => e.stopPropagation()}>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+               onClick={() => setEmailModal(false)}>
+            <div className="bg-[#0c0e18] border border-white/10 rounded-2xl p-8 max-w-sm w-full"
+                 onClick={e => e.stopPropagation()}>
               <h3 className="text-slate-100 font-semibold mb-2">Votre email</h3>
               <p className="text-slate-500 text-sm mb-4">Pour démarrer votre essai gratuit de 14 jours.</p>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="vous@exemple.com" autoFocus
-                className="w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-slate-200 placeholder-slate-600 text-sm mb-3 focus:outline-none focus:border-violet-500/50 transition-colors" />
+              <input
+                type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="vous@exemple.com" autoFocus
+                className="w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl
+                           text-slate-200 placeholder-slate-600 text-sm mb-3
+                           focus:outline-none focus:border-violet-500/50 transition-colors" />
               <button onClick={() => { setEmailModal(false); pay(); }} disabled={!email}
-                className="w-full py-3 bg-white text-[#0b0d12] disabled:opacity-40 rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
+                className="w-full py-3 bg-white text-[#050508] disabled:opacity-40
+                           rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
                 Continuer →
               </button>
             </div>
           </div>
         )}
+
       </div>
     </>
-  );
-}
-
-// ─── FAQ item ─────────────────────────────────────────────────────────────────
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-white/[0.06] rounded-xl bg-white/[0.015] overflow-hidden">
-      <button onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group">
-        <span className="text-[15px] text-slate-200 font-medium group-hover:text-white transition-colors">{q}</span>
-        <span className={`text-slate-500 text-lg flex-shrink-0 transition-transform duration-200 ${open ? "rotate-45" : ""}`}>+</span>
-      </button>
-      {open && <p className="px-5 pb-5 -mt-1 text-sm text-slate-500 leading-relaxed">{a}</p>}
-    </div>
   );
 }
