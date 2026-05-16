@@ -338,8 +338,8 @@ export default function LeadsPage() {
       <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
+      <header className="flex items-center justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm overflow-x-auto">
+        <div className="flex items-center gap-3 shrink-0">
           <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Leads</h1>
 
           {isFreeUser && leadsLeft !== null && (
@@ -367,7 +367,7 @@ export default function LeadsPage() {
           )}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Bouton Session d'appels */}
           <button
             onClick={startCallSession}

@@ -229,7 +229,7 @@ export default function INPISearch({ onAddLeads }: Props) {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="px-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Recherche INPI — Entreprises récentes</h1>

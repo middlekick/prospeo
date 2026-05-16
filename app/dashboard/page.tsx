@@ -311,12 +311,12 @@ export default function DashboardPage() {
         <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
         <div className="h-[52px] border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60" />
         <div className="flex-1 px-6 py-6 max-w-[1200px] w-full mx-auto space-y-4 animate-pulse">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-28 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
             ))}
           </div>
-          <div className="grid grid-cols-[1fr_320px] gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
             <div className="h-52 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
             <div className="h-52 rounded-2xl bg-white/[0.04] border border-white/[0.06]" />
           </div>
@@ -359,7 +359,7 @@ export default function DashboardPage() {
       <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
         <div>
           <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Tableau de bord</h1>
           <p className="text-xs text-slate-600 mt-0.5">
@@ -406,7 +406,7 @@ export default function DashboardPage() {
       <div className="flex-1 px-6 py-6 space-y-6 max-w-[1200px] w-full mx-auto">
 
         {/* ── Cartes stat ── */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             icon="📞"
             label={`Contactés — ${periodLabel}`}
@@ -445,7 +445,7 @@ export default function DashboardPage() {
         </div>
 
         {/* ── Graphique + Entonnoir ── */}
-        <div className="grid grid-cols-[1fr_320px] gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
 
           {/* Graphique activité 30 jours */}
           <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
@@ -543,7 +543,7 @@ export default function DashboardPage() {
         <RdvCalendar leads={leads} />
 
         {/* ── Prochains RDV + Derniers contactés ── */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           {/* Prochains RDV */}
           <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
@@ -640,7 +640,7 @@ export default function DashboardPage() {
         {/* ── Bilan global ── */}
         <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
           <h2 className="text-sm font-semibold text-slate-100 mb-4">Bilan global</h2>
-          <div className="grid grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {[
               { label: "Total leads",    value: stats.total,          color: "text-slate-200",  bg: "border-white/[0.09] bg-white/[0.05]"      },
               { label: "Non contactés",  value: stats.nonContactes,   color: "text-slate-500",  bg: "border-white/[0.06] bg-white/[0.02]"      },

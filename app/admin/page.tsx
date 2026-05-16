@@ -230,7 +230,7 @@ export default function AdminPage() {
       <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="shrink-0 px-5 py-3 border-b border-white/[0.06] bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="shrink-0 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] bg-[#0c0e15]/60 backdrop-blur-sm">
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-semibold text-slate-100">Administration</h1>
           <button onClick={load} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">↻ Actualiser</button>

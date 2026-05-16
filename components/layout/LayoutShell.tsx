@@ -31,7 +31,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
       />
 
       <Sidebar />
-      <main className="relative z-10 ml-[220px] min-h-screen">{children}</main>
+      <main className="relative z-10 md:ml-[220px] min-h-screen">{children}</main>
       <CommandPalette />
     </>
   );

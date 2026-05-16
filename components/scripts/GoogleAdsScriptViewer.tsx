@@ -542,7 +542,7 @@ export default function GoogleAdsScriptViewer({ onBack }: { onBack: () => void }
       <div className="h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent shrink-0" />
 
       {/* ── Header ───────────────────────────────────────────────────────── */}
-      <header className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
         <button
           onClick={onBack}
           className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-200 transition-colors"
