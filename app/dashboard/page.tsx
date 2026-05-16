@@ -241,9 +241,11 @@ export default function DashboardPage() {
     // Ne répond pas n'est PAS compté dans le closing — ils n'ont pas eu de vraie conversation
     const vraisConversations = interesses + rdvPris + pasInteresse;
 
-    const tauxContact   = total               > 0 ? Math.round((contactes          / total)               * 100) : 0;
-    const tauxInteret   = vraisConversations  > 0 ? Math.round(((interesses + rdvPris) / vraisConversations) * 100) : 0;
-    const tauxRdv       = vraisConversations  > 0 ? Math.round((rdvPris             / vraisConversations)   * 100) : 0;
+    // Taux de décrochage = ceux qui ont vraiment parlé / ceux qu'on a appelés
+    // (contactes = tous les leads sortis de "non_appelé" = appelés au moins une fois)
+    const tauxDecrochage = contactes          > 0 ? Math.round((vraisConversations / contactes)          * 100) : 0;
+    const tauxInteret    = vraisConversations > 0 ? Math.round(((interesses + rdvPris) / vraisConversations) * 100) : 0;
+    const tauxRdv        = vraisConversations > 0 ? Math.round((rdvPris             / vraisConversations) * 100) : 0;
 
     // ── Graphique 30 jours ───────────────────────────────────────────────
     const chart: ChartPoint[] = days30.map(d => ({
@@ -272,7 +274,7 @@ export default function DashboardPage() {
       contactedPeriod, addedPeriod, rdvPeriod, rappelsDus,
       total, nonContactes, contactes, neRepond, interesses, rdvPris, pasInteresse,
       vraisConversations,
-      tauxContact, tauxInteret, tauxRdv,
+      tauxDecrochage, tauxInteret, tauxRdv,
       chart, totalContacted30, bestDay,
       upcomingRdv, recentlyContacted,
     };
@@ -289,9 +291,10 @@ export default function DashboardPage() {
       ["Intéressés", stats.interesses],
       ["RDV pris", stats.rdvPris],
       ["Pas intéressés", stats.pasInteresse],
-      ["Taux de contact", `${stats.tauxContact}%`],
+      ["Vrais échanges (décrochés)", stats.vraisConversations],
+      ["Taux de décrochage", `${stats.tauxDecrochage}%`],
       ["Taux d'intérêt", `${stats.tauxInteret}%`],
-      ["Taux RDV", `${stats.tauxRdv}%`],
+      ["Taux closing RDV", `${stats.tauxRdv}%`],
     ];
     const csv  = rows.map(r => r.join(";")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
@@ -516,8 +519,8 @@ export default function DashboardPage() {
             {stats.vraisConversations > 0 && (
               <div className="mt-5 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
                 <div className="text-center">
-                  <div className="text-lg font-bold mono text-slate-300">{stats.tauxContact}%</div>
-                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont décroché<br/>(sur total)</div>
+                  <div className="text-lg font-bold mono text-slate-300">{stats.tauxDecrochage}%</div>
+                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont décroché<br/>(sur appelés)</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold mono text-cyan-400">{stats.tauxInteret}%</div>
