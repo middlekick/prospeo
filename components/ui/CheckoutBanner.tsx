@@ -12,7 +12,13 @@ import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useToast }                   from "@/components/ui/Toast";
 import { usePlan }                    from "@/hooks/usePlan";
-import { PLAN_LABELS }                from "@/lib/plan";
+
+// Labels plan — copie client-safe (pas d'import depuis lib/plan qui tire Prisma)
+const PLAN_LABELS: Record<string, string> = {
+  free:   "Free",
+  pro:    "Pro",
+  agency: "Agence",
+};
 
 function CheckoutBannerInner() {
   const params   = useSearchParams();
@@ -28,10 +34,7 @@ function CheckoutBannerInner() {
 
     if (status === "success") {
       const planParam = params.get("plan");
-      const label =
-        planParam && (planParam in PLAN_LABELS)
-          ? PLAN_LABELS[planParam as keyof typeof PLAN_LABELS]
-          : "Pro";
+      const label = (planParam && PLAN_LABELS[planParam]) || "Pro";
       toast.success(`Bienvenue en ${label} 🎉 Toutes les fonctionnalités sont débloquées.`);
       // Forcer le rechargement du plan (invalide le cache sessionStorage)
       refresh();
