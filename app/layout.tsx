@@ -7,7 +7,6 @@ import LayoutShell              from "@/components/layout/LayoutShell";
 import { ToastProvider }        from "@/components/ui/Toast";
 import { ConfirmProvider }      from "@/components/ui/ConfirmModal";
 import ServiceWorker            from "@/components/layout/ServiceWorker";
-import GlowCursor               from "@/components/ui/GlowCursor";
 import SmoothScrollProvider     from "@/components/ui/SmoothScrollProvider";
 
 export const metadata: Metadata = {
@@ -50,8 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <html lang="fr" className={`${syne.variable} ${dmMono.variable}`}>
         <body className="bg-[#0A0A0B]">
-          {/* Curseur custom global — désactivé automatiquement sur mobile */}
-          <GlowCursor />
           <SmoothScrollProvider>
             <ToastProvider>
               <ConfirmProvider>

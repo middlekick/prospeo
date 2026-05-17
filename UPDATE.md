@@ -209,6 +209,7 @@
 | 2026-05-18 | PWA | Manifest corrigé — `theme_color` #00E5FF (cohérent layout), `start_url`/`id` `/app`, `scope` `/`, `dir`. SW v2 — fallback hors-ligne brandé pour les navigations non cachées | `app/manifest.ts`, `public/sw.js` |
 | 2026-05-18 | Perf | **LCP 7,9 s → ≈FCP** (PageSpeed mobile 62). Le H1 hero (élément LCP) était `opacity:0` via Framer Motion `initial` → invisible jusqu'à l'hydratation. Remplacé par reveal CSS pur transform-only (`.hero-word`, démarre au 1er paint, respecte reduced-motion) | `app/page.tsx`, `app/globals.css` |
 | 2026-05-18 | A11y | Accessibilité 80 → corrections déterministes : `maximumScale` retiré du viewport (zoom débloqué), `<main>` landmark sur landing/auth, 5 noms accessibles (`aria-label` : toggle annuel role=switch, LinkedIn, contact email, CTA sticky, fermeture bannière), SVG `aria-hidden` | `app/layout.tsx`, `components/layout/LayoutShell.tsx`, `app/page.tsx` |
+| 2026-05-18 | Perf | `GlowCursor` (curseur custom global : listener mousemove + RAF + élément fixe sur toutes les pages) supprimé du layout + fichier retiré — moins de JS/runtime client | `app/layout.tsx`, `components/ui/GlowCursor.tsx` (supprimé) |
 
 ---
 
