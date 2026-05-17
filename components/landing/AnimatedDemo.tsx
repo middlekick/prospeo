@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // ─── Données fictives ──────────────────────────────────────────────────────────
 const LEADS = [
@@ -44,8 +44,8 @@ function TagBadge({ tag }: { tag: string }) {
 }
 
 // ─── Composant principal ──────────────────────────────────────────────────────
-export default function AnimatedDemo() {
-  const [scene,        setScene]        = useState<Scene>("scraping");
+export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}) {
+  const [scene,        setScene]        = useState<Scene>(forceScene ?? "scraping");
   const [fadingOut,    setFadingOut]    = useState(false);
   const [contentFade,  setContentFade]  = useState(true);
 
@@ -80,6 +80,17 @@ export default function AnimatedDemo() {
   const sidebarIdx: Record<Scene, number> = {
     scraping: 0, kanban: 0, inpi: 2, session: 0, scripts: 3,
   };
+
+  // ── Mode contrôlé : forceScene piloté depuis ScrollDemoSection ────────────
+  const prevForceScene = useRef<Scene | undefined>(undefined);
+  useEffect(() => {
+    if (forceScene === undefined) return;
+    if (forceScene === prevForceScene.current) return;
+    prevForceScene.current = forceScene;
+    setContentFade(false);
+    const t = setTimeout(() => { setScene(forceScene); setContentFade(true); }, 260);
+    return () => clearTimeout(t);
+  }, [forceScene]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Transitions entre scènes ───────────────────────────────────────────────
   const switchScene = (next: Scene, delay: number) => {
@@ -127,7 +138,7 @@ export default function AnimatedDemo() {
                   setLeadTag("interesse");
                   T(() => {
                     setShowActivity(true);
-                    switchScene("kanban", 2800);
+                    if (!forceScene) switchScene("kanban", 2800);
                   }, 900);
                 }, 1400);
               }, 600);
@@ -146,7 +157,7 @@ export default function AnimatedDemo() {
           setMovingCard(true);
           T(() => {
             setKanbanPhase("dropped");
-            switchScene("inpi", 2200);
+            if (!forceScene) switchScene("inpi", 2200);
           }, 700);
         }, 900);
       }, 1400);
@@ -173,7 +184,7 @@ export default function AnimatedDemo() {
             }, 480);
             T(() => {
               setImportSuccess(true);
-              switchScene("session", 2000);
+              if (!forceScene) switchScene("session", 2000);
             }, 2000);
           }, 1000);
         }, 1500);
@@ -188,7 +199,7 @@ export default function AnimatedDemo() {
         T(() => { setSessionCount(3); }, 900);
         T(() => {
           setSessionPhase("result");
-          switchScene("scripts", 2600);
+          if (!forceScene) switchScene("scripts", 2600);
         }, 2400);
       }, 700);
     }
@@ -197,8 +208,8 @@ export default function AnimatedDemo() {
       setScriptScroll(false); setObjectionOpen(false);
       T(() => setScriptScroll(true), 600);
       T(() => setObjectionOpen(true), 3800);
-      T(() => {
-        // Fin du cycle → restart
+      if (!forceScene) T(() => {
+        // Fin du cycle → restart (autoplay uniquement)
         setFadingOut(true);
         setTimeout(() => {
           setFadingOut(false);

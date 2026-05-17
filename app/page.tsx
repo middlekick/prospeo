@@ -10,7 +10,7 @@ import {
 import Link            from "next/link";
 import { useUser }     from "@clerk/nextjs";
 import ContactModal    from "@/components/ui/ContactModal";
-import AnimatedDemo      from "@/components/landing/AnimatedDemo";
+import ScrollDemoSection from "@/components/landing/ScrollDemoSection";
 import ConstatSection    from "@/components/landing/ConstatSection";
 import { useToast }      from "@/components/ui/Toast";
 import MagneticButton    from "@/components/ui/MagneticButton";
@@ -633,13 +633,8 @@ export default function Landing() {
 
               <div className="flex flex-col gap-4">
 
-                {/* ── Démo animée  pleine largeur, chrome intégré dans le composant ── */}
-                <div data-reveal className="relative rounded-3xl border border-white/[0.08] overflow-hidden
-                                            shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
-                  <div className="absolute -inset-x-0 -top-16 h-48 -z-10 blur-[80px] opacity-40 pointer-events-none"
-                       style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.40), rgba(0,229,255,0.10) 55%, transparent 75%)" }} />
-                  <AnimatedDemo />
-                </div>
+                {/* ── Démo scroll-pinned (desktop) / autoplay (mobile) ── */}
+                <ScrollDemoSection />
 
                 {/* ── Grille 3×2  aucune carte isolée ── */}
                 <div className="grid md:grid-cols-3 gap-4">
