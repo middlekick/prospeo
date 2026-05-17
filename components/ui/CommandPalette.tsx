@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface NavItem {
   id:    string;
@@ -22,11 +22,11 @@ interface LeadLite {
 
 // Pages navigables
 const NAV: NavItem[] = [
-  { id: "leads",      label: "Leads",          hint: "Gestion des prospects",      icon: "👥", href: "/app" },
-  { id: "dashboard",  label: "Tableau de bord", hint: "Métriques & funnel",         icon: "📊", href: "/app/dashboard" },
-  { id: "inpi",       label: "Recherche INPI",  hint: "Sourcing entreprises",       icon: "🏛️", href: "/app/inpi" },
-  { id: "scripts",    label: "Scripts",         hint: "Téléprompter d'appel",       icon: "📜", href: "/app/scripts" },
-  { id: "autoscrape", label: "Auto-scraping",   hint: "Leads automatiques",         icon: "⚡", href: "/app/auto-scrape" },
+  { id: "leads",      label: "Leads",          hint: "Gestion des prospects",      icon: "ðŸ‘¥", href: "/app" },
+  { id: "dashboard",  label: "Tableau de bord", hint: "MÃ©triques & funnel",         icon: "ðŸ“Š", href: "/app/dashboard" },
+  { id: "inpi",       label: "Recherche INPI",  hint: "Sourcing entreprises",       icon: "ðŸ›ï¸", href: "/app/inpi" },
+  { id: "scripts",    label: "Scripts",         hint: "TÃ©lÃ©prompter d'appel",       icon: "ðŸ“œ", href: "/app/scripts" },
+  { id: "autoscrape", label: "Auto-scraping",   hint: "Leads automatiques",         icon: "âš¡", href: "/app/auto-scrape" },
 ];
 
 export default function CommandPalette() {
@@ -50,7 +50,7 @@ export default function CommandPalette() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  // Charger les leads (1 fois à la 1ère ouverture)
+  // Charger les leads (1 fois Ã  la 1Ã¨re ouverture)
   useEffect(() => {
     if (open && leads.length === 0) {
       fetch("/api/leads")
@@ -62,7 +62,7 @@ export default function CommandPalette() {
     }
   }, [open, leads.length]);
 
-  // Reset à l'ouverture
+  // Reset Ã  l'ouverture
   useEffect(() => {
     if (open) {
       setQuery("");
@@ -71,7 +71,7 @@ export default function CommandPalette() {
     }
   }, [open]);
 
-  // Résultats filtrés
+  // RÃ©sultats filtrÃ©s
   const { navResults, leadResults } = useMemo(() => {
     const q = query.trim().toLowerCase();
     const nav = q
@@ -94,7 +94,7 @@ export default function CommandPalette() {
     if (globalIdx < navResults.length) {
       router.push(navResults[globalIdx].href);
     } else {
-      // Lead → page principale (la recherche reprend le contexte)
+      // Lead â†’ page principale (la recherche reprend le contexte)
       router.push("/app");
     }
     setOpen(false);
@@ -134,16 +134,16 @@ export default function CommandPalette() {
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Rechercher une page ou un lead…"
+            placeholder="Rechercher une page ou un leadâ€¦"
             className="flex-1 bg-transparent text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none"
           />
-          <kbd className="text-[10px] text-slate-700 bg-white/[0.05] border border-white/[0.08] rounded px-1.5 py-0.5">Échap</kbd>
+          <kbd className="text-[10px] text-slate-700 bg-white/[0.05] border border-white/[0.08] rounded px-1.5 py-0.5">Ã‰chap</kbd>
         </div>
 
-        {/* Résultats */}
+        {/* RÃ©sultats */}
         <div className="max-h-[50vh] overflow-y-auto p-2">
           {flatCount === 0 ? (
-            <div className="py-10 text-center text-sm text-slate-600">Aucun résultat</div>
+            <div className="py-10 text-center text-sm text-slate-600">Aucun rÃ©sultat</div>
           ) : (
             <>
               {navResults.length > 0 && (
@@ -156,7 +156,7 @@ export default function CommandPalette() {
                       onMouseEnter={() => setActive(i)}
                       className={[
                         "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors",
-                        active === i ? "bg-violet-500/15" : "hover:bg-white/[0.04]",
+                        active === i ? "bg-brand-500/15" : "hover:bg-white/[0.04]",
                       ].join(" ")}
                     >
                       <span className="text-base w-6 text-center">{n.icon}</span>
@@ -164,7 +164,7 @@ export default function CommandPalette() {
                         <div className={`text-sm ${active === i ? "text-violet-200" : "text-slate-300"}`}>{n.label}</div>
                         <div className="text-xs text-slate-600">{n.hint}</div>
                       </div>
-                      {active === i && <span className="text-xs text-violet-400">↵</span>}
+                      {active === i && <span className="text-xs text-brand-400">â†µ</span>}
                     </button>
                   ))}
                 </div>
@@ -182,14 +182,14 @@ export default function CommandPalette() {
                         onMouseEnter={() => setActive(gi)}
                         className={[
                           "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors",
-                          active === gi ? "bg-violet-500/15" : "hover:bg-white/[0.04]",
+                          active === gi ? "bg-brand-500/15" : "hover:bg-white/[0.04]",
                         ].join(" ")}
                       >
-                        <span className="w-6 text-center text-slate-600">·</span>
+                        <span className="w-6 text-center text-slate-600">Â·</span>
                         <div className="flex-1 min-w-0">
                           <div className={`text-sm truncate ${active === gi ? "text-violet-200" : "text-slate-300"}`}>{l.nom}</div>
                           <div className="text-xs text-slate-600 truncate">
-                            {l.metier}{l.emplacement ? ` · ${l.emplacement}` : ""}
+                            {l.metier}{l.emplacement ? ` Â· ${l.emplacement}` : ""}
                           </div>
                         </div>
                         {l.telephone && <span className="text-xs mono text-slate-700 shrink-0">{l.telephone}</span>}
@@ -204,11 +204,12 @@ export default function CommandPalette() {
 
         {/* Pied */}
         <div className="flex items-center gap-4 px-4 py-2.5 border-t border-white/[0.06] text-[10px] text-slate-700">
-          <span><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">↑↓</kbd> naviguer</span>
-          <span><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">↵</kbd> ouvrir</span>
-          <span className="ml-auto"><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">⌘K</kbd> ouvrir/fermer</span>
+          <span><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">â†‘â†“</kbd> naviguer</span>
+          <span><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">â†µ</kbd> ouvrir</span>
+          <span className="ml-auto"><kbd className="bg-white/[0.05] border border-white/[0.08] rounded px-1">âŒ˜K</kbd> ouvrir/fermer</span>
         </div>
       </div>
     </div>
   );
 }
+

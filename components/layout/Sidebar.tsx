@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link            from "next/link";
@@ -7,7 +7,7 @@ import { UserButton }  from "@clerk/nextjs";
 import { usePlan }     from "@/hooks/usePlan";
 import TrialCodeModal  from "@/components/ui/TrialCodeModal";
 
-// ── Icônes SVG ────────────────────────────────────────────────────────────────
+// â”€â”€ IcÃ´nes SVG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const IconLeads = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -49,17 +49,17 @@ const IconScrape = () => (
   </svg>
 );
 
-// ── Navigation ────────────────────────────────────────────────────────────────
+// â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const NAV = [
-  { href: "/app",             label: "Leads",        Icon: IconLeads,     hint: "⌘1" },
-  { href: "/app/dashboard",   label: "Dashboard",    Icon: IconDashboard, hint: "⌘2" },
-  { href: "/app/inpi",        label: "INPI / RNE",   Icon: IconINPI,      hint: "⌘3" },
-  { href: "/app/scripts",     label: "Scripts",      Icon: IconScripts,   hint: "⌘4" },
-  { href: "/app/auto-scrape", label: "Auto-scraping", Icon: IconScrape,   hint: "⌘5" },
+  { href: "/app",             label: "Leads",        Icon: IconLeads,     hint: "âŒ˜1" },
+  { href: "/app/dashboard",   label: "Dashboard",    Icon: IconDashboard, hint: "âŒ˜2" },
+  { href: "/app/inpi",        label: "INPI / RNE",   Icon: IconINPI,      hint: "âŒ˜3" },
+  { href: "/app/scripts",     label: "Scripts",      Icon: IconScripts,   hint: "âŒ˜4" },
+  { href: "/app/auto-scrape", label: "Auto-scraping", Icon: IconScrape,   hint: "âŒ˜5" },
 ];
 
-// ── Composant ─────────────────────────────────────────────────────────────────
+// â”€â”€ Composant â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function Sidebar() {
   const pathname                  = usePathname();
@@ -110,21 +110,21 @@ export default function Sidebar() {
         mobileOpen ? "translate-x-0" : "-translate-x-full",
       ].join(" ")}>
 
-        {/* Trait de lumière haut */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+        {/* Trait de lumiÃ¨re haut */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent" />
 
-        {/* ── Logo ──────────────────────────────────────────────────────────── */}
+        {/* â”€â”€ Logo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="flex items-center gap-3 px-4 py-[18px] shrink-0">
-          {/* Icône P */}
+          {/* IcÃ´ne P */}
           <div className="relative w-8 h-8 rounded-[10px] shrink-0 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-indigo-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-indigo-700" />
             <div className="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]" />
             <span className="relative text-white text-[13px] font-bold tracking-tight">P</span>
           </div>
 
           <div className="flex flex-col leading-none">
             <span className="text-[13px] font-bold text-white tracking-tight">Prospeo</span>
-            <span className="text-[10px] text-slate-600 mt-[3px] tracking-wide font-mono">CRM · prospection</span>
+            <span className="text-[10px] text-slate-600 mt-[3px] tracking-wide font-mono">CRM Â· prospection</span>
           </div>
 
           {/* Fermer (mobile) */}
@@ -133,14 +133,14 @@ export default function Sidebar() {
             aria-label="Fermer"
             className="md:hidden ml-auto w-6 h-6 rounded-lg bg-white/[0.04] flex items-center justify-center text-slate-600 hover:text-slate-300 transition-colors text-xs"
           >
-            ✕
+            âœ•
           </button>
         </div>
 
-        {/* Séparateur */}
+        {/* SÃ©parateur */}
         <div className="mx-4 mb-2 h-px bg-white/[0.04]" />
 
-        {/* ── Navigation ────────────────────────────────────────────────────── */}
+        {/* â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <nav className="flex-1 px-2 space-y-px overflow-y-auto py-1">
           <p className="px-2 pb-2 pt-1 text-[9px] font-semibold tracking-[0.15em] text-slate-700 uppercase">
             Navigation
@@ -155,19 +155,19 @@ export default function Sidebar() {
                 className={[
                   "group relative flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] transition-all duration-150",
                   active
-                    ? "bg-violet-500/[0.12] text-slate-100"
+                    ? "bg-brand-500/[0.12] text-slate-100"
                     : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.04]",
                 ].join(" ")}
               >
                 {/* Barre active gauche */}
                 {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b from-violet-400 to-violet-600 shadow-[0_0_8px_rgba(124,58,237,0.6)]" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b from-brand-400 to-brand-600 shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
                 )}
 
-                {/* Icône */}
+                {/* IcÃ´ne */}
                 <span className={[
                   "shrink-0 transition-colors duration-150",
-                  active ? "text-violet-400" : "text-slate-600 group-hover:text-slate-400",
+                  active ? "text-brand-400" : "text-slate-600 group-hover:text-slate-400",
                 ].join(" ")}>
                   <Icon />
                 </span>
@@ -178,7 +178,7 @@ export default function Sidebar() {
                 {/* Hint raccourci clavier */}
                 <span className={[
                   "text-[10px] font-mono transition-opacity duration-150 shrink-0",
-                  active ? "text-violet-500/60" : "text-slate-700 group-hover:text-slate-600",
+                  active ? "text-brand-500/60" : "text-slate-700 group-hover:text-slate-600",
                 ].join(" ")}>
                   {hint}
                 </span>
@@ -187,7 +187,7 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* ── Bas : Cmd+K hint ─────────────────────────────────────────────── */}
+        {/* â”€â”€ Bas : Cmd+K hint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="px-2 pt-2 pb-1">
           <button
             onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true }))}
@@ -200,39 +200,39 @@ export default function Sidebar() {
             </svg>
             <span className="flex-1 text-left">Recherche rapide</span>
             <span className="flex items-center gap-0.5">
-              <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">⌘</kbd>
+              <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">âŒ˜</kbd>
               <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">K</kbd>
             </span>
           </button>
         </div>
 
-        {/* Séparateur */}
+        {/* SÃ©parateur */}
         <div className="mx-4 h-px bg-white/[0.04]" />
 
-        {/* ── Badge plan + compte ───────────────────────────────────────────── */}
+        {/* â”€â”€ Badge plan + compte â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="px-2 pb-4 pt-2 shrink-0 space-y-1">
 
           {/* Badge plan */}
           {isPaid ? (
-            <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-violet-500/[0.08] border border-violet-500/[0.15]">
-              <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_6px_rgba(167,139,250,0.8)]" />
-              <span className="text-[11px] font-semibold text-violet-300 tracking-wide">Plan {planLabel}</span>
+            <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-brand-500/[0.08] border border-brand-500/[0.15]">
+              <div className="w-1.5 h-1.5 rounded-full bg-brand-400 shadow-[0_0_6px_rgba(167,139,250,0.8)]" />
+              <span className="text-[11px] font-semibold text-brand-300 tracking-wide">Plan {planLabel}</span>
             </div>
           ) : (
             <button
               onClick={() => setTrialOpen(true)}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl
                          bg-white/[0.03] border border-white/[0.07]
-                         hover:bg-violet-500/[0.07] hover:border-violet-500/[0.18]
+                         hover:bg-brand-500/[0.07] hover:border-brand-500/[0.18]
                          transition-all text-left group"
             >
-              <span className="text-[13px]">🎟️</span>
+              <span className="text-[13px]">ðŸŽŸï¸</span>
               <div className="flex-1 min-w-0">
-                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider leading-none group-hover:text-violet-400 transition-colors">
+                <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider leading-none group-hover:text-brand-400 transition-colors">
                   Plan Free
                 </div>
                 <div className="text-[10px] text-slate-700 mt-0.5 group-hover:text-slate-500 transition-colors">
-                  Activer un code →
+                  Activer un code â†’
                 </div>
               </div>
             </button>
@@ -258,3 +258,5 @@ export default function Sidebar() {
     </>
   );
 }
+
+

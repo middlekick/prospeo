@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import FilterPills      from "@/components/leads/FilterPills";
@@ -18,7 +18,7 @@ import { useConfirm } from "@/components/ui/ConfirmModal";
 
 type ViewMode = "table" | "kanban";
 
-// ── Skeleton de chargement ────────────────────────────────────────────────────
+// â”€â”€ Skeleton de chargement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function TableSkeleton() {
   return (
@@ -38,7 +38,7 @@ function TableSkeleton() {
   );
 }
 
-// ── Barre d'actions en masse ──────────────────────────────────────────────────
+// â”€â”€ Barre d'actions en masse â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface BulkBarProps {
   count: number;
@@ -61,8 +61,8 @@ function BulkBar({ count, onClear, onBulkTag, onBulkDelete, loading }: BulkBarPr
   }, []);
 
   return (
-    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-3 md:px-4 py-2.5 bg-[#1a1d2e] border border-violet-500/30 rounded-2xl shadow-2xl shadow-violet-900/20 max-w-[calc(100vw-1.5rem)] overflow-x-auto">
-      <span className="text-xs font-semibold text-violet-300">{count} sélectionné{count > 1 ? "s" : ""}</span>
+    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-3 md:px-4 py-2.5 bg-[#1a1d2e] border border-brand-500/30 rounded-2xl shadow-2xl shadow-violet-900/20 max-w-[calc(100vw-1.5rem)] overflow-x-auto">
+      <span className="text-xs font-semibold text-brand-300">{count} sÃ©lectionnÃ©{count > 1 ? "s" : ""}</span>
       <div className="w-px h-4 bg-white/10 mx-1" />
 
       {/* Changer le statut */}
@@ -105,15 +105,15 @@ function BulkBar({ count, onClear, onBulkTag, onBulkDelete, loading }: BulkBarPr
         onClick={onClear}
         className="h-7 px-2 rounded-lg hover:bg-white/[0.05] text-slate-600 hover:text-slate-400 text-xs transition-all"
       >
-        ✕
+        âœ•
       </button>
 
-      {loading && <div className="w-3.5 h-3.5 rounded-full border-2 border-violet-500/30 border-t-violet-400 animate-spin" />}
+      {loading && <div className="w-3.5 h-3.5 rounded-full border-2 border-brand-500/30 border-t-brand-400 animate-spin" />}
     </div>
   );
 }
 
-// ── Page principale ───────────────────────────────────────────────────────────
+// â”€â”€ Page principale â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function LeadsPage() {
   const [leads,        setLeads]        = useState<Lead[]>([]);
@@ -125,7 +125,7 @@ export default function LeadsPage() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [viewMode,     setViewMode]     = useState<ViewMode>("table");
   const [callSession,  setCallSession]  = useState<Lead[] | null>(null);
-  // Sélection multiple
+  // SÃ©lection multiple
   const [selSet,       setSelSet]       = useState<Set<string>>(new Set());
   const [bulkLoading,  setBulkLoading]  = useState(false);
 
@@ -152,7 +152,7 @@ export default function LeadsPage() {
 
   useEffect(() => { loadLeads(); }, [loadLeads]);
 
-  // ── Raccourcis clavier ──────────────────────────────────────────────────────
+  // â”€â”€ Raccourcis clavier â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     function handler(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement).tagName;
@@ -230,20 +230,20 @@ export default function LeadsPage() {
     ));
   }
 
-  // Lance une session d'appels : priorité aux non-appelés de la liste filtrée,
-  // sinon toute la liste filtrée actuelle (respecte la recherche + le filtre)
+  // Lance une session d'appels : prioritÃ© aux non-appelÃ©s de la liste filtrÃ©e,
+  // sinon toute la liste filtrÃ©e actuelle (respecte la recherche + le filtre)
   function startCallSession() {
     const nonAppeles = filtered.filter(l => l.tag === "non_appele");
     const pool = nonAppeles.length > 0 ? nonAppeles : filtered;
     if (pool.length === 0) {
-      warning("Aucun lead à appeler dans cette vue");
+      warning("Aucun lead Ã  appeler dans cette vue");
       return;
     }
     setSelected(null);
     setCallSession(pool);
   }
 
-  // Mise à jour optimiste pendant la session (sans fermer le flux)
+  // Mise Ã  jour optimiste pendant la session (sans fermer le flux)
   function handleSessionUpdate(lead: Lead, tag: string) {
     setLeads(prev => prev.map(l =>
       l.nom === lead.nom && l.telephone === lead.telephone
@@ -252,7 +252,7 @@ export default function LeadsPage() {
     ));
   }
 
-  // ── Sélection multiple ──────────────────────────────────────────────────────
+  // â”€â”€ SÃ©lection multiple â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   function toggleSelect(key: string) {
     setSelSet(prev => {
@@ -268,7 +268,7 @@ export default function LeadsPage() {
   async function handleBulkTag(tag: string) {
     if (selSet.size === 0) return;
     setBulkLoading(true);
-    // Mise à jour optimiste
+    // Mise Ã  jour optimiste
     setLeads(prev => prev.map(l => selSet.has(`${l.nom}|${l.telephone}`) ? { ...l, tag } : l));
     try {
       const selectedLeads = leads.filter(l => selSet.has(`${l.nom}|${l.telephone}`));
@@ -279,10 +279,10 @@ export default function LeadsPage() {
           body: JSON.stringify({ ...l, tag }),
         })
       ));
-      success(`${selSet.size} lead${selSet.size > 1 ? "s" : ""} mis à jour → ${TAG_LABEL[tag]}`);
+      success(`${selSet.size} lead${selSet.size > 1 ? "s" : ""} mis Ã  jour â†’ ${TAG_LABEL[tag]}`);
       clearSelection();
     } catch {
-      toastError("Erreur lors de la mise à jour en masse");
+      toastError("Erreur lors de la mise Ã  jour en masse");
     } finally {
       setBulkLoading(false);
     }
@@ -292,7 +292,7 @@ export default function LeadsPage() {
     if (selSet.size === 0) return;
     const ok = await confirm({
       title:        `Supprimer ${selSet.size} lead${selSet.size > 1 ? "s" : ""} ?`,
-      message:      "Cette action est irréversible.",
+      message:      "Cette action est irrÃ©versible.",
       confirmLabel: "Supprimer",
       danger:       true,
     });
@@ -308,7 +308,7 @@ export default function LeadsPage() {
         })
       ));
       setLeads(prev => prev.filter(l => !selSet.has(`${l.nom}|${l.telephone}`)));
-      warning(`${selSet.size} lead${selSet.size > 1 ? "s" : ""} supprimé${selSet.size > 1 ? "s" : ""}`);
+      warning(`${selSet.size} lead${selSet.size > 1 ? "s" : ""} supprimÃ©${selSet.size > 1 ? "s" : ""}`);
       clearSelection();
     } catch {
       toastError("Erreur lors de la suppression en masse");
@@ -334,10 +334,10 @@ export default function LeadsPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Trait de lumière haut */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+      {/* Trait de lumiÃ¨re haut */}
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
-      {/* ── Header ──────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2
                          pl-14 md:pl-5 pr-3 md:pr-5 py-3
                          border-b border-white/[0.05] shrink-0
@@ -349,7 +349,7 @@ export default function LeadsPage() {
           {isFreeUser && leadsLeft !== null && (
             <a
               href="/#pricing"
-              title={leadsLeft === 0 ? "Limite atteinte — passez Pro" : "Plan Free — 100 leads max"}
+              title={leadsLeft === 0 ? "Limite atteinte â€” passez Pro" : "Plan Free â€” 100 leads max"}
               className={[
                 "flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium border transition-colors",
                 leadsLeft === 0
@@ -381,10 +381,10 @@ export default function LeadsPage() {
           {/* Session d'appels */}
           <button
             onClick={startCallSession}
-            title="Lancer une session d'appels enchaînés"
-            className="h-7 px-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[12px] font-semibold
+            title="Lancer une session d'appels enchaÃ®nÃ©s"
+            className="h-7 px-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-[12px] font-semibold
                        transition-all flex items-center gap-1.5 mr-1
-                       shadow-[0_0_20px_rgba(124,58,237,0.22)] hover:shadow-[0_0_24px_rgba(124,58,237,0.35)]"
+                       shadow-[0_0_20px_rgba(0,229,255,0.22)] hover:shadow-[0_0_24px_rgba(0,229,255,0.35)]"
           >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             Session d&apos;appels
@@ -398,7 +398,7 @@ export default function LeadsPage() {
               className={[
                 "h-[22px] px-2 rounded-md text-xs transition-all flex items-center",
                 viewMode === "table"
-                  ? "bg-violet-500/[0.18] text-violet-300"
+                  ? "bg-brand-500/[0.18] text-brand-300"
                   : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
@@ -412,7 +412,7 @@ export default function LeadsPage() {
               className={[
                 "h-[22px] px-2 rounded-md text-xs transition-all flex items-center",
                 viewMode === "kanban"
-                  ? "bg-violet-500/[0.18] text-violet-300"
+                  ? "bg-brand-500/[0.18] text-brand-300"
                   : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
@@ -435,7 +435,7 @@ export default function LeadsPage() {
           ) : (
             <a
               href="/#pricing"
-              title="Import CSV — réservé Pro"
+              title="Import CSV â€” rÃ©servÃ© Pro"
               className="h-7 px-3 rounded-lg bg-white/[0.02] border border-white/[0.05] text-[12px] text-slate-700 flex items-center gap-1.5 cursor-pointer hover:text-slate-500 transition-colors"
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -452,7 +452,7 @@ export default function LeadsPage() {
           ) : (
             <a
               href="/#pricing"
-              title="Export CSV — réservé Pro"
+              title="Export CSV â€” rÃ©servÃ© Pro"
               className="h-7 px-3 rounded-lg bg-white/[0.02] border border-white/[0.05] text-[12px] text-slate-700 flex items-center gap-1.5 cursor-pointer hover:text-slate-500 transition-colors"
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -465,7 +465,7 @@ export default function LeadsPage() {
       {/* Stats */}
       {!loading && <StatsBar leads={leads} />}
 
-      {/* ── Toolbar recherche + filtres ───────────────────────────────────────── */}
+      {/* â”€â”€ Toolbar recherche + filtres â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex flex-wrap items-center gap-2.5 px-5 py-2.5 border-b border-white/[0.05] shrink-0 bg-[#080b12]/30">
         {/* Barre de recherche */}
         <div className="relative w-full sm:w-56">
@@ -478,11 +478,11 @@ export default function LeadsPage() {
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Rechercher un lead…"
+            placeholder="Rechercher un leadâ€¦"
             id="search-input"
             className="h-8 pl-8 pr-3 rounded-xl bg-white/[0.04] border border-white/[0.07]
                        text-[13px] text-slate-200 placeholder:text-slate-600
-                       focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.06]
+                       focus:outline-none focus:border-brand-500/35 focus:bg-white/[0.06]
                        transition-all w-full"
           />
         </div>
@@ -503,12 +503,12 @@ export default function LeadsPage() {
         </div>
       </div>
 
-      {/* ── Zone scraping ─────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Zone scraping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="px-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/20">
         <ScrapeForm onDone={loadLeads} />
       </div>
 
-      {/* ── Zone principale (table ou kanban) ───────────────────────────────── */}
+      {/* â”€â”€ Zone principale (table ou kanban) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex-1 overflow-auto">
         {loading ? (
           <TableSkeleton />
@@ -530,7 +530,7 @@ export default function LeadsPage() {
         )}
       </div>
 
-      {/* ── Drawer ──────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <LeadDrawer
         lead={selected}
         onClose={() => setSelected(null)}
@@ -538,7 +538,7 @@ export default function LeadsPage() {
         onDeleted={handleDeleted}
       />
 
-      {/* ── Barre bulk actions ───────────────────────────────────────────── */}
+      {/* â”€â”€ Barre bulk actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {selSet.size > 0 && (
         <BulkBar
           count={selSet.size}
@@ -560,7 +560,7 @@ export default function LeadsPage() {
         <OnboardingModal onClose={() => setShowOnboarding(false)} />
       )}
 
-      {/* Mode Session d'appels — plein écran */}
+      {/* Mode Session d'appels â€” plein Ã©cran */}
       {callSession && (
         <CallSession
           leads={callSession}
@@ -571,3 +571,5 @@ export default function LeadsPage() {
     </div>
   );
 }
+
+

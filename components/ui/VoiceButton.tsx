@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 
-// ── Typage minimal de la Web Speech API (non typée par défaut) ────────────────
+// â”€â”€ Typage minimal de la Web Speech API (non typÃ©e par dÃ©faut) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface SpeechRecognitionResult {
   readonly transcript: string;
@@ -33,7 +33,7 @@ function getRecognition(): SpeechRecognitionLike | null {
 }
 
 interface Props {
-  // Appelé avec le texte final reconnu (à concaténer côté parent)
+  // AppelÃ© avec le texte final reconnu (Ã  concatÃ©ner cÃ´tÃ© parent)
   onTranscript: (text: string) => void;
   className?: string;
   title?: string;
@@ -80,12 +80,12 @@ export default function VoiceButton({ onTranscript, className, title }: Props) {
     <button
       type="button"
       onClick={toggle}
-      title={title || (listening ? "Arrêter la dictée" : "Dicter une note")}
+      title={title || (listening ? "ArrÃªter la dictÃ©e" : "Dicter une note")}
       className={[
         "shrink-0 flex items-center justify-center transition-all",
         listening
           ? "text-red-400 bg-red-500/15 ring-1 ring-red-500/30 animate-pulse"
-          : "text-slate-500 hover:text-violet-400 hover:bg-white/[0.06]",
+          : "text-slate-500 hover:text-brand-400 hover:bg-white/[0.06]",
         className || "h-8 w-8 rounded-md",
       ].join(" ")}
     >
@@ -100,3 +100,4 @@ export default function VoiceButton({ onTranscript, className, title }: Props) {
     </button>
   );
 }
+

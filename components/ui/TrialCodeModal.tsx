@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 /**
- * TrialCodeModal — Modal de saisie du code d'invitation.
+ * TrialCodeModal â€” Modal de saisie du code d'invitation.
  * S'affiche automatiquement sur le plan free si l'utilisateur
- * n'a pas encore activé de trial.
- * Peut aussi être ouvert manuellement via le bouton dans la sidebar.
+ * n'a pas encore activÃ© de trial.
+ * Peut aussi Ãªtre ouvert manuellement via le bouton dans la sidebar.
  */
 
 import { useState } from "react";
 
 interface Props {
-  onSuccess: () => void;  // appelé après activation → recharge le plan
+  onSuccess: () => void;  // appelÃ© aprÃ¨s activation â†’ recharge le plan
   onClose:   () => void;
 }
 
@@ -45,7 +45,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
         onClose();
       }, 1800);
     } catch {
-      setError("Erreur réseau — réessayez");
+      setError("Erreur rÃ©seau â€” rÃ©essayez");
     } finally {
       setLoading(false);
     }
@@ -58,28 +58,28 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-sm bg-[#13151e] border border-white/[0.10] rounded-2xl shadow-2xl p-6">
-        {/* Icône */}
+        {/* IcÃ´ne */}
         <div className="flex justify-center mb-4">
           <div className="relative">
-            <div className="w-14 h-14 rounded-2xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center text-2xl">
-              🎟️
+            <div className="w-14 h-14 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-2xl">
+              ðŸŽŸï¸
             </div>
-            <div className="absolute inset-0 rounded-2xl bg-violet-500/10 blur-xl -z-10" />
+            <div className="absolute inset-0 rounded-2xl bg-brand-500/10 blur-xl -z-10" />
           </div>
         </div>
 
         {success ? (
-          /* État succès */
+          /* Ã‰tat succÃ¨s */
           <div className="text-center">
-            <div className="text-2xl mb-2">✅</div>
-            <h2 className="text-base font-bold text-slate-100 mb-1">Accès Pro activé !</h2>
-            <p className="text-xs text-slate-500">Toutes les fonctionnalités sont maintenant disponibles.</p>
+            <div className="text-2xl mb-2">âœ…</div>
+            <h2 className="text-base font-bold text-slate-100 mb-1">AccÃ¨s Pro activÃ© !</h2>
+            <p className="text-xs text-slate-500">Toutes les fonctionnalitÃ©s sont maintenant disponibles.</p>
           </div>
         ) : (
           <>
             <h2 className="text-base font-bold text-slate-100 text-center mb-1">Code d&apos;invitation</h2>
             <p className="text-xs text-slate-500 text-center mb-5">
-              Entrez votre code pour activer l&apos;accès Pro pendant la formation.
+              Entrez votre code pour activer l&apos;accÃ¨s Pro pendant la formation.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -91,7 +91,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
                 autoFocus
                 className="w-full h-10 px-3 rounded-xl bg-white/[0.06] border border-white/[0.10] text-sm
                            text-slate-100 placeholder-slate-600 font-mono tracking-widest text-center
-                           focus:outline-none focus:border-violet-500/50 transition-colors uppercase"
+                           focus:outline-none focus:border-brand-500/50 transition-colors uppercase"
               />
 
               {error && (
@@ -101,11 +101,11 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
               <button
                 type="submit"
                 disabled={loading || !code.trim()}
-                className="w-full h-10 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold
+                className="w-full h-10 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold
                            transition-colors disabled:opacity-40 disabled:cursor-not-allowed
-                           shadow-[0_0_20px_rgba(124,58,237,0.25)]"
+                           shadow-[0_0_20px_rgba(0,229,255,0.25)]"
               >
-                {loading ? "Vérification…" : "Activer l'accès"}
+                {loading ? "VÃ©rificationâ€¦" : "Activer l'accÃ¨s"}
               </button>
 
               <button
@@ -122,3 +122,5 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
     </div>
   );
 }
+
+

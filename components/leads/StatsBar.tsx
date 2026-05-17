@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Lead, isRappelDue } from "./types";
@@ -18,10 +18,10 @@ interface StatItem {
 function StatCard({ item }: { item: StatItem }) {
   const accentMap: Record<string, { card: string; icon: string; num: string; dot: string }> = {
     violet:  {
-      card: "bg-violet-500/[0.06] border-violet-500/[0.18]",
-      icon: "bg-violet-500/15 text-violet-400",
-      num:  "text-violet-200",
-      dot:  "bg-violet-400",
+      card: "bg-brand-500/[0.06] border-brand-500/[0.18]",
+      icon: "bg-brand-500/15 text-brand-400",
+      num:  "text-brand-200",
+      dot:  "bg-brand-400",
     },
     amber: {
       card: "bg-amber-500/[0.06] border-amber-500/[0.18]",
@@ -53,12 +53,12 @@ function StatCard({ item }: { item: StatItem }) {
 
   return (
     <div className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl border shrink-0 transition-all ${styles.card}`}>
-      {/* Icône */}
+      {/* IcÃ´ne */}
       <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${styles.icon}`}>
         {item.icon}
       </div>
 
-      {/* Données */}
+      {/* DonnÃ©es */}
       <div className="flex flex-col leading-none">
         <div className={`text-[15px] font-bold font-mono leading-none ${item.active ? styles.num : "text-slate-500"}`}>
           {item.value}
@@ -68,7 +68,7 @@ function StatCard({ item }: { item: StatItem }) {
         </div>
       </div>
 
-      {/* Point pulsé si actif */}
+      {/* Point pulsÃ© si actif */}
       {item.active && item.accent !== "slate" && (
         <div className={`w-1.5 h-1.5 rounded-full ml-0.5 shrink-0 ${styles.dot} opacity-70`} />
       )}
@@ -113,7 +113,7 @@ export default function StatsBar({ leads }: Props) {
       ),
     },
     {
-      label:  "Intéressés",
+      label:  "IntÃ©ressÃ©s",
       value:  interesses,
       accent: "cyan",
       active: interesses > 0,
@@ -170,3 +170,4 @@ export default function StatsBar({ leads }: Props) {
     </div>
   );
 }
+

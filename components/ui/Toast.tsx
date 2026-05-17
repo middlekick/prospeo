@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -12,7 +12,7 @@ export interface Toast {
   id:      string;
   type:    ToastType;
   message: string;
-  duration?: number; // ms, défaut 4000
+  duration?: number; // ms, dÃ©faut 4000
 }
 
 interface ToastContextValue {
@@ -23,26 +23,26 @@ interface ToastContextValue {
   info:    (message: string) => void;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Context
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error("useToast doit être utilisé dans un ToastProvider");
+  if (!ctx) throw new Error("useToast doit Ãªtre utilisÃ© dans un ToastProvider");
   return ctx;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Composant Toast individuel
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const ICONS: Record<ToastType, string> = {
-  success: "✓",
-  error:   "✕",
-  warning: "⚠",
+  success: "âœ“",
+  error:   "âœ•",
+  warning: "âš ",
   info:    "i",
 };
 
@@ -66,10 +66,10 @@ const STYLES: Record<ToastType, { bar: string; icon: string; iconBg: string; bor
     border: "border-amber-500/20",
   },
   info: {
-    bar:    "bg-violet-500",
-    icon:   "text-violet-400",
-    iconBg: "bg-violet-500/15",
-    border: "border-violet-500/20",
+    bar:    "bg-brand-500",
+    icon:   "text-brand-400",
+    iconBg: "bg-brand-500/15",
+    border: "border-brand-500/20",
   },
 };
 
@@ -111,10 +111,10 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
       ].join(" ")}
       onClick={dismiss}
     >
-      {/* Barre colorée gauche */}
+      {/* Barre colorÃ©e gauche */}
       <div className={`absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full ${s.bar}`} />
 
-      {/* Icône */}
+      {/* IcÃ´ne */}
       <div className={`w-6 h-6 rounded-full ${s.iconBg} flex items-center justify-center shrink-0 mt-0.5`}>
         <span className={`text-xs font-bold ${s.icon}`}>{ICONS[toast.type]}</span>
       </div>
@@ -127,7 +127,7 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
         onClick={e => { e.stopPropagation(); dismiss(); }}
         className="text-slate-600 hover:text-slate-300 transition-colors shrink-0 mt-0.5 text-xs"
       >
-        ✕
+        âœ•
       </button>
 
       {/* Barre de progression */}
@@ -143,7 +143,7 @@ function ProgressBar({ duration, type }: { duration: number; type: ToastType }) 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Démarrer à 100% et réduire à 0% sur la durée
+    // DÃ©marrer Ã  100% et rÃ©duire Ã  0% sur la durÃ©e
     el.style.width = "100%";
     el.style.transition = `width ${duration}ms linear`;
     const t = requestAnimationFrame(() => { el.style.width = "0%"; });
@@ -157,9 +157,9 @@ function ProgressBar({ duration, type }: { duration: number; type: ToastType }) 
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Provider + Container
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -171,7 +171,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const add = useCallback((message: string, type: ToastType = "info", duration?: number) => {
     const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
     setToasts(prev => {
-      // Max 4 toasts simultanés — supprimer le plus ancien si besoin
+      // Max 4 toasts simultanÃ©s â€” supprimer le plus ancien si besoin
       const next = prev.length >= 4 ? prev.slice(1) : prev;
       return [...next, { id, type, message, duration }];
     });
@@ -189,7 +189,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <ToastContext.Provider value={value}>
       {children}
 
-      {/* Portail toasts — coin bas-droit */}
+      {/* Portail toasts â€” coin bas-droit */}
       <div className="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2.5 items-end pointer-events-none">
         {toasts.map(t => (
           <div key={t.id} className="pointer-events-auto">
@@ -200,3 +200,4 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     </ToastContext.Provider>
   );
 }
+

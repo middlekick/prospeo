@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Lead, TAG_COLORS, TAG_OPTIONS, TAG_LABEL, RDV_STATUT_COLORS, isRappelDue } from "./types";
@@ -10,23 +10,23 @@ type SortDir = "asc" | "desc";
 
 const RDV_LABEL: Record<string, string> = {
   en_attente: "En attente",
-  confirme:   "Confirmé",
-  annule:     "Annulé",
-  effectue:   "Effectué",
+  confirme:   "ConfirmÃ©",
+  annule:     "AnnulÃ©",
+  effectue:   "EffectuÃ©",
 };
 
 interface Props {
   leads: Lead[];
   onOpen: (lead: Lead) => void;
   onTagChange: (lead: Lead, tag: string) => void;
-  // Sélection multiple
+  // SÃ©lection multiple
   selected?: Set<string>;
   onToggleSelect?: (key: string) => void;
   onSelectAll?: () => void;
   selectionMode?: boolean;
 }
 
-// ── Popover tag inline ────────────────────────────────────────────────────────
+// â”€â”€ Popover tag inline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function TagPopover({
   lead,
@@ -68,7 +68,7 @@ function TagPopover({
             ].join(" ")}
           >
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${cls}`}>{o.label}</span>
-            {lead.tag === o.value && <span className="ml-auto text-slate-600 text-[10px]">✓ actuel</span>}
+            {lead.tag === o.value && <span className="ml-auto text-slate-600 text-[10px]">âœ“ actuel</span>}
           </button>
         );
       })}
@@ -76,7 +76,7 @@ function TagPopover({
   );
 }
 
-// ── Icône tri ─────────────────────────────────────────────────────────────────
+// â”€â”€ IcÃ´ne tri â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SortChip({
   label, sortKey, active, dir, onToggle,
@@ -93,32 +93,32 @@ function SortChip({
       className={[
         "flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-all font-medium shrink-0",
         active
-          ? "bg-violet-500/15 text-violet-300 border border-violet-500/25"
+          ? "bg-brand-500/15 text-brand-300 border border-brand-500/25"
           : "text-slate-600 hover:text-slate-300 hover:bg-white/[0.05] border border-transparent",
       ].join(" ")}
     >
       {label}
-      {active && <span className="text-violet-400">{dir === "asc" ? "↑" : "↓"}</span>}
+      {active && <span className="text-brand-400">{dir === "asc" ? "â†‘" : "â†“"}</span>}
     </button>
   );
 }
 
-// ── Boutons log appel rapide ──────────────────────────────────────────────────
+// â”€â”€ Boutons log appel rapide â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const QUICK_ACTIONS = [
-  { tag: "ne_repond_pas", label: "📵", title: "Ne répond pas",  cls: "hover:bg-orange-500/20 hover:text-orange-400" },
-  { tag: "interesse",     label: "⭐", title: "Intéressé",       cls: "hover:bg-cyan-500/20 hover:text-cyan-400"    },
-  { tag: "pas_interesse", label: "✗",  title: "Pas intéressé",  cls: "hover:bg-red-500/20 hover:text-red-400"      },
+  { tag: "ne_repond_pas", label: "ðŸ“µ", title: "Ne rÃ©pond pas",  cls: "hover:bg-orange-500/20 hover:text-orange-400" },
+  { tag: "interesse",     label: "â­", title: "IntÃ©ressÃ©",       cls: "hover:bg-cyan-500/20 hover:text-cyan-400"    },
+  { tag: "pas_interesse", label: "âœ—",  title: "Pas intÃ©ressÃ©",  cls: "hover:bg-red-500/20 hover:text-red-400"      },
 ];
 
-// ── Table principale ──────────────────────────────────────────────────────────
+// â”€â”€ Table principale â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function LeadsTable({ leads, onOpen, onTagChange, selected, onToggleSelect, selectionMode }: Props) {
   const { error: toastError } = useToast();
   const [sortKey, setSortKey] = useState<SortKey>("nom");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [tagPopover, setTagPopover] = useState<{ lead: Lead; rect: DOMRect } | null>(null);
-  const [quickLogging, setQuickLogging] = useState<string | null>(null); // clé du lead en cours de log
+  const [quickLogging, setQuickLogging] = useState<string | null>(null); // clÃ© du lead en cours de log
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -141,35 +141,35 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
     setTagPopover(null);
     if (lead.tag === tag) return;
     const previousTag = lead.tag;
-    onTagChange(lead, tag); // mise à jour optimiste
+    onTagChange(lead, tag); // mise Ã  jour optimiste
     try {
       const res = await fetch("/api/leads/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...lead, tag }),
       });
-      if (!res.ok) throw new Error("Échec de la mise à jour du statut");
+      if (!res.ok) throw new Error("Ã‰chec de la mise Ã  jour du statut");
     } catch (err) {
       onTagChange(lead, previousTag); // rollback
       toastError((err as Error).message);
     }
   }
 
-  // Log appel rapide — change le tag (l'activité est loggée côté serveur)
+  // Log appel rapide â€” change le tag (l'activitÃ© est loggÃ©e cÃ´tÃ© serveur)
   async function handleQuickLog(e: React.MouseEvent, lead: Lead, tag: string) {
     e.stopPropagation();
     const key = `${lead.nom}|${lead.telephone}`;
     if (quickLogging === key) return;
     const previousTag = lead.tag;
     setQuickLogging(key);
-    onTagChange(lead, tag); // mise à jour optimiste
+    onTagChange(lead, tag); // mise Ã  jour optimiste
     try {
       const res = await fetch("/api/leads/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...lead, tag }),
       });
-      if (!res.ok) throw new Error("Échec de l'enregistrement de l'appel");
+      if (!res.ok) throw new Error("Ã‰chec de l'enregistrement de l'appel");
     } catch (err) {
       onTagChange(lead, previousTag); // rollback
       toastError((err as Error).message);
@@ -194,14 +194,14 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
 
   return (
     <>
-      {/* ── Barre de tri ─────────────────────────────────────────────────── */}
+      {/* â”€â”€ Barre de tri â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.05] bg-white/[0.01] overflow-x-auto">
         <span className="text-[10px] text-slate-700 font-semibold tracking-wider uppercase mr-1 shrink-0">Trier</span>
         {(["nom", "metier", "emplacement", "tag", "rappel"] as SortKey[]).map(k => (
           <SortChip
             key={k}
             sortKey={k}
-            label={k === "nom" ? "Entreprise" : k === "metier" ? "Métier" : k === "emplacement" ? "Lieu" : k === "tag" ? "Statut" : "Rappel"}
+            label={k === "nom" ? "Entreprise" : k === "metier" ? "MÃ©tier" : k === "emplacement" ? "Lieu" : k === "tag" ? "Statut" : "Rappel"}
             active={sortKey === k}
             dir={sortDir}
             onToggle={toggleSort}
@@ -210,7 +210,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
         <span className="ml-auto text-[10px] text-slate-700 mono">{leads.length} lead{leads.length > 1 ? "s" : ""}</span>
       </div>
 
-      {/* ── Liste de leads (card-rows) ────────────────────────────────────── */}
+      {/* â”€â”€ Liste de leads (card-rows) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="divide-y divide-white/[0.04]">
         {sorted.map((lead, i) => {
           const tagCls  = TAG_COLORS[lead.tag] || "bg-slate-800/60 text-slate-400";
@@ -227,37 +227,37 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
               className={[
                 "group px-4 py-3.5 cursor-pointer transition-all duration-100",
                 due       ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.07]" : "hover:bg-white/[0.03]",
-                isSelected ? "bg-violet-500/[0.06] border-l-2 border-violet-500" : "",
+                isSelected ? "bg-brand-500/[0.06] border-l-2 border-brand-500" : "",
               ].join(" ")}
             >
-              {/* ═══ Carte MOBILE (< md) ═══════════════════════════════════════ */}
+              {/* â•â•â• Carte MOBILE (< md) â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
               <div className="flex md:hidden items-start gap-3">
                 {(selectionMode || selected) && (
                   <div
                     onClick={e => { e.stopPropagation(); onToggleSelect?.(leadKey); }}
                     className={[
                       "mt-0.5 w-5 h-5 rounded border shrink-0 flex items-center justify-center",
-                      isSelected ? "bg-violet-500 border-violet-500" : "border-white/25",
+                      isSelected ? "bg-brand-500 border-brand-500" : "border-white/25",
                     ].join(" ")}
                   >
-                    {isSelected && <span className="text-white text-[10px] font-bold">✓</span>}
+                    {isSelected && <span className="text-white text-[10px] font-bold">âœ“</span>}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full shrink-0 ${lead.site ? "bg-cyan-500" : "bg-white/10"}`} />
-                    <span className="text-sm font-semibold text-slate-100 truncate">{lead.nom || "—"}</span>
+                    <span className="text-sm font-semibold text-slate-100 truncate">{lead.nom || "â€”"}</span>
                   </div>
                   <div className="text-xs text-slate-600 truncate mt-0.5 ml-4">
-                    {lead.metier || "—"}{lead.emplacement ? ` · ${lead.emplacement}` : ""}
+                    {lead.metier || "â€”"}{lead.emplacement ? ` Â· ${lead.emplacement}` : ""}
                   </div>
                   <div className="flex items-center gap-3 mt-2 ml-4">
                     {lead.telephone ? (
                       <>
                         <a href={`tel:${lead.telephone.replace(/\s/g, "")}`}
                            onClick={e => e.stopPropagation()}
-                           className="inline-flex items-center gap-1.5 h-7 px-3 rounded-lg bg-violet-600/90 text-white text-xs font-medium">
-                          📞 Appeler
+                           className="inline-flex items-center gap-1.5 h-7 px-3 rounded-lg bg-brand-600/90 text-white text-xs font-medium">
+                          ðŸ“ž Appeler
                         </a>
                         <a href={toWhatsAppUrl(lead.telephone)} target="_blank" rel="noopener noreferrer"
                            onClick={e => e.stopPropagation()}
@@ -266,10 +266,10 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                         </a>
                       </>
                     ) : (
-                      <a href={`https://www.google.com/search?q=${encodeURIComponent(`${lead.nom} ${lead.emplacement} téléphone`)}`}
+                      <a href={`https://www.google.com/search?q=${encodeURIComponent(`${lead.nom} ${lead.emplacement} tÃ©lÃ©phone`)}`}
                          target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
                          className="inline-flex items-center gap-1 h-7 px-3 rounded-lg bg-white/[0.05] border border-white/[0.08] text-slate-400 text-xs">
-                        🔍 Trouver le numéro
+                        ðŸ” Trouver le numÃ©ro
                       </a>
                     )}
                   </div>
@@ -283,31 +283,31 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                   </button>
                   {lead.rappel && (
                     <span className={`text-[10px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
-                      {due && "⏰ "}{lead.rappel}
+                      {due && "â° "}{lead.rappel}
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* ═══ Ligne DESKTOP (≥ md) ═════════════════════════════════════ */}
+              {/* â•â•â• Ligne DESKTOP (â‰¥ md) â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
               <div className="hidden md:flex items-center gap-4">
-              {/* ── Checkbox de sélection (visible si selectionMode ou hover) ──── */}
+              {/* â”€â”€ Checkbox de sÃ©lection (visible si selectionMode ou hover) â”€â”€â”€â”€ */}
               {(selectionMode || selected) && (
                 <div
                   onClick={e => { e.stopPropagation(); onToggleSelect?.(leadKey); }}
                   className={[
                     "w-4 h-4 rounded border shrink-0 flex items-center justify-center transition-all",
                     isSelected
-                      ? "bg-violet-500 border-violet-500"
+                      ? "bg-brand-500 border-brand-500"
                       : "border-white/20 group-hover:border-white/40",
                     selectionMode ? "opacity-100" : "opacity-0 group-hover:opacity-100",
                   ].join(" ")}
                 >
-                  {isSelected && <span className="text-white text-[9px] font-bold">✓</span>}
+                  {isSelected && <span className="text-white text-[9px] font-bold">âœ“</span>}
                 </div>
               )}
 
-              {/* ── Indicateur + Nom ─────────────────────────────── */}
+              {/* â”€â”€ Indicateur + Nom â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="flex items-center gap-3 min-w-0 w-[220px] shrink-0">
                 {lead.site ? (
                   <a href={lead.site} target="_blank" rel="noopener noreferrer"
@@ -318,16 +318,16 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                   <span className="w-2 h-2 rounded-full bg-white/10 shrink-0" />
                 )}
                 <span className="text-sm font-semibold text-slate-200 group-hover:text-white truncate transition-colors">
-                  {lead.nom || "—"}
+                  {lead.nom || "â€”"}
                 </span>
               </div>
 
-              {/* ── Métier ───────────────────────────────────────── */}
+              {/* â”€â”€ MÃ©tier â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <span className="text-xs text-slate-500 w-[140px] shrink-0 truncate">
-                {lead.metier || "—"}
+                {lead.metier || "â€”"}
               </span>
 
-              {/* ── Téléphone ────────────────────────────────────── */}
+              {/* â”€â”€ TÃ©lÃ©phone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="w-[140px] shrink-0">
                 {lead.telephone ? (
                   <a href={toWhatsAppUrl(lead.telephone)} target="_blank" rel="noopener noreferrer"
@@ -340,7 +340,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                   </a>
                 ) : (
                   <a
-                    href={`https://www.google.com/search?q=${encodeURIComponent(`${lead.nom} ${lead.emplacement} téléphone`)}`}
+                    href={`https://www.google.com/search?q=${encodeURIComponent(`${lead.nom} ${lead.emplacement} tÃ©lÃ©phone`)}`}
                     target="_blank" rel="noopener noreferrer"
                     onClick={e => e.stopPropagation()}
                     title="Rechercher sur Google"
@@ -354,12 +354,12 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                 )}
               </div>
 
-              {/* ── Emplacement ──────────────────────────────────── */}
+              {/* â”€â”€ Emplacement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <span className="text-xs text-slate-600 flex-1 min-w-0 truncate hidden xl:block">
-                {lead.emplacement || "—"}
+                {lead.emplacement || "â€”"}
               </span>
 
-              {/* ── Statut (tag) ─────────────────────────────────── */}
+              {/* â”€â”€ Statut (tag) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="shrink-0">
                 <button
                   onClick={e => openTagPopover(e, lead)}
@@ -370,7 +370,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                 </button>
               </div>
 
-              {/* ── RDV ──────────────────────────────────────────── */}
+              {/* â”€â”€ RDV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="w-[100px] shrink-0 text-right hidden lg:block">
                 {lead.rdv_statut ? (
                   <span className={`px-2 py-0.5 rounded-full text-[11px] font-medium ${rdvCls}`}>
@@ -379,19 +379,19 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                 ) : null}
               </div>
 
-              {/* ── Rappel ───────────────────────────────────────── */}
+              {/* â”€â”€ Rappel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="w-[90px] shrink-0 text-right hidden sm:block">
                 {lead.rappel ? (
                   <span className={`text-[11px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
-                    {due && "⏰ "}{lead.rappel}
+                    {due && "â° "}{lead.rappel}
                   </span>
                 ) : null}
               </div>
 
-              {/* ── Actions rapides (hover) ────────────────────────── */}
+              {/* â”€â”€ Actions rapides (hover) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
               <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                 {isLogging ? (
-                  <div className="w-3 h-3 rounded-full border border-violet-500/50 border-t-violet-400 animate-spin" />
+                  <div className="w-3 h-3 rounded-full border border-brand-500/50 border-t-brand-400 animate-spin" />
                 ) : (
                   QUICK_ACTIONS.map(action => (
                     <button
@@ -406,8 +406,8 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                 )}
               </div>
 
-              {/* ── Flèche hover ─────────────────────────────────── */}
-              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0 ml-1">→</span>
+              {/* â”€â”€ FlÃ¨che hover â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0 ml-1">â†’</span>
               </div>
             </div>
           );
@@ -425,3 +425,4 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
     </>
   );
 }
+

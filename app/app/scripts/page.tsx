@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link                               from "next/link";
@@ -7,9 +7,9 @@ import GoogleAdsScriptViewer              from "@/components/scripts/GoogleAdsSc
 import { useToast }                       from "@/components/ui/Toast";
 import { useConfirm }                      from "@/components/ui/ConfirmModal";
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface Objection { q: string; a: string; }
 
@@ -27,7 +27,7 @@ interface Step {
   name:        string;
   time?:       string;
   mindset?:    string;
-  say?:        string[];    // lignes du speech (séparées par \n dans l'éditeur)
+  say?:        string[];    // lignes du speech (sÃ©parÃ©es par \n dans l'Ã©diteur)
   pause?:      string;
   objections?: Objection[];
 }
@@ -42,9 +42,9 @@ interface UserScript {
   steps?:    Step[];    // closing
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Persistance localStorage
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const LS_KEY = "prospeo_scripts";
 
@@ -65,9 +65,9 @@ function genId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Composants lecture — téléprompter
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Composants lecture â€” tÃ©lÃ©prompter
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ObjectionList({ objections }: { objections: Objection[] }) {
   const [open, setOpen] = useState(false);
@@ -79,14 +79,14 @@ function ObjectionList({ objections }: { objections: Objection[] }) {
         onClick={() => setOpen(v => !v)}
         className="flex items-center gap-2 text-xs text-slate-600 hover:text-slate-400 transition-colors"
       >
-        <span className={`transition-transform duration-150 ${open ? "rotate-90" : ""}`}>▶</span>
+        <span className={`transition-transform duration-150 ${open ? "rotate-90" : ""}`}>â–¶</span>
         Objections ({filtered.length})
       </button>
       {open && (
         <div className="mt-3 space-y-3 pl-4 border-l border-white/[0.08]">
           {filtered.map((obj, i) => (
             <div key={i} className="space-y-1">
-              <div className="text-xs text-slate-500 italic">— {obj.q}</div>
+              <div className="text-xs text-slate-500 italic">â€” {obj.q}</div>
               <div className="text-sm text-slate-300 leading-relaxed pl-2">{obj.a}</div>
             </div>
           ))}
@@ -103,9 +103,9 @@ function TeleprompterBlocks({ blocks, showMindset }: { blocks: Block[]; showMind
         if (block.type === "mindset") {
           if (!showMindset) return null;
           return (
-            <div key={block.id} className="px-4 py-3 rounded-lg bg-violet-900/20 border border-violet-500/20">
-              <div className="text-xs font-bold tracking-widest text-violet-500/70 mb-1.5">{block.label || "MINDSET"}</div>
-              {block.text && <p className="text-sm text-violet-300/80 italic leading-relaxed">{block.text}</p>}
+            <div key={block.id} className="px-4 py-3 rounded-lg bg-violet-900/20 border border-brand-500/20">
+              <div className="text-xs font-bold tracking-widest text-brand-500/70 mb-1.5">{block.label || "MINDSET"}</div>
+              {block.text && <p className="text-sm text-brand-300/80 italic leading-relaxed">{block.text}</p>}
             </div>
           );
         }
@@ -116,11 +116,11 @@ function TeleprompterBlocks({ blocks, showMindset }: { blocks: Block[]; showMind
               {block.text && (
                 <div className="space-y-2">
                   {block.text.split("\n").map((line, j) => {
-                    const isArrow = line.startsWith("→");
+                    const isArrow = line.startsWith("â†’");
                     return (
                       <div key={j} className="flex items-start gap-2 text-sm">
                         {isArrow
-                          ? <><span className="text-orange-500/50 shrink-0 mt-0.5">→</span><span className="text-slate-500">{line.slice(1).trim()}</span></>
+                          ? <><span className="text-orange-500/50 shrink-0 mt-0.5">â†’</span><span className="text-slate-500">{line.slice(1).trim()}</span></>
                           : <span className="text-orange-400/70">{line}</span>
                         }
                       </div>
@@ -163,7 +163,7 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
 
   return (
     <div className="flex h-full min-h-0">
-      {/* Sidebar étapes */}
+      {/* Sidebar Ã©tapes */}
       <nav className="w-48 shrink-0 border-r border-white/[0.06] py-3 overflow-y-auto bg-white/[0.01]">
         {steps.map((s, i) => (
           <button
@@ -172,12 +172,12 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
             className={[
               "w-full relative flex items-center gap-2.5 px-3 py-2.5 text-left transition-all",
               current === i
-                ? "bg-violet-500/15 text-violet-200"
+                ? "bg-brand-500/15 text-brand-200"
                 : "text-slate-600 hover:text-slate-300 hover:bg-white/[0.05]",
             ].join(" ")}
           >
             {current === i && (
-              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-8 rounded-r-full bg-gradient-to-b from-violet-400 to-violet-600" />
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-8 rounded-r-full bg-gradient-to-b from-brand-400 to-brand-600" />
             )}
             <span className="text-sm shrink-0">{s.emoji || String(i + 1)}</span>
             <span className="text-xs leading-tight">{s.name}</span>
@@ -185,7 +185,7 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
         ))}
       </nav>
 
-      {/* Contenu étape */}
+      {/* Contenu Ã©tape */}
       <div className="flex-1 overflow-auto px-10 py-8">
         {step && (
           <>
@@ -202,20 +202,20 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
                   onClick={() => setCurrent(prev => Math.max(0, prev - 1))}
                   disabled={current === 0}
                   className="h-7 w-7 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] border border-white/[0.08] text-slate-400 text-sm disabled:opacity-20 transition-all"
-                >←</button>
+                >â†</button>
                 <span className="text-xs text-slate-600 mono px-1">{current + 1}/{steps.length}</span>
                 <button
                   onClick={() => setCurrent(prev => Math.min(steps.length - 1, prev + 1))}
                   disabled={current === steps.length - 1}
                   className="h-7 w-7 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] border border-white/[0.08] text-slate-400 text-sm disabled:opacity-20 transition-all"
-                >→</button>
+                >â†’</button>
               </div>
             </div>
 
             {step.mindset && showMindset && (
-              <div className="mb-6 px-4 py-3 rounded-lg bg-violet-900/20 border border-violet-500/20">
-                <div className="text-xs font-bold tracking-widest text-violet-500/70 mb-1.5">MINDSET</div>
-                <p className="text-sm text-violet-300/80 italic leading-relaxed">{step.mindset}</p>
+              <div className="mb-6 px-4 py-3 rounded-lg bg-violet-900/20 border border-brand-500/20">
+                <div className="text-xs font-bold tracking-widest text-brand-500/70 mb-1.5">MINDSET</div>
+                <p className="text-sm text-brand-300/80 italic leading-relaxed">{step.mindset}</p>
               </div>
             )}
 
@@ -232,12 +232,12 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
             {step.pause && (
               <div className="mt-6 space-y-2">
                 {step.pause.split("\n").map((line, i) => {
-                  const isArrow = line.startsWith("→");
+                  const isArrow = line.startsWith("â†’");
                   return (
                     <div key={i} className={`flex items-start gap-2 text-sm ${isArrow ? "text-orange-300/60" : "text-orange-400/80"}`}>
-                      {i === 0 && !isArrow && <span className="shrink-0 mt-0.5">⏸</span>}
+                      {i === 0 && !isArrow && <span className="shrink-0 mt-0.5">â¸</span>}
                       {isArrow
-                        ? <><span className="text-orange-500/50 shrink-0">→</span><span className="text-slate-500">{line.slice(1).trim()}</span></>
+                        ? <><span className="text-orange-500/50 shrink-0">â†’</span><span className="text-slate-500">{line.slice(1).trim()}</span></>
                         : <span>{line}</span>
                       }
                     </div>
@@ -256,9 +256,9 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Éditeur de script
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã‰diteur de script
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function BlockEditor({
   block, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast,
@@ -274,7 +274,7 @@ function BlockEditor({
   const typeColors: Record<string, string> = {
     say:        "border-cyan-500/30 bg-cyan-500/[0.04]",
     pause:      "border-orange-500/30 bg-orange-500/[0.04]",
-    mindset:    "border-violet-500/30 bg-violet-500/[0.04]",
+    mindset:    "border-brand-500/30 bg-brand-500/[0.04]",
     objections: "border-yellow-500/30 bg-yellow-500/[0.04]",
   };
   const typeLabel: Record<string, string> = {
@@ -295,13 +295,13 @@ function BlockEditor({
 
   return (
     <div className={`rounded-xl border ${typeColors[block.type] || "border-white/10 bg-white/[0.02]"} p-4`}>
-      {/* En-tête bloc */}
+      {/* En-tÃªte bloc */}
       <div className="flex items-center gap-2 mb-3">
         <select
           value={block.type}
           onChange={e => onChange({ ...block, type: e.target.value as Block["type"] })}
           className="appearance-none h-7 px-2 pr-7 rounded-md bg-[#1a1d27] border border-white/10
-                     text-xs text-slate-300 focus:outline-none focus:border-violet-500/50 cursor-pointer [color-scheme:dark]"
+                     text-xs text-slate-300 focus:outline-none focus:border-brand-500/50 cursor-pointer [color-scheme:dark]"
         >
           <option value="say">Discours</option>
           <option value="pause">Pause</option>
@@ -313,12 +313,12 @@ function BlockEditor({
           onChange={e => onChange({ ...block, label: e.target.value })}
           placeholder={typeLabel[block.type]}
           className="flex-1 h-7 px-2 rounded-md bg-transparent border border-white/8 text-xs text-slate-300
-                     placeholder-slate-600 focus:outline-none focus:border-violet-500/40"
+                     placeholder-slate-600 focus:outline-none focus:border-brand-500/40"
         />
         <div className="flex items-center gap-1 ml-auto">
-          <button onClick={onMoveUp} disabled={isFirst} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">↑</button>
-          <button onClick={onMoveDown} disabled={isLast} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">↓</button>
-          <button onClick={onDelete} className="h-6 w-6 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition-all">✕</button>
+          <button onClick={onMoveUp} disabled={isFirst} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">â†‘</button>
+          <button onClick={onMoveDown} disabled={isLast} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">â†“</button>
+          <button onClick={onDelete} className="h-6 w-6 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition-all">âœ•</button>
         </div>
       </div>
 
@@ -328,13 +328,13 @@ function BlockEditor({
           value={block.text || ""}
           onChange={e => onChange({ ...block, text: e.target.value })}
           placeholder={
-            block.type === "say"     ? "Ce que vous dites — utilisez de longues phrases naturelles…" :
-            block.type === "pause"   ? "Instructions entre les répliques\n→ Si oui : passer à l'étape suivante\n→ Si non : gérer l'objection" :
-                                       "État d'esprit à adopter pendant cette phase…"
+            block.type === "say"     ? "Ce que vous dites â€” utilisez de longues phrases naturellesâ€¦" :
+            block.type === "pause"   ? "Instructions entre les rÃ©pliques\nâ†’ Si oui : passer Ã  l'Ã©tape suivante\nâ†’ Si non : gÃ©rer l'objection" :
+                                       "Ã‰tat d'esprit Ã  adopter pendant cette phaseâ€¦"
           }
           rows={3}
           className="w-full bg-[#13151e] border border-white/8 rounded-lg px-3 py-2.5 text-sm text-slate-200
-                     placeholder-slate-700 focus:outline-none focus:border-violet-500/40 resize-y leading-relaxed"
+                     placeholder-slate-700 focus:outline-none focus:border-brand-500/40 resize-y leading-relaxed"
         />
       )}
 
@@ -346,18 +346,18 @@ function BlockEditor({
               <input
                 value={obj.q}
                 onChange={e => updateObjection(i, "q", e.target.value)}
-                placeholder="Objection du prospect…"
+                placeholder="Objection du prospectâ€¦"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-yellow-500/30"
               />
               <input
                 value={obj.a}
                 onChange={e => updateObjection(i, "a", e.target.value)}
-                placeholder="Votre réponse…"
+                placeholder="Votre rÃ©ponseâ€¦"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-cyan-500/30"
               />
-              <button onClick={() => removeObjection(i)} className="h-7 w-7 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs shrink-0 transition-all">✕</button>
+              <button onClick={() => removeObjection(i)} className="h-7 w-7 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs shrink-0 transition-all">âœ•</button>
             </div>
           ))}
           <button
@@ -397,44 +397,44 @@ function StepEditor({
 
   return (
     <div className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-4 space-y-3">
-      {/* En-tête étape */}
+      {/* En-tÃªte Ã©tape */}
       <div className="flex items-center gap-2">
         <input
           value={step.emoji || ""}
           onChange={e => onChange({ ...step, emoji: e.target.value })}
-          placeholder="🎯"
-          className="w-10 h-7 text-center rounded-md bg-white/[0.06] border border-white/8 text-sm focus:outline-none focus:border-violet-500/40"
+          placeholder="ðŸŽ¯"
+          className="w-10 h-7 text-center rounded-md bg-white/[0.06] border border-white/8 text-sm focus:outline-none focus:border-brand-500/40"
         />
         <input
           value={step.name}
           onChange={e => onChange({ ...step, name: e.target.value })}
-          placeholder="Nom de l'étape…"
+          placeholder="Nom de l'Ã©tapeâ€¦"
           className="flex-1 h-7 px-2 rounded-md bg-transparent border border-white/8 text-sm text-slate-200
-                     placeholder-slate-600 focus:outline-none focus:border-violet-500/40 font-medium"
+                     placeholder-slate-600 focus:outline-none focus:border-brand-500/40 font-medium"
         />
         <input
           value={step.time || ""}
           onChange={e => onChange({ ...step, time: e.target.value })}
-          placeholder="⏱ 30s"
+          placeholder="â± 30s"
           className="w-20 h-7 px-2 rounded-md bg-transparent border border-white/8 text-xs text-slate-500
-                     placeholder-slate-700 focus:outline-none focus:border-violet-500/40 mono"
+                     placeholder-slate-700 focus:outline-none focus:border-brand-500/40 mono"
         />
         <div className="flex items-center gap-1">
-          <button onClick={onMoveUp} disabled={isFirst} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">↑</button>
-          <button onClick={onMoveDown} disabled={isLast} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">↓</button>
-          <button onClick={onDelete} className="h-6 w-6 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition-all">✕</button>
+          <button onClick={onMoveUp} disabled={isFirst} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">â†‘</button>
+          <button onClick={onMoveDown} disabled={isLast} className="h-6 w-6 rounded bg-white/[0.05] text-slate-500 hover:text-slate-200 disabled:opacity-20 text-xs transition-all">â†“</button>
+          <button onClick={onDelete} className="h-6 w-6 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs transition-all">âœ•</button>
         </div>
       </div>
 
       {/* Mindset */}
       <div>
-        <label className="text-[10px] font-bold tracking-widest text-violet-500/60 block mb-1">MINDSET (optionnel)</label>
+        <label className="text-[10px] font-bold tracking-widest text-brand-500/60 block mb-1">MINDSET (optionnel)</label>
         <input
           value={step.mindset || ""}
           onChange={e => onChange({ ...step, mindset: e.target.value })}
-          placeholder="État d'esprit à adopter…"
+          placeholder="Ã‰tat d'esprit Ã  adopterâ€¦"
           className="w-full h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
-                     placeholder-slate-700 focus:outline-none focus:border-violet-500/30"
+                     placeholder-slate-700 focus:outline-none focus:border-brand-500/30"
         />
       </div>
 
@@ -444,12 +444,12 @@ function StepEditor({
         <textarea
           value={(step.say || []).join("\n")}
           onChange={e => onChange({ ...step, say: e.target.value.split("\n") })}
-          placeholder={"Première réplique…\nDeuxième réplique (une par ligne)…"}
+          placeholder={"PremiÃ¨re rÃ©pliqueâ€¦\nDeuxiÃ¨me rÃ©plique (une par ligne)â€¦"}
           rows={3}
           className="w-full bg-[#13151e] border border-white/8 rounded-lg px-3 py-2 text-sm text-slate-200
                      placeholder-slate-700 focus:outline-none focus:border-cyan-500/30 resize-y leading-relaxed"
         />
-        <p className="text-[10px] text-slate-700 mt-1">Une réplique par ligne — chaque ligne devient un paragraphe téléprompter</p>
+        <p className="text-[10px] text-slate-700 mt-1">Une rÃ©plique par ligne â€” chaque ligne devient un paragraphe tÃ©lÃ©prompter</p>
       </div>
 
       {/* Pause / instructions */}
@@ -458,7 +458,7 @@ function StepEditor({
         <textarea
           value={step.pause || ""}
           onChange={e => onChange({ ...step, pause: e.target.value })}
-          placeholder={"Attendre la réaction du prospect\n→ Si intéressé : continuer\n→ Sinon : gérer l'objection"}
+          placeholder={"Attendre la rÃ©action du prospect\nâ†’ Si intÃ©ressÃ© : continuer\nâ†’ Sinon : gÃ©rer l'objection"}
           rows={2}
           className="w-full bg-[#13151e] border border-white/8 rounded-lg px-3 py-2 text-xs text-slate-400
                      placeholder-slate-700 focus:outline-none focus:border-orange-500/20 resize-y"
@@ -474,18 +474,18 @@ function StepEditor({
               <input
                 value={obj.q}
                 onChange={e => updateObjection(i, "q", e.target.value)}
-                placeholder="Objection…"
+                placeholder="Objectionâ€¦"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-yellow-500/30"
               />
               <input
                 value={obj.a}
                 onChange={e => updateObjection(i, "a", e.target.value)}
-                placeholder="Réponse…"
+                placeholder="RÃ©ponseâ€¦"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-cyan-500/30"
               />
-              <button onClick={() => removeObjection(i)} className="h-7 w-7 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs shrink-0">✕</button>
+              <button onClick={() => removeObjection(i)} className="h-7 w-7 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs shrink-0">âœ•</button>
             </div>
           ))}
           <button onClick={addObjection} className="text-xs text-slate-600 hover:text-slate-300 transition-colors flex items-center gap-1">
@@ -497,9 +497,9 @@ function StepEditor({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Vue éditeur complet
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Vue Ã©diteur complet
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ScriptEditor({
   initial,
@@ -570,20 +570,20 @@ function ScriptEditor({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
-      {/* Header éditeur */}
+      {/* Header Ã©diteur */}
       <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <button onClick={onCancel} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-200 transition-colors">
-          ← Retour
+          â† Retour
         </button>
         <div className="w-px h-4 bg-white/10" />
         <input
           value={title}
           onChange={e => setTitle(e.target.value)}
-          placeholder="Titre du script…"
+          placeholder="Titre du scriptâ€¦"
           className="flex-1 bg-transparent text-sm font-semibold text-slate-100 placeholder-slate-600
-                     focus:outline-none border-b border-transparent focus:border-violet-500/40 pb-0.5 transition-colors"
+                     focus:outline-none border-b border-transparent focus:border-brand-500/40 pb-0.5 transition-colors"
         />
         {/* Type selector */}
         <div className="flex gap-1 bg-white/[0.05] border border-white/[0.08] rounded-xl p-1">
@@ -592,7 +592,7 @@ function ScriptEditor({
               className={[
                 "px-3 py-1 rounded-lg text-xs font-medium transition-all",
                 type === val
-                  ? "bg-violet-500/25 text-violet-200"
+                  ? "bg-brand-500/25 text-brand-200"
                   : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.06]",
               ].join(" ")}>
               {label}
@@ -602,20 +602,20 @@ function ScriptEditor({
         <button
           onClick={handleSave}
           disabled={!title.trim()}
-          className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Enregistrer
         </button>
       </header>
 
-      {/* Corps éditeur */}
+      {/* Corps Ã©diteur */}
       <div className="flex-1 overflow-auto">
 
-        {/* Cold Call — blocs linéaires */}
+        {/* Cold Call â€” blocs linÃ©aires */}
         {type === "cold_call" && (
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-slate-600">Script linéaire — les blocs s&apos;affichent dans l&apos;ordre lors de la lecture</p>
+              <p className="text-xs text-slate-600">Script linÃ©aire â€” les blocs s&apos;affichent dans l&apos;ordre lors de la lecture</p>
               <span className="text-xs mono text-slate-700">{blocks.length} bloc{blocks.length > 1 ? "s" : ""}</span>
             </div>
             {blocks.map((block, i) => (
@@ -635,7 +635,7 @@ function ScriptEditor({
               {[
                 { type: "say" as const,        label: "+ Discours",    color: "border-cyan-500/20 text-cyan-600 hover:text-cyan-300 hover:border-cyan-500/40"     },
                 { type: "pause" as const,      label: "+ Pause",       color: "border-orange-500/20 text-orange-600 hover:text-orange-300 hover:border-orange-500/40" },
-                { type: "mindset" as const,    label: "+ Mindset",     color: "border-violet-500/20 text-violet-600 hover:text-violet-300 hover:border-violet-500/40" },
+                { type: "mindset" as const,    label: "+ Mindset",     color: "border-brand-500/20 text-brand-600 hover:text-brand-300 hover:border-brand-500/40" },
                 { type: "objections" as const, label: "+ Objections",  color: "border-yellow-500/20 text-yellow-600 hover:text-yellow-300 hover:border-yellow-500/40" },
               ].map(btn => (
                 <button key={btn.type} onClick={() => addBlock(btn.type)}
@@ -647,12 +647,12 @@ function ScriptEditor({
           </div>
         )}
 
-        {/* Closing — étapes */}
+        {/* Closing â€” Ã©tapes */}
         {type === "closing" && (
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-slate-600">Script en étapes — navigables via la sidebar lors de la lecture</p>
-              <span className="text-xs mono text-slate-700">{steps.length} étape{steps.length > 1 ? "s" : ""}</span>
+              <p className="text-xs text-slate-600">Script en Ã©tapes â€” navigables via la sidebar lors de la lecture</p>
+              <span className="text-xs mono text-slate-700">{steps.length} Ã©tape{steps.length > 1 ? "s" : ""}</span>
             </div>
             {steps.map((step, i) => (
               <StepEditor
@@ -669,9 +669,9 @@ function ScriptEditor({
             <button
               onClick={addStep}
               className="w-full h-10 rounded-xl border border-dashed border-white/10 text-xs text-slate-600
-                         hover:text-slate-300 hover:border-violet-500/30 transition-all"
+                         hover:text-slate-300 hover:border-brand-500/30 transition-all"
             >
-              + Ajouter une étape
+              + Ajouter une Ã©tape
             </button>
           </div>
         )}
@@ -680,9 +680,9 @@ function ScriptEditor({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Vue liste des scripts
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ScriptList({
   scripts,
@@ -729,7 +729,7 @@ function ScriptList({
   function ScriptCard({ script }: { script: UserScript }) {
     const isCold = script.type === "cold_call";
     const count  = isCold ? (script.blocks?.length || 0) : (script.steps?.length || 0);
-    const suffix = isCold ? "bloc" : "étape";
+    const suffix = isCold ? "bloc" : "Ã©tape";
 
     function exportSingle(e: React.MouseEvent) {
       e.stopPropagation();
@@ -749,19 +749,19 @@ function ScriptList({
           "group relative flex items-center gap-4 px-4 py-4 rounded-2xl border cursor-pointer transition-all overflow-hidden",
           isCold
             ? "border-cyan-500/[0.12] bg-gradient-to-r from-cyan-500/[0.04] to-transparent hover:border-cyan-500/[0.20] hover:from-cyan-500/[0.07]"
-            : "border-violet-500/[0.12] bg-gradient-to-r from-violet-500/[0.04] to-transparent hover:border-violet-500/[0.20] hover:from-violet-500/[0.07]",
+            : "border-brand-500/[0.12] bg-gradient-to-r from-brand-500/[0.04] to-transparent hover:border-brand-500/[0.20] hover:from-brand-500/[0.07]",
         ].join(" ")}
       >
-        {/* Icône type avec SVG */}
+        {/* IcÃ´ne type avec SVG */}
         <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${
-          isCold ? "bg-cyan-500/[0.12] border-cyan-500/[0.20]" : "bg-violet-500/[0.12] border-violet-500/[0.20]"
+          isCold ? "bg-cyan-500/[0.12] border-cyan-500/[0.20]" : "bg-brand-500/[0.12] border-brand-500/[0.20]"
         }`}>
           {isCold ? (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
             </svg>
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-violet-400">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-brand-400">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14 2 14 8 20 8"/>
               <line x1="16" y1="13" x2="8" y2="13"/>
@@ -776,12 +776,12 @@ function ScriptList({
           </div>
           <div className="flex items-center gap-2">
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono uppercase tracking-wide ${
-              isCold ? "bg-cyan-500/[0.12] text-cyan-400 border border-cyan-500/20" : "bg-violet-500/[0.12] text-violet-400 border border-violet-500/20"
+              isCold ? "bg-cyan-500/[0.12] text-cyan-400 border border-cyan-500/20" : "bg-brand-500/[0.12] text-brand-400 border border-brand-500/20"
             }`}>
               {isCold ? "Cold Call" : "Closing"}
             </span>
             <span className="text-[11px] text-slate-600 font-mono">{count} {suffix}{count > 1 ? "s" : ""}</span>
-            <span className="text-slate-700">·</span>
+            <span className="text-slate-700">Â·</span>
             <span className="text-[11px] text-slate-700 font-mono">{new Date(script.updatedAt).toLocaleDateString("fr-FR")}</span>
           </div>
         </div>
@@ -818,7 +818,7 @@ function ScriptList({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
       {/* Header */}
       <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
@@ -834,17 +834,17 @@ function ScriptList({
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                        text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all"
           >
-            ↑ Importer JSON
+            â†‘ Importer JSON
           </button>
 
-          {/* Exemples — toujours visibles */}
+          {/* Exemples â€” toujours visibles */}
           <button
             onClick={() => loadExamples("setting")}
             disabled={loadingExamples !== null}
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                        text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all disabled:opacity-40"
           >
-            {loadingExamples === "setting" ? "…" : "📞 Setting"}
+            {loadingExamples === "setting" ? "â€¦" : "ðŸ“ž Setting"}
           </button>
           <button
             onClick={() => loadExamples("closing")}
@@ -852,10 +852,10 @@ function ScriptList({
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                        text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all disabled:opacity-40"
           >
-            {loadingExamples === "closing" ? "…" : "🤝 Closing"}
+            {loadingExamples === "closing" ? "â€¦" : "ðŸ¤ Closing"}
           </button>
 
-          {/* Séparateur */}
+          {/* SÃ©parateur */}
           <div className="w-px h-4 bg-white/[0.08]" />
 
           {/* Export tout */}
@@ -865,24 +865,24 @@ function ScriptList({
               className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                          text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all"
             >
-              ↓ Exporter tout
+              â†“ Exporter tout
             </button>
           )}
 
-          {/* Script Google Ads intégré */}
+          {/* Script Google Ads intÃ©grÃ© */}
           <button
             onClick={onOpenGads}
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-orange-500/15 border border-orange-500/25
                        text-xs text-orange-300 font-medium hover:bg-orange-500/25 transition-all"
           >
-            🎯 Google Ads
+            ðŸŽ¯ Google Ads
           </button>
 
-          {/* Créer */}
+          {/* CrÃ©er */}
           <button
             onClick={onCreate}
-            className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-violet-600 hover:bg-violet-500
-                       text-white text-xs font-semibold transition-colors shadow-[0_0_16px_rgba(124,58,237,0.25)]"
+            className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-brand-600 hover:bg-brand-500
+                       text-white text-xs font-semibold transition-colors shadow-[0_0_16px_rgba(0,229,255,0.25)]"
           >
             + Nouveau script
           </button>
@@ -892,49 +892,49 @@ function ScriptList({
       {/* Contenu */}
       <div className="flex-1 overflow-auto px-6 py-6">
         {scripts.length === 0 ? (
-          /* État vide */
+          /* Ã‰tat vide */
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-5">
             <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-3xl">📋</div>
-              <div className="absolute inset-0 rounded-2xl bg-violet-500/08 blur-xl" />
+              <div className="w-16 h-16 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-3xl">ðŸ“‹</div>
+              <div className="absolute inset-0 rounded-2xl bg-brand-500/08 blur-xl" />
             </div>
             <div className="text-center max-w-sm">
               <h2 className="text-lg font-bold text-slate-200 mb-2">Aucun script</h2>
               <p className="text-slate-500 text-sm leading-relaxed">
-                Créez votre premier script Cold Call ou Closing. Vous pouvez aussi importer un fichier JSON partagé par un autre utilisateur.
+                CrÃ©ez votre premier script Cold Call ou Closing. Vous pouvez aussi importer un fichier JSON partagÃ© par un autre utilisateur.
               </p>
             </div>
             <div className="flex flex-wrap gap-3 justify-center">
               <button onClick={onOpenGads}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-orange-500/15 border border-orange-500/25 text-orange-300 text-sm font-semibold transition-all hover:bg-orange-500/25">
-                🎯 Script Google Ads
+                ðŸŽ¯ Script Google Ads
               </button>
               <button onClick={onCreate}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(124,58,237,0.25)]">
-                + Créer un script
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.25)]">
+                + CrÃ©er un script
               </button>
               <button onClick={() => fileRef.current?.click()}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300 text-sm font-medium transition-all">
-                ↑ Importer JSON
+                â†‘ Importer JSON
               </button>
               <button onClick={() => loadExamples("setting")} disabled={loadingExamples !== null}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300 text-sm font-medium transition-all disabled:opacity-50">
-                {loadingExamples === "setting" ? "Chargement…" : "📞 Exemples Setting"}
+                {loadingExamples === "setting" ? "Chargementâ€¦" : "ðŸ“ž Exemples Setting"}
               </button>
               <button onClick={() => loadExamples("closing")} disabled={loadingExamples !== null}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300 text-sm font-medium transition-all disabled:opacity-50">
-                {loadingExamples === "closing" ? "Chargement…" : "🤝 Exemples Closing"}
+                {loadingExamples === "closing" ? "Chargementâ€¦" : "ðŸ¤ Exemples Closing"}
               </button>
             </div>
           </div>
         ) : (
           <div className="max-w-2xl mx-auto space-y-6">
 
-            {/* Carte script Google Ads intégré */}
+            {/* Carte script Google Ads intÃ©grÃ© */}
             <section>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-                <span className="text-[10px] font-mono tracking-widest text-orange-400/70 uppercase">Formation intégrée</span>
+                <span className="text-[10px] font-mono tracking-widest text-orange-400/70 uppercase">Formation intÃ©grÃ©e</span>
               </div>
               <div
                 onClick={onOpenGads}
@@ -950,13 +950,13 @@ function ScriptList({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1">
-                    Script Google Ads — Setting & Closing
+                    Script Google Ads â€” Setting & Closing
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full font-mono uppercase tracking-wide bg-orange-500/[0.12] text-orange-400 border border-orange-500/20">
                       10kchallenge
                     </span>
-                    <span className="text-[11px] text-slate-600">6 étapes prospection · 8 étapes closing</span>
+                    <span className="text-[11px] text-slate-600">6 Ã©tapes prospection Â· 8 Ã©tapes closing</span>
                   </div>
                 </div>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-slate-700 group-hover:text-orange-400 transition-colors shrink-0"><polyline points="9 18 15 12 9 6"/></svg>
@@ -981,8 +981,8 @@ function ScriptList({
             {closings.length > 0 && (
               <section>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
-                  <span className="text-[10px] font-mono tracking-widest text-violet-400/70 uppercase">Closing</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-brand-400" />
+                  <span className="text-[10px] font-mono tracking-widest text-brand-400/70 uppercase">Closing</span>
                   <span className="text-[10px] font-mono text-slate-700 ml-1">{closings.length}</span>
                 </div>
                 <div className="space-y-2">
@@ -998,9 +998,9 @@ function ScriptList({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Vue lecture (téléprompter)
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Vue lecture (tÃ©lÃ©prompter)
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function ScriptReader({
   script,
@@ -1015,19 +1015,19 @@ function ScriptReader({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
       {/* Header */}
       <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <button onClick={onBack} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-200 transition-colors">
-          ← Scripts
+          â† Scripts
         </button>
         <div className="w-px h-4 bg-white/10" />
         <span className="text-sm font-semibold text-slate-100">{script.title}</span>
         <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
           script.type === "cold_call"
             ? "bg-cyan-500/15 text-cyan-400"
-            : "bg-violet-500/15 text-violet-400"
+            : "bg-brand-500/15 text-brand-400"
         }`}>
           {script.type === "cold_call" ? "Cold Call" : "Closing"}
         </span>
@@ -1038,22 +1038,22 @@ function ScriptReader({
             className={[
               "flex items-center gap-1.5 h-7 px-3 rounded-lg text-xs border transition-all",
               showMindset
-                ? "bg-violet-500/20 border-violet-500/30 text-violet-300"
+                ? "bg-brand-500/20 border-brand-500/30 text-brand-300"
                 : "bg-white/[0.05] border-white/[0.08] text-slate-600 hover:text-slate-300",
             ].join(" ")}
           >
-            💭 Mindset
+            ðŸ’­ Mindset
           </button>
           <button
             onClick={onEdit}
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all"
           >
-            ✏️ Modifier
+            âœï¸ Modifier
           </button>
         </div>
       </header>
 
-      {/* Contenu téléprompter */}
+      {/* Contenu tÃ©lÃ©prompter */}
       <div className="flex-1 overflow-auto min-h-0">
         {script.blocks ? (
           <div className="max-w-2xl mx-auto px-8 py-10">
@@ -1067,7 +1067,7 @@ function ScriptReader({
           <TeleprompterSteps steps={script.steps} showMindset={showMindset} />
         ) : (
           <div className="flex items-center justify-center py-24 text-slate-600 text-sm">
-            Ce script est vide — modifiez-le pour ajouter du contenu
+            Ce script est vide â€” modifiez-le pour ajouter du contenu
           </div>
         )}
       </div>
@@ -1075,9 +1075,9 @@ function ScriptReader({
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Page principale
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type View = "list" | "read" | "edit" | "gads";
 
@@ -1090,8 +1090,8 @@ export default function ScriptsPage() {
   const { success, error: toastError, info } = useToast();
   const confirm = useConfirm();
 
-  // Chargement localStorage uniquement côté client après le mount
-  // (évite le mismatch d'hydratation SSR)
+  // Chargement localStorage uniquement cÃ´tÃ© client aprÃ¨s le mount
+  // (Ã©vite le mismatch d'hydratation SSR)
   useEffect(() => {
     setScripts(loadScripts());
     setMounted(true);
@@ -1099,13 +1099,13 @@ export default function ScriptsPage() {
 
   const { plan, loading: planLoading } = usePlan();
 
-  // ── Persistance ─────────────────────────────────────────────────────────
+  // â”€â”€ Persistance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function persist(updated: UserScript[]) {
     setScripts(updated);
     saveScripts(updated);
   }
 
-  // ── Actions ─────────────────────────────────────────────────────────────
+  // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function handleSave(script: UserScript) {
     const exists = scripts.find(s => s.id === script.id);
     const updated = exists
@@ -1114,7 +1114,7 @@ export default function ScriptsPage() {
     persist(updated);
     setSelected(script);
     setView("read");
-    success(exists ? "Script mis à jour" : "Script créé");
+    success(exists ? "Script mis Ã  jour" : "Script crÃ©Ã©");
   }
 
   async function handleDelete(id: string) {
@@ -1130,7 +1130,7 @@ export default function ScriptsPage() {
       setSelected(null);
       setView("list");
     }
-    info("Script supprimé");
+    info("Script supprimÃ©");
   }
 
   function handleCreate() {
@@ -1152,7 +1152,7 @@ export default function ScriptsPage() {
     setView("read");
   }
 
-  // ── Import JSON ─────────────────────────────────────────────────────────
+  // â”€â”€ Import JSON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleImport = useCallback((file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -1163,13 +1163,13 @@ export default function ScriptsPage() {
         const now = new Date().toISOString();
         const imported = incoming.map(s => ({
           ...s,
-          id:        genId(),  // nouveau id pour éviter les conflits
+          id:        genId(),  // nouveau id pour Ã©viter les conflits
           createdAt: s.createdAt || now,
           updatedAt: now,
         }));
         const updated = [...scripts, ...imported];
         persist(updated);
-        success(`${imported.length} script${imported.length > 1 ? "s" : ""} importé${imported.length > 1 ? "s" : ""}`);
+        success(`${imported.length} script${imported.length > 1 ? "s" : ""} importÃ©${imported.length > 1 ? "s" : ""}`);
       } catch {
         toastError("Fichier JSON invalide");
       }
@@ -1177,7 +1177,7 @@ export default function ScriptsPage() {
     reader.readAsText(file);
   }, [scripts]);
 
-  // ── Export tout ─────────────────────────────────────────────────────────
+  // â”€â”€ Export tout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function handleExportAll() {
     const blob = new Blob([JSON.stringify(scripts, null, 2)], { type: "application/json" });
     const url  = URL.createObjectURL(blob);
@@ -1188,43 +1188,43 @@ export default function ScriptsPage() {
     URL.revokeObjectURL(url);
   }
 
-  // ── Attendre le mount pour éviter le flash SSR ──────────────────────────
+  // â”€â”€ Attendre le mount pour Ã©viter le flash SSR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (!mounted) {
     return (
       <div className="flex items-center justify-center h-screen text-slate-700 text-sm">
-        Chargement…
+        Chargementâ€¦
       </div>
     );
   }
 
-  // ── Plan free ────────────────────────────────────────────────────────────
+  // â”€â”€ Plan free â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (!planLoading && plan === "free") {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-5 px-6">
         <div className="relative flex items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center text-3xl z-10 relative">📋</div>
-          <div className="absolute inset-0 rounded-2xl bg-violet-500/10 blur-xl" />
+          <div className="w-16 h-16 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-3xl z-10 relative">ðŸ“‹</div>
+          <div className="absolute inset-0 rounded-2xl bg-brand-500/10 blur-xl" />
         </div>
         <div className="text-center max-w-sm">
           <h2 className="text-xl font-bold text-slate-100 mb-2">Scripts d&apos;appel</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
-            Le système de scripts Cold Call et Closing est réservé au plan{" "}
-            <span className="text-violet-300 font-medium">Pro</span>.
-            Créez, partagez et lisez vos scripts en mode téléprompter.
+            Le systÃ¨me de scripts Cold Call et Closing est rÃ©servÃ© au plan{" "}
+            <span className="text-brand-300 font-medium">Pro</span>.
+            CrÃ©ez, partagez et lisez vos scripts en mode tÃ©lÃ©prompter.
           </p>
         </div>
         <Link
           href="/#pricing"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.3)]"
         >
-          Passer Pro — 19 €/mois →
+          Passer Pro â€” 19 â‚¬/mois â†’
         </Link>
-        <p className="text-xs text-slate-700">14 jours gratuits · annulable à tout moment</p>
+        <p className="text-xs text-slate-700">14 jours gratuits Â· annulable Ã  tout moment</p>
       </div>
     );
   }
 
-  // ── Routage interne ──────────────────────────────────────────────────────
+  // â”€â”€ Routage interne â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (view === "gads") {
     return <GoogleAdsScriptViewer onBack={() => setView("list")} />;
   }
@@ -1262,3 +1262,5 @@ export default function ScriptsPage() {
     />
   );
 }
+
+

@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { createContext, useContext, useState, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 
-// ── Options d'une confirmation ────────────────────────────────────────────────
+// â”€â”€ Options d'une confirmation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface ConfirmOptions {
   title:         string;
@@ -19,11 +19,11 @@ const ConfirmContext = createContext<ConfirmFn | null>(null);
 
 export function useConfirm(): ConfirmFn {
   const ctx = useContext(ConfirmContext);
-  if (!ctx) throw new Error("useConfirm doit être utilisé dans <ConfirmProvider>");
+  if (!ctx) throw new Error("useConfirm doit Ãªtre utilisÃ© dans <ConfirmProvider>");
   return ctx;
 }
 
-// ── Provider ──────────────────────────────────────────────────────────────────
+// â”€â”€ Provider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function ConfirmProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<{ open: boolean; opts: ConfirmOptions }>({
@@ -33,7 +33,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
   const resolver = useRef<((v: boolean) => void) | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // monter le portal côté client
+  // monter le portal cÃ´tÃ© client
   if (typeof window !== "undefined" && !mounted) setMounted(true);
 
   const confirm = useCallback<ConfirmFn>((opts) => {
@@ -63,9 +63,9 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
               <div className="flex items-start gap-3">
                 <div className={[
                   "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-lg",
-                  state.opts.danger ? "bg-red-500/15" : "bg-violet-500/15",
+                  state.opts.danger ? "bg-red-500/15" : "bg-brand-500/15",
                 ].join(" ")}>
-                  {state.opts.danger ? "⚠️" : "❓"}
+                  {state.opts.danger ? "âš ï¸" : "â“"}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-semibold text-slate-100">{state.opts.title}</h3>
@@ -91,7 +91,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
                   "flex-1 h-9 rounded-lg text-xs font-semibold transition-all",
                   state.opts.danger
                     ? "bg-red-600 hover:bg-red-500 text-white"
-                    : "bg-violet-600 hover:bg-violet-500 text-white",
+                    : "bg-brand-600 hover:bg-brand-500 text-white",
                 ].join(" ")}
               >
                 {state.opts.confirmLabel || "Confirmer"}
@@ -104,3 +104,4 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
     </ConfirmContext.Provider>
   );
 }
+

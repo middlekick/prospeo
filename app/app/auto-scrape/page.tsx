@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { useConfirm } from "@/components/ui/ConfirmModal";
@@ -22,7 +22,7 @@ interface RunResult {
   skipped: number;
 }
 
-// ─── Formatage date ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Formatage date â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmtDate(iso: string | null): string {
   if (!iso) return "jamais";
   const d = new Date(iso);
@@ -46,7 +46,7 @@ export default function AutoScrapePage() {
   const [showForm,  setShowForm]  = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
-  // ── Chargement des configs ──────────────────────────────────────────────────
+  // â”€â”€ Chargement des configs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const loadConfigs = useCallback(async () => {
     try {
       const res  = await fetch("/api/auto-scrape");
@@ -61,7 +61,7 @@ export default function AutoScrapePage() {
 
   useEffect(() => { loadConfigs(); }, [loadConfigs]);
 
-  // ── Ajouter une config ──────────────────────────────────────────────────────
+  // â”€â”€ Ajouter une config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
     if (!metier.trim() || !ville.trim()) return;
@@ -84,13 +84,13 @@ export default function AutoScrapePage() {
         setFormError(data.error || `Erreur ${res.status}`);
       }
     } catch (err) {
-      setFormError((err as Error).message || "Erreur réseau");
+      setFormError((err as Error).message || "Erreur rÃ©seau");
     } finally {
       setAdding(false);
     }
   }
 
-  // ── Toggle enable/disable ───────────────────────────────────────────────────
+  // â”€â”€ Toggle enable/disable â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   async function toggleEnabled(id: string, current: boolean) {
     await fetch("/api/auto-scrape", {
       method:  "PATCH",
@@ -100,11 +100,11 @@ export default function AutoScrapePage() {
     await loadConfigs();
   }
 
-  // ── Supprimer ───────────────────────────────────────────────────────────────
+  // â”€â”€ Supprimer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   async function handleDelete(id: string) {
     const ok = await confirm({
       title:        "Supprimer cette config ?",
-      message:      "Le scraping automatique associé sera arrêté.",
+      message:      "Le scraping automatique associÃ© sera arrÃªtÃ©.",
       confirmLabel: "Supprimer",
       danger:       true,
     });
@@ -113,8 +113,8 @@ export default function AutoScrapePage() {
     await loadConfigs();
   }
 
-  // ── Lancer maintenant ───────────────────────────────────────────────────────
-  // Utilise /api/auto-scrape/run (protégé par Clerk) — pas de secret exposé
+  // â”€â”€ Lancer maintenant â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Utilise /api/auto-scrape/run (protÃ©gÃ© par Clerk) â€” pas de secret exposÃ©
   async function handleRunNow() {
     setRunning(true);
     setLastResults(null);
@@ -136,9 +136,9 @@ export default function AutoScrapePage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <div>
           <h1 className="text-sm font-semibold text-slate-100">Auto-scraping</h1>
@@ -159,16 +159,16 @@ export default function AutoScrapePage() {
                        text-white text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {running ? (
-              <><span className="animate-spin">⟳</span> Scraping…</>
+              <><span className="animate-spin">âŸ³</span> Scrapingâ€¦</>
             ) : (
-              "▶ Lancer maintenant"
+              "â–¶ Lancer maintenant"
             )}
           </button>
 
           {/* Ajouter une config */}
           <button
             onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-violet-600 hover:bg-violet-500
+            className="flex items-center gap-1.5 h-7 px-4 rounded-lg bg-brand-600 hover:bg-brand-500
                        text-white text-xs font-semibold transition-colors"
           >
             + Ajouter
@@ -176,7 +176,7 @@ export default function AutoScrapePage() {
         </div>
       </header>
 
-      {/* ── Contenu ────────────────────────────────────────────────────────── */}
+      {/* â”€â”€ Contenu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex-1 overflow-auto px-6 py-6">
         <div className="max-w-2xl mx-auto space-y-6">
 
@@ -191,31 +191,31 @@ export default function AutoScrapePage() {
             </div>
             <div className="flex-1 relative">
               <div className="text-[13px] font-semibold text-slate-200 mb-0.5">
-                Automatisé chaque matin à <span className="text-emerald-300 font-mono">8h00</span>
+                AutomatisÃ© chaque matin Ã  <span className="text-emerald-300 font-mono">8h00</span>
               </div>
               <div className="text-[12px] text-slate-500 leading-relaxed">
-                Prospeo scrape automatiquement les leads et les ajoute à ton CRM. Les doublons sont ignorés. Tu peux aussi lancer manuellement à tout moment.
+                Prospeo scrape automatiquement les leads et les ajoute Ã  ton CRM. Les doublons sont ignorÃ©s. Tu peux aussi lancer manuellement Ã  tout moment.
               </div>
             </div>
           </div>
 
-          {/* Résultats du dernier run manuel */}
+          {/* RÃ©sultats du dernier run manuel */}
           {lastResults && (
             <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] overflow-hidden">
               <div className="flex items-center gap-2 px-4 py-3 border-b border-emerald-500/15">
-                <span className="text-emerald-400 text-sm">✓</span>
+                <span className="text-emerald-400 text-sm">âœ“</span>
                 <span className="text-xs font-semibold text-emerald-300">
-                  Scraping terminé — {lastResults.reduce((s, r) => s + r.added, 0)} leads ajoutés
+                  Scraping terminÃ© â€” {lastResults.reduce((s, r) => s + r.added, 0)} leads ajoutÃ©s
                 </span>
               </div>
               <div className="divide-y divide-white/[0.04]">
                 {lastResults.map((r, i) => (
                   <div key={i} className="flex items-center justify-between px-4 py-2.5">
-                    <span className="text-sm text-slate-300">{r.metier} · {r.ville}</span>
+                    <span className="text-sm text-slate-300">{r.metier} Â· {r.ville}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-semibold text-emerald-400">+{r.added} ajoutés</span>
+                      <span className="text-xs font-semibold text-emerald-400">+{r.added} ajoutÃ©s</span>
                       {r.skipped > 0 && (
-                        <span className="text-xs text-slate-600">{r.skipped} doublons ignorés</span>
+                        <span className="text-xs text-slate-600">{r.skipped} doublons ignorÃ©s</span>
                       )}
                     </div>
                   </div>
@@ -228,19 +228,19 @@ export default function AutoScrapePage() {
           {showForm && (
             <form
               onSubmit={handleAdd}
-              className="rounded-xl border border-violet-500/25 bg-violet-500/[0.04] p-4 space-y-3"
+              className="rounded-xl border border-brand-500/25 bg-brand-500/[0.04] p-4 space-y-3"
             >
-              <div className="text-xs font-bold tracking-widest text-violet-400/70 mb-1">NOUVELLE CONFIG</div>
+              <div className="text-xs font-bold tracking-widest text-brand-400/70 mb-1">NOUVELLE CONFIG</div>
               <div className="flex gap-3">
                 <div className="flex-1">
-                  <label className="text-[10px] text-slate-600 font-medium uppercase tracking-wider block mb-1">Métier</label>
+                  <label className="text-[10px] text-slate-600 font-medium uppercase tracking-wider block mb-1">MÃ©tier</label>
                   <input
                     value={metier}
                     onChange={e => setMetier(e.target.value)}
                     placeholder="ex: plombier"
                     required
                     className="w-full h-9 px-3 rounded-lg bg-[#13151e] border border-white/[0.08] text-sm text-slate-200
-                               placeholder-slate-700 focus:outline-none focus:border-violet-500/50"
+                               placeholder-slate-700 focus:outline-none focus:border-brand-500/50"
                   />
                 </div>
                 <div className="flex-1">
@@ -251,7 +251,7 @@ export default function AutoScrapePage() {
                     placeholder="ex: Lyon"
                     required
                     className="w-full h-9 px-3 rounded-lg bg-[#13151e] border border-white/[0.08] text-sm text-slate-200
-                               placeholder-slate-700 focus:outline-none focus:border-violet-500/50"
+                               placeholder-slate-700 focus:outline-none focus:border-brand-500/50"
                   />
                 </div>
                 <div className="w-28">
@@ -262,7 +262,7 @@ export default function AutoScrapePage() {
                     value={nbPerRun}
                     onChange={e => setNbPerRun(Number(e.target.value))}
                     className="w-full h-9 px-3 rounded-lg bg-[#13151e] border border-white/[0.08] text-sm text-slate-200
-                               focus:outline-none focus:border-violet-500/50 [color-scheme:dark] cursor-pointer"
+                               focus:outline-none focus:border-brand-500/50 [color-scheme:dark] cursor-pointer"
                   >
                     <option value={10}>10</option>
                     <option value={20}>20</option>
@@ -274,7 +274,7 @@ export default function AutoScrapePage() {
               </div>
               {formError && (
                 <div className="px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400">
-                  ⚠ {formError}
+                  âš  {formError}
                 </div>
               )}
               <div className="flex gap-2 justify-end pt-1">
@@ -288,10 +288,10 @@ export default function AutoScrapePage() {
                 <button
                   type="submit"
                   disabled={adding || !metier.trim() || !ville.trim()}
-                  className="h-8 px-5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold
+                  className="h-8 px-5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold
                              transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {adding ? "Ajout…" : "Ajouter"}
+                  {adding ? "Ajoutâ€¦" : "Ajouter"}
                 </button>
               </div>
             </form>
@@ -300,22 +300,22 @@ export default function AutoScrapePage() {
           {/* Liste des configs */}
           {loading ? (
             <div className="flex items-center justify-center py-16 text-slate-700 text-sm">
-              Chargement…
+              Chargementâ€¦
             </div>
           ) : configs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-2xl">
-                🔍
+              <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl">
+                ðŸ”
               </div>
               <div className="text-center max-w-xs">
                 <h2 className="text-base font-bold text-slate-200 mb-1.5">Aucune config</h2>
                 <p className="text-slate-500 text-sm leading-relaxed">
-                  Ajoute un métier + une ville et Prospeo scrape automatiquement des leads chaque matin à 8h.
+                  Ajoute un mÃ©tier + une ville et Prospeo scrape automatiquement des leads chaque matin Ã  8h.
                 </p>
               </div>
               <button
                 onClick={() => setShowForm(true)}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500
                            text-white text-sm font-semibold transition-colors"
               >
                 + Ajouter une config
@@ -339,7 +339,7 @@ export default function AutoScrapePage() {
                       : "border-white/[0.05] bg-white/[0.02] opacity-50",
                   ].join(" ")}
                 >
-                  {/* Icône métier */}
+                  {/* IcÃ´ne mÃ©tier */}
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
                     cfg.enabled
                       ? "bg-emerald-500/[0.10] border-emerald-500/[0.18]"
@@ -355,7 +355,7 @@ export default function AutoScrapePage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-[13px] font-semibold text-slate-200 capitalize">{cfg.metier}</span>
-                      <span className="text-slate-600">·</span>
+                      <span className="text-slate-600">Â·</span>
                       <span className="text-[13px] text-slate-300">{cfg.ville}</span>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-slate-500 font-mono">
                         {cfg.nb_per_run} leads/run
@@ -367,11 +367,11 @@ export default function AutoScrapePage() {
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                           <span>{fmtDate(cfg.last_run_at)}</span>
                           {cfg.last_run_added !== null && (
-                            <span className="text-emerald-500/80 font-mono font-medium">+{cfg.last_run_added} ajoutés</span>
+                            <span className="text-emerald-500/80 font-mono font-medium">+{cfg.last_run_added} ajoutÃ©s</span>
                           )}
                         </>
                       ) : (
-                        <span className="italic">Pas encore exécuté</span>
+                        <span className="italic">Pas encore exÃ©cutÃ©</span>
                       )}
                     </div>
                   </div>
@@ -379,7 +379,7 @@ export default function AutoScrapePage() {
                   {/* Toggle */}
                   <button
                     onClick={() => toggleEnabled(cfg.id, cfg.enabled)}
-                    title={cfg.enabled ? "Désactiver" : "Activer"}
+                    title={cfg.enabled ? "DÃ©sactiver" : "Activer"}
                     className={[
                       "w-11 h-6 rounded-full relative transition-colors shrink-0 border",
                       cfg.enabled
@@ -409,7 +409,7 @@ export default function AutoScrapePage() {
 
           {/* Note technique */}
           <div className="text-xs text-slate-700 text-center pt-2">
-            Cron déclenché quotidiennement à 8h UTC (9h heure française en hiver, 10h en été)
+            Cron dÃ©clenchÃ© quotidiennement Ã  8h UTC (9h heure franÃ§aise en hiver, 10h en Ã©tÃ©)
           </div>
 
         </div>
@@ -417,3 +417,4 @@ export default function AutoScrapePage() {
     </div>
   );
 }
+

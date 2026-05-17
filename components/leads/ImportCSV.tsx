@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 
-// Colonnes CSV reconnues → champs Lead
+// Colonnes CSV reconnues â†’ champs Lead
 const COL_MAP: Record<string, string> = {
   nom: "nom", name: "nom", entreprise: "nom", company: "nom",
   metier: "metier", activite: "metier", category: "metier",
@@ -19,7 +19,7 @@ function parseCSV(text: string): Record<string, string>[] {
   const lines = text.split(/\r?\n/).filter(Boolean);
   if (lines.length < 2) return [];
 
-  // Détecte le séparateur (;  ou ,)
+  // DÃ©tecte le sÃ©parateur (;  ou ,)
   const sep = lines[0].includes(";") ? ";" : ",";
 
   const rawHeaders = lines[0].split(sep).map(h => h.trim().replace(/^"|"$/g, "").toLowerCase());
@@ -71,11 +71,11 @@ export default function ImportCSV({ onClose, onImported }: Props) {
       if (!res.ok) {
         // Message clair si plan free
         if (data.error === "upgrade_required") {
-          throw new Error("L'import CSV est réservé au plan Pro. Passez Pro sur /#pricing.");
+          throw new Error("L'import CSV est rÃ©servÃ© au plan Pro. Passez Pro sur /#pricing.");
         }
         throw new Error(data.error || "Erreur import");
       }
-      setMsg({ text: `✓ ${data.added} lead(s) importé(s) (doublons ignorés)`, ok: true });
+      setMsg({ text: `âœ“ ${data.added} lead(s) importÃ©(s) (doublons ignorÃ©s)`, ok: true });
       setTimeout(onImported, 1200);
     } catch (e) {
       setMsg({ text: (e as Error).message, ok: false });
@@ -92,32 +92,32 @@ export default function ImportCSV({ onClose, onImported }: Props) {
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
             <h2 className="text-sm font-semibold text-slate-200">Importer des leads (CSV)</h2>
-            <button onClick={onClose} className="w-7 h-7 rounded-md bg-white/5 hover:bg-white/10 text-slate-400 text-sm flex items-center justify-center">✕</button>
+            <button onClick={onClose} className="w-7 h-7 rounded-md bg-white/5 hover:bg-white/10 text-slate-400 text-sm flex items-center justify-center">âœ•</button>
           </div>
 
           <div className="p-5 space-y-4">
             {/* Info colonnes */}
             <div className="rounded-lg bg-white/3 border border-white/8 p-3 text-xs text-slate-500 space-y-1">
               <p className="font-medium text-slate-400">Colonnes reconnues automatiquement :</p>
-              <p>nom / entreprise · téléphone / phone · métier / activité · site / website</p>
-              <p>emplacement / adresse / ville · pays · tag · rappel (YYYY-MM-DD) · note</p>
-              <p className="text-slate-600">Séparateur ; ou , · Encodage UTF-8 · En-têtes en 1ère ligne</p>
+              <p>nom / entreprise Â· tÃ©lÃ©phone / phone Â· mÃ©tier / activitÃ© Â· site / website</p>
+              <p>emplacement / adresse / ville Â· pays Â· tag Â· rappel (YYYY-MM-DD) Â· note</p>
+              <p className="text-slate-600">SÃ©parateur ; ou , Â· Encodage UTF-8 Â· En-tÃªtes en 1Ã¨re ligne</p>
             </div>
 
             {/* Input fichier */}
             <div
               onClick={() => fileRef.current?.click()}
-              className="border-2 border-dashed border-white/10 rounded-lg p-6 text-center cursor-pointer hover:border-violet-500/40 hover:bg-violet-500/5 transition-colors"
+              className="border-2 border-dashed border-white/10 rounded-lg p-6 text-center cursor-pointer hover:border-brand-500/40 hover:bg-brand-500/5 transition-colors"
             >
               <input ref={fileRef} type="file" accept=".csv,.txt" className="hidden" onChange={handleFile} />
               <p className="text-sm text-slate-400">Cliquer pour choisir un fichier CSV</p>
               <p className="text-xs text-slate-600 mt-1">.csv ou .txt</p>
             </div>
 
-            {/* Prévisualisation */}
+            {/* PrÃ©visualisation */}
             {rows && rows.length > 0 && (
               <div>
-                <p className="text-xs text-slate-500 mb-2">{rows.length} ligne(s) détectée(s) — aperçu :</p>
+                <p className="text-xs text-slate-500 mb-2">{rows.length} ligne(s) dÃ©tectÃ©e(s) â€” aperÃ§u :</p>
                 <div className="overflow-x-auto rounded-lg border border-white/8">
                   <table className="w-full text-xs">
                     <thead>
@@ -138,7 +138,7 @@ export default function ImportCSV({ onClose, onImported }: Props) {
                     </tbody>
                   </table>
                   {rows.length > 3 && (
-                    <p className="px-3 py-2 text-xs text-slate-600">… et {rows.length - 3} autres lignes</p>
+                    <p className="px-3 py-2 text-xs text-slate-600">â€¦ et {rows.length - 3} autres lignes</p>
                   )}
                 </div>
               </div>
@@ -155,9 +155,9 @@ export default function ImportCSV({ onClose, onImported }: Props) {
             <button
               onClick={doImport}
               disabled={!rows?.length || loading}
-              className="px-4 py-1.5 rounded-md bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-xs font-medium text-white transition-colors"
+              className="px-4 py-1.5 rounded-md bg-brand-600 hover:bg-brand-500 disabled:opacity-40 text-xs font-medium text-white transition-colors"
             >
-              {loading ? "Import…" : `Importer ${rows?.length ?? 0} ligne(s)`}
+              {loading ? "Importâ€¦" : `Importer ${rows?.length ?? 0} ligne(s)`}
             </button>
           </div>
         </div>
@@ -165,3 +165,4 @@ export default function ImportCSV({ onClose, onImported }: Props) {
     </>
   );
 }
+

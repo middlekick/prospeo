@@ -1,36 +1,36 @@
-"use client";
+﻿"use client";
 
 /**
  * components/ui/OnboardingModal.tsx
- * Modal d'onboarding au 1er login — 4 étapes illustrées.
- * Déclenché depuis app/page.tsx si "onboarding_done" absent du localStorage.
+ * Modal d'onboarding au 1er login â€” 4 Ã©tapes illustrÃ©es.
+ * DÃ©clenchÃ© depuis app/page.tsx si "onboarding_done" absent du localStorage.
  */
 
 import { useState } from "react";
 
 const STEPS = [
   {
-    emoji: "🗺️",
+    emoji: "ðŸ—ºï¸",
     title: "Scrapez vos premiers leads",
-    desc:  "Entrez un métier et une ville dans le formulaire en haut de page. Prospeo va chercher automatiquement les entreprises sur Google Maps et remplir votre liste en quelques secondes.",
-    tip:   "Essayez : « plombier » + « Lyon »",
+    desc:  "Entrez un mÃ©tier et une ville dans le formulaire en haut de page. Prospeo va chercher automatiquement les entreprises sur Google Maps et remplir votre liste en quelques secondes.",
+    tip:   "Essayez : Â« plombier Â» + Â« Lyon Â»",
   },
   {
-    emoji: "📞",
+    emoji: "ðŸ“ž",
     title: "Appelez avec le script",
-    desc:  "Ouvrez la page Scripts pour avoir votre téléprompter en plein écran. Chaque étape du cold call est guidée — de l'accroche aux objections.",
-    tip:   "Le script s'adapte à chaque réponse du prospect.",
+    desc:  "Ouvrez la page Scripts pour avoir votre tÃ©lÃ©prompter en plein Ã©cran. Chaque Ã©tape du cold call est guidÃ©e â€” de l'accroche aux objections.",
+    tip:   "Le script s'adapte Ã  chaque rÃ©ponse du prospect.",
   },
   {
-    emoji: "🏷️",
+    emoji: "ðŸ·ï¸",
     title: "Taguez et planifiez",
-    desc:  "Après chaque appel, changez le statut du lead directement dans la table (clic sur le badge). Planifiez un rappel si le prospect n'était pas disponible.",
+    desc:  "AprÃ¨s chaque appel, changez le statut du lead directement dans la table (clic sur le badge). Planifiez un rappel si le prospect n'Ã©tait pas disponible.",
     tip:   "Les rappels en retard s'affichent en surbrillance.",
   },
   {
-    emoji: "📧",
+    emoji: "ðŸ“§",
     title: "Envoyez une offre par email",
-    desc:  "Ouvrez le drawer d'un lead intéressé → cliquez « Email » → choisissez le template « Offre semaine gratuite ». L'envoi et la date sont logués automatiquement dans le journal.",
+    desc:  "Ouvrez le drawer d'un lead intÃ©ressÃ© â†’ cliquez Â« Email Â» â†’ choisissez le template Â« Offre semaine gratuite Â». L'envoi et la date sont loguÃ©s automatiquement dans le journal.",
     tip:   "Disponible sur le plan Pro.",
   },
 ];
@@ -68,7 +68,7 @@ export default function OnboardingModal({ onClose }: Props) {
                 className="h-1 flex-1 rounded-full transition-all duration-300"
                 style={{
                   background: i <= step
-                    ? "linear-gradient(90deg,#7c3aed,#a78bfa)"
+                    ? "linear-gradient(90deg,#00E5FF,#00E5FF)"
                     : "rgba(255,255,255,0.08)",
                 }}
               />
@@ -78,13 +78,13 @@ export default function OnboardingModal({ onClose }: Props) {
           {/* Contenu */}
           <div className="p-8 text-center">
             {/* Emoji illustratif */}
-            <div className="w-20 h-20 mx-auto rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-4xl mb-6">
+            <div className="w-20 h-20 mx-auto rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-4xl mb-6">
               {current.emoji}
             </div>
 
-            {/* Compteur étape */}
-            <p className="text-xs text-violet-400/70 font-medium mb-2 mono">
-              Étape {step + 1} sur {STEPS.length}
+            {/* Compteur Ã©tape */}
+            <p className="text-xs text-brand-400/70 font-medium mb-2 mono">
+              Ã‰tape {step + 1} sur {STEPS.length}
             </p>
 
             {/* Titre */}
@@ -99,19 +99,19 @@ export default function OnboardingModal({ onClose }: Props) {
 
             {/* Tip */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/8 text-xs text-slate-500">
-              💡 {current.tip}
+              ðŸ’¡ {current.tip}
             </div>
           </div>
 
           {/* Footer navigation */}
           <div className="flex items-center justify-between px-6 pb-6 gap-3">
-            {/* Bouton précédent */}
+            {/* Bouton prÃ©cÃ©dent */}
             <button
               onClick={() => setStep(s => Math.max(0, s - 1))}
               disabled={step === 0}
               className="px-4 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-300 disabled:opacity-0 transition-colors"
             >
-              ← Précédent
+              â† PrÃ©cÃ©dent
             </button>
 
             {/* Dots */}
@@ -122,7 +122,7 @@ export default function OnboardingModal({ onClose }: Props) {
                   onClick={() => setStep(i)}
                   className={[
                     "w-1.5 h-1.5 rounded-full transition-all",
-                    i === step ? "bg-violet-400 w-4" : "bg-white/20 hover:bg-white/40",
+                    i === step ? "bg-brand-400 w-4" : "bg-white/20 hover:bg-white/40",
                   ].join(" ")}
                 />
               ))}
@@ -132,16 +132,16 @@ export default function OnboardingModal({ onClose }: Props) {
             {isLast ? (
               <button
                 onClick={finish}
-                className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors"
+                className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors"
               >
-                Commencer →
+                Commencer â†’
               </button>
             ) : (
               <button
                 onClick={() => setStep(s => s + 1)}
-                className="px-5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors"
+                className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors"
               >
-                Suivant →
+                Suivant â†’
               </button>
             )}
           </div>
@@ -157,3 +157,5 @@ export default function OnboardingModal({ onClose }: Props) {
     </>
   );
 }
+
+
