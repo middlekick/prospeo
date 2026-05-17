@@ -521,28 +521,26 @@ export default function Landing() {
                     </Eyebrow>
                   </div>
 
-                  {/* Headline principal — stagger word reveal */}
+                  {/* Headline principal — élément LCP : rendu visible d'emblée
+                      (SSR), reveal via CSS pur qui démarre au 1er paint (pas
+                      d'attente d'hydratation JS → LCP ≈ FCP). */}
                   <div className="mt-8">
                     <h1 className="text-[clamp(3rem,9vw,5.8rem)] font-bold leading-[0.94] tracking-[-0.04em] text-slate-50">
                       {["Trouve.", "Appelle.", "Signe."].map((word, i) => (
                         <span key={word} className="block overflow-hidden">
-                          <motion.span
-                            className="inline-block"
-                            initial={{ y: "105%", opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{
-                              duration: 0.9,
-                              delay:    0.15 + i * 0.13,
-                              ease:     [0.16, 1, 0.3, 1],
+                          <span
+                            className="hero-word inline-block"
+                            style={{
+                              animationDelay: `${0.05 + i * 0.11}s`,
+                              ...(i === 2 ? {
+                                background: "linear-gradient(135deg, #00E5FF 0%, #00b8cc 100%)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                              } : {}),
                             }}
-                            style={i === 2 ? {
-                              background: "linear-gradient(135deg, #00E5FF 0%, #00b8cc 100%)",
-                              WebkitBackgroundClip: "text",
-                              WebkitTextFillColor: "transparent",
-                            } : undefined}
                           >
                             {word}
-                          </motion.span>
+                          </span>
                         </span>
                       ))}
                     </h1>

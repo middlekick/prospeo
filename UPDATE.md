@@ -207,6 +207,7 @@
 | 2026-05-18 | Perf | `ScrollDemoSection` + `ConstatSection` (lourdes, sous la ligne de flottaison, → `AnimatedDemo`) en `next/dynamic` — sorties du chunk initial de `/` | `app/page.tsx` |
 | 2026-05-18 | Perf | `NodeNetwork` — boucle RAF gelée hors-vue (IntersectionObserver) + onglet caché (visibilitychange) : fin du drain CPU continu | `app/page.tsx` |
 | 2026-05-18 | PWA | Manifest corrigé — `theme_color` #00E5FF (cohérent layout), `start_url`/`id` `/app`, `scope` `/`, `dir`. SW v2 — fallback hors-ligne brandé pour les navigations non cachées | `app/manifest.ts`, `public/sw.js` |
+| 2026-05-18 | Perf | **LCP 7,9 s → ≈FCP** (PageSpeed mobile 62). Le H1 hero (élément LCP) était `opacity:0` via Framer Motion `initial` → invisible jusqu'à l'hydratation. Remplacé par reveal CSS pur transform-only (`.hero-word`, démarre au 1er paint, respecte reduced-motion) | `app/page.tsx`, `app/globals.css` |
 
 ---
 

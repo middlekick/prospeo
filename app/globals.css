@@ -73,6 +73,19 @@ body {
 /* ── Utilitaires ─────────────────────────────────────────────────────────── */
 .mono { font-family: var(--font-dm-mono), ui-monospace, monospace; }
 
+/* Reveal du titre hero (élément LCP) — CSS pur : démarre dès le 1er paint,
+   sans attendre l'hydratation JS. Slide-up court → LCP ≈ FCP. */
+@keyframes heroWordReveal {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.hero-word {
+  animation: heroWordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-word { animation: none; }
+}
+
 /* Glow brand réutilisable */
 .glow-brand {
   box-shadow: 0 0 40px var(--brand-glow), 0 0 80px rgba(0, 229, 255, 0.06);
