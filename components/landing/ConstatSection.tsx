@@ -66,7 +66,7 @@ const CARDS = [
     kicker:  "Le résultat",
     title:   "Des chiffres réels",
     metrics: [
-      { value: "12 k€",  label: "CA généré en 1 semaine de test" },
+      { value: "+3h",    label: "Gagnées par jour, fini le copier-coller" },
       { value: "×2",     label: "RDV pris par rapport à avant" },
       { value: "0",      label: "Relance oubliée depuis le lancement" },
       { value: "< 1h",   label: "Pour être pleinement opérationnel" },

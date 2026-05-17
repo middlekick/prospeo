@@ -145,7 +145,7 @@
 | 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts ✅ / /api/og (OG images dynamiques) ❌ | ✅ Partiel | 2026-05-17 |
 | 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ✅ Fait | 2026-05-17 |
 | 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ✅ Fait | 2026-05-17 |
-| 15 | 🟡 P2 | Data | Déduplication fuzzy à l'import CSV | ⏳ À faire | — |
+| 15 | 🟡 P2 | Data | Déduplication fuzzy à l'import CSV | ✅ Fait | 2026-05-17 |
 | 16 | 🟡 P2 | UI | Badge trial restant dans la sidebar | ✅ Fait | 2026-05-17 |
 | 17 | 🟢 P3 | Pages | `/produit`, `/cas-dusage`, `/integrations`, `/tarifs`, `/a-propos` | ⏳ À faire | — |
 | 18 | 🟢 P3 | Pages | `/blog` + `/blog/[slug]`, `/changelog` (timeline animée), `/contact` | ⏳ À faire | — |
@@ -198,6 +198,9 @@
 | 2026-05-17 | UX | Bannière post-checkout — redirect Stripe → `/app?checkout=success&plan=`, `CheckoutBanner` (toast bienvenue + refresh plan + URL nettoyée), monté dans LayoutShell | `api/checkout/route.ts`, `CheckoutBanner.tsx`, `LayoutShell.tsx` |
 | 2026-05-17 | UI | Badge trial sidebar — `/api/plan` expose `getTrialInfo`, `usePlan` typé `trial`, badge ambré pulsé "Essai · N jours restants" | `api/plan/route.ts`, `usePlan.ts`, `Sidebar.tsx` |
 | 2026-05-17 | Fix | Mojibake icônes Toast (✓ ✕ ⚠) corrigé | `components/ui/Toast.tsx` |
+| 2026-05-17 | Fix | Build Vercel cassé — CheckoutBanner importait lib/plan (→ Prisma/pg dans bundle navigateur). Labels plan inline client-safe | `components/ui/CheckoutBanner.tsx` |
+| 2026-05-17 | Landing | ConstatSection — métrique « 12 k€ semaine de test » (activité Ads perso, hors sujet CRM) remplacée par « +3h gagnées/jour » | `components/landing/ConstatSection.tsx` |
+| 2026-05-17 | Data | Déduplication fuzzy import CSV — `normalizePhoneKey` (tous formats → 10 chiffres) + `normalizeNameKey` (accents/formes juridiques/tokens triés). Dédup par tel canonique prioritaire, repli nom+ville. Retour `skipped` affiché dans ImportCSV | `lib/phone.ts`, `api/leads/import/route.ts`, `ImportCSV.tsx` |
 
 ---
 

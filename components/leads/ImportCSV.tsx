@@ -75,7 +75,12 @@ export default function ImportCSV({ onClose, onImported }: Props) {
         }
         throw new Error(data.error || "Erreur import");
       }
-      setMsg({ text: `✓ ${data.added} lead(s) importé(s) (doublons ignorés)`, ok: true });
+      setMsg({
+        text: data.skipped
+          ? `✓ ${data.added} lead(s) importé(s) · ${data.skipped} doublon(s) ignoré(s)`
+          : `✓ ${data.added} lead(s) importé(s)`,
+        ok: true,
+      });
       setTimeout(onImported, 1200);
     } catch (e) {
       setMsg({ text: (e as Error).message, ok: false });
