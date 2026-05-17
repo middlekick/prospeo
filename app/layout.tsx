@@ -35,7 +35,7 @@ export const viewport: Viewport = {
   themeColor:   "#00E5FF",   // cyan électrique (brand)
   width:        "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  // Pas de maximumScale/userScalable : bloquer le zoom = échec a11y
   viewportFit:  "cover",
 };
 

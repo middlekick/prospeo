@@ -842,6 +842,9 @@ export default function Landing() {
                   <span className={`text-sm transition-colors ${!annual ? "text-slate-200" : "text-slate-500"}`}>Mensuel</span>
                   <button
                     onClick={() => setAnnual(a => !a)}
+                    role="switch"
+                    aria-checked={annual}
+                    aria-label="Basculer la facturation annuelle"
                     className="relative w-12 h-6 rounded-full bg-white/[0.08] border border-white/[0.1] transition-colors"
                     style={{ background: annual ? "rgba(0,229,255,0.15)" : undefined }}>
                     <motion.span
@@ -1023,13 +1026,15 @@ export default function Landing() {
                   <div className="mt-5 flex items-center gap-3">
                     {/* LinkedIn SVG */}
                     <a href="https://linkedin.com" target="_blank" rel="noopener"
+                       aria-label="Prospeo sur LinkedIn"
                        className="w-8 h-8 rounded-lg border border-white/[0.08] flex items-center justify-center text-text-mute hover:text-brand hover:border-brand/25 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
                     </a>
                     {/* Mail SVG */}
                     <button onClick={() => openContact()}
+                       aria-label="Nous contacter par email"
                        className="w-8 h-8 rounded-lg border border-white/[0.08] flex items-center justify-center text-text-mute hover:text-brand hover:border-brand/25 transition-colors">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     </button>
                   </div>
                 </div>
@@ -1093,11 +1098,13 @@ export default function Landing() {
                 Essai 14 jours  gratuit
               </span>
               <button onClick={() => pay("pro")} disabled={loading}
+                aria-label="Commencer gratuitement"
                 className="px-4 py-2 rounded-full bg-white text-[#0A0A0B] text-xs font-semibold
                            hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
                 {loading ? "" : "Commencer →"}
               </button>
               <button onClick={() => setShowSticky(false)}
+                aria-label="Fermer la bannière"
                 className="text-slate-600 hover:text-slate-400 text-xl leading-none">×</button>
             </div>
           </div>

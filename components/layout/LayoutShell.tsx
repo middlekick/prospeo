@@ -23,7 +23,9 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
     return (
       <>
         <Curtain />
-        <PageFade>{children}</PageFade>
+        <main>
+          <PageFade>{children}</PageFade>
+        </main>
       </>
     );
   }
