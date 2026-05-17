@@ -10,12 +10,13 @@ import {
 import Link            from "next/link";
 import { useUser }     from "@clerk/nextjs";
 import ContactModal    from "@/components/ui/ContactModal";
-import AnimatedDemo    from "@/components/landing/AnimatedDemo";
-import { useToast }    from "@/components/ui/Toast";
-import MagneticButton  from "@/components/ui/MagneticButton";
-import Marquee         from "@/components/ui/Marquee";
-import GradientBorder  from "@/components/ui/GradientBorder";
-import SectionLabel    from "@/components/ui/SectionLabel";
+import AnimatedDemo      from "@/components/landing/AnimatedDemo";
+import ConstatSection    from "@/components/landing/ConstatSection";
+import { useToast }      from "@/components/ui/Toast";
+import MagneticButton    from "@/components/ui/MagneticButton";
+import Marquee           from "@/components/ui/Marquee";
+import GradientBorder    from "@/components/ui/GradientBorder";
+import SectionLabel      from "@/components/ui/SectionLabel";
 
 // ─── Stripe ───────────────────────────────────────────────────────────────────
 async function startCheckout(
@@ -103,7 +104,7 @@ function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean
   );
 }
 
-// ─── Réseau de nœuds animé ───────────────────────────────────────────────────
+// ─── Réseau de nuds animé ───────────────────────────────────────────────────
 function NodeNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -156,7 +157,7 @@ function NodeNetwork() {
         }
       }
 
-      // Nœuds
+      // Nuds
       nodes.forEach(n => {
         n.phase += 0.018;
         const glow = 0.65 + Math.sin(n.phase) * 0.35;
@@ -286,7 +287,7 @@ function HeroCard3D() {
 
       </motion.div>
 
-      {/* ── Badges orbitaux (CSS pur — cross-browser garanti) ── */}
+      {/* ── Badges orbitaux (CSS pur  cross-browser garanti) ── */}
       <div className="absolute -top-5 -right-4 floaty-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full
                    bg-[#0c0e16]/95 border border-brand-400/25 z-10
                    shadow-[0_0_22px_rgba(0,229,255,0.22)] text-[11px] whitespace-nowrap">
@@ -469,11 +470,11 @@ export default function Landing() {
           </nav>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §00 — HERO
+              §00  HERO
           ══════════════════════════════════════════════════════════════════ */}
           <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16 overflow-hidden">
 
-            {/* Réseau de nœuds — fond du hero */}
+            {/* Réseau de nuds  fond du hero */}
             <div className="absolute inset-0 pointer-events-none">
               <NodeNetwork />
             </div>
@@ -486,23 +487,41 @@ export default function Landing() {
                   <div data-reveal>
                     <Eyebrow>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                      §00 — CRM de prospection · 14 jours offerts
+                      §00  CRM de prospection · 14 jours offerts
                     </Eyebrow>
                   </div>
 
-                  {/* Headline principal */}
-                  <div data-reveal data-rd="1" className="mt-8">
+                  {/* Headline principal — stagger word reveal */}
+                  <div className="mt-8">
                     <h1 className="text-[clamp(3rem,9vw,5.8rem)] font-bold leading-[0.94] tracking-[-0.04em] text-slate-50">
-                      Trouve.<br />
-                      Appelle.<br />
-                      <G>Signe.</G>
+                      {["Trouve.", "Appelle.", "Signe."].map((word, i) => (
+                        <span key={word} className="block overflow-hidden">
+                          <motion.span
+                            className="inline-block"
+                            initial={{ y: "105%", opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{
+                              duration: 0.9,
+                              delay:    0.15 + i * 0.13,
+                              ease:     [0.16, 1, 0.3, 1],
+                            }}
+                            style={i === 2 ? {
+                              background: "linear-gradient(135deg, #00E5FF 0%, #00b8cc 100%)",
+                              WebkitBackgroundClip: "text",
+                              WebkitTextFillColor: "transparent",
+                            } : undefined}
+                          >
+                            {word}
+                          </motion.span>
+                        </span>
+                      ))}
                     </h1>
                   </div>
 
                   <div data-reveal data-rd="2" className="mt-7">
                     <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
                       Le CRM qui réunit le sourcing Maps + INPI, le téléprompter d&apos;appel,
-                      les relances automatiques et le suivi RDV —
+                      les relances automatiques et le suivi RDV 
                       dans un seul flux pensé pour le terrain.
                     </p>
                   </div>
@@ -528,7 +547,7 @@ export default function Landing() {
                   { v: <Counter end={50}  suffix="+" />, l: "leads en 1 clic",       c: "text-slate-100" },
                   { v: <Counter end={100} suffix="%" />, l: "relances tracées",       c: "text-brand-300" },
                   { v: <Counter end={14}  suffix="j" />, l: "d'essai offert",         c: "text-brand-400"   },
-                  { v: "0€",                             l: "pour démarrer",          c: "text-slate-100"  },
+                  { v: "0",                             l: "pour démarrer",          c: "text-slate-100"  },
                 ].map((s, i) => (
                   <div key={i}>
                     <div className={`text-2xl sm:text-3xl font-bold tracking-tight ${s.c}`}>{s.v}</div>
@@ -554,46 +573,7 @@ export default function Landing() {
             </Marquee>
           </div>
 
-          <section id="produit" className="px-5 sm:px-6 py-24 sm:py-32">
-            <div className="max-w-5xl mx-auto">
-              <div data-reveal className="text-center mb-14">
-                <Eyebrow>§02 — Le constat</Eyebrow>
-                <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Le tableur ne t&apos;a jamais<br />rappelé un seul client.
-                </h2>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  { t: "Avant",         tone: "bad", items: ["Leads éparpillés dans Excel", "Scripts sur un bout de papier", "Rappels oubliés systématiquement", "Zéro visibilité sur la conversion"] },
-                  { t: "Avec Prospeo",  tone: "mid", items: ["Sourcing auto Maps + INPI", "Téléprompter en direct d'appel", "Rappels visuels + alertes auto", "Funnel temps réel"] },
-                  { t: "Le résultat",   tone: "good", items: ["2× plus de leads qualifiés", "Meilleur taux de closing", "0 relance oubliée", "Décisions basées sur les données"] },
-                ].map((c, i) => (
-                  <div key={i} data-reveal data-rd={String(i + 1)}
-                    className={`p-7 rounded-2xl border backdrop-blur-sm transition-all
-                      ${c.tone === "bad"  ? "border-white/[0.06] bg-white/[0.02]"
-                      : c.tone === "mid"  ? "border-brand-500/20 bg-brand-500/[0.05] shadow-[0_0_60px_-20px_rgba(0,229,255,0.45)]"
-                      :                     "border-brand-400/20 bg-brand-500/[0.04]"}`}>
-                    <div className={`text-[10px] font-mono uppercase tracking-widest mb-5
-                      ${c.tone === "bad" ? "text-slate-600" : c.tone === "mid" ? "text-brand-300" : "text-brand-400"}`}>
-                      {c.t}
-                    </div>
-                    <ul className="space-y-3">
-                      {c.items.map(it => (
-                        <li key={it} className={`flex items-start gap-2.5 text-sm
-                          ${c.tone === "bad" ? "text-slate-500" : "text-slate-300"}`}>
-                          {c.tone === "bad"
-                            ? <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-slate-700" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                            : <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand-400" viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3.5 3.5 5.5-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          }
-                          {it}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+          <ConstatSection />
 
 
           {/* §03  SOCIAL PROOF */}
@@ -640,12 +620,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §04 — FEATURES + démo intégrée
+              §04  FEATURES + démo intégrée
           ══════════════════════════════════════════════════════════════════ */}
           <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-6xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§04 — Fonctionnalités</Eyebrow>
+                <Eyebrow>§04  Fonctionnalités</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Tout le pipeline.<br /><G>Un seul écran.</G>
                 </h2>
@@ -653,7 +633,7 @@ export default function Landing() {
 
               <div className="flex flex-col gap-4">
 
-                {/* ── Démo animée — pleine largeur, chrome intégré dans le composant ── */}
+                {/* ── Démo animée  pleine largeur, chrome intégré dans le composant ── */}
                 <div data-reveal className="relative rounded-3xl border border-white/[0.08] overflow-hidden
                                             shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
                   <div className="absolute -inset-x-0 -top-16 h-48 -z-10 blur-[80px] opacity-40 pointer-events-none"
@@ -661,7 +641,7 @@ export default function Landing() {
                   <AnimatedDemo />
                 </div>
 
-                {/* ── Grille 3×2 — aucune carte isolée ── */}
+                {/* ── Grille 3×2  aucune carte isolée ── */}
                 <div className="grid md:grid-cols-3 gap-4">
                   {[
                     {
@@ -734,12 +714,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §05 — HOW
+              §05  HOW
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-16">
-                <Eyebrow cyan>§05 — En pratique</Eyebrow>
+                <Eyebrow cyan>§05  En pratique</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Zéro à ton premier RDV<br /><G>en moins d&apos;une heure.</G>
                 </h2>
@@ -769,12 +749,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §06 — COMPARATIF
+              §06  COMPARATIF
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-4xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§06 — Comparatif</Eyebrow>
+                <Eyebrow>§06  Comparatif</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Pourquoi pas Notion ou HubSpot&nbsp;?
                 </h2>
@@ -800,7 +780,7 @@ export default function Landing() {
                       ["Funnel & taux de décrochage",    true,      false,      true ],
                       ["Vue Kanban + session d'appels",  true,      false,      false],
                       ["Import/export CSV",              true,      true,       true ],
-                      ["Prix mensuel",                  "19€",     "0-16€",    "0€ (très limité)"],
+                      ["Prix mensuel",                  "19",     "0-16",    "0 (très limité)"],
                       ["Prise en main",                 "< 1h",    "Moyenne",  "Élevée"],
                     ].map((r, i) => (
                       <tr key={i} className={`border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.01]" : ""}`}>
@@ -824,12 +804,12 @@ export default function Landing() {
 
 
           {/* ══════════════════════════════════════════════════════════════════
-              §07 — PRICING
+              §07  PRICING
           ══════════════════════════════════════════════════════════════════ */}
           <section id="pricing" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-12">
-                <Eyebrow>§07 — Tarifs</Eyebrow>
+                <Eyebrow>§07  Tarifs</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em]">
                   Simple. <G>Transparent.</G>
                 </h2>
@@ -902,7 +882,7 @@ export default function Landing() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.2 }}
                           className="text-4xl font-bold text-slate-50">
-                          {displayPrice}€
+                          {displayPrice}
                         </motion.span>
                         {displayPrice !== "0" && (
                           <span className="text-slate-500 mb-1 text-sm">/mois
@@ -912,7 +892,7 @@ export default function Landing() {
                       </div>
                       {annual && p.monthlyPrice !== "0" && (
                         <p className="text-[11px] text-slate-600 mt-0.5 font-mono">
-                          soit {parseInt(p.annualPrice) * 12}€/an — économie {(parseInt(p.monthlyPrice) - parseInt(p.annualPrice)) * 12}€
+                          soit {parseInt(p.annualPrice) * 12}/an  économie {(parseInt(p.monthlyPrice) - parseInt(p.annualPrice)) * 12}
                         </p>
                       )}
                       <p className="mt-2 text-sm text-slate-500">{p.desc}</p>
@@ -945,12 +925,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §08 — FAQ
+              §08  FAQ
           ══════════════════════════════════════════════════════════════════ */}
           <section id="faq" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-2xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§08 — FAQ</Eyebrow>
+                <Eyebrow>§08  FAQ</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Questions directes.
                 </h2>
@@ -958,7 +938,7 @@ export default function Landing() {
               <div data-reveal className="space-y-1">
                 {[
                   { q: "Faut-il une carte bancaire pour l'essai ?", a: "Non. L'essai de 14 jours ne demande aucune carte. Vous n'êtes débité qu'à la fin si vous continuez." },
-                  { q: "Mes données sont-elles sécurisées ?", a: "Oui. Chaque compte est totalement isolé — vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffré SSL." },
+                  { q: "Mes données sont-elles sécurisées ?", a: "Oui. Chaque compte est totalement isolé  vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffré SSL." },
                   { q: "Puis-je importer mes leads existants ?", a: "Oui : CSV avec auto-détection des colonnes, import INPI, ou scraping Google Maps direct." },
                   { q: "Comment marche le scraping Google Maps ?", a: "Métier + ville → Prospeo interroge Maps et remplit le tableau (nom, tel, site, adresse). Doublons filtrés automatiquement." },
                   { q: "Puis-je annuler à tout moment ?", a: "Oui, sans frais. Annulation depuis l'espace client, accès conservé jusqu'à la fin de la période payée." },
@@ -969,7 +949,7 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §09 — CTA FINAL
+              §09  CTA FINAL
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-28 sm:py-44 relative overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -977,7 +957,7 @@ export default function Landing() {
                    style={{ background: "radial-gradient(ellipse, rgba(0,229,255,0.25) 0%, rgba(0,229,255,0.08) 50%, transparent 70%)" }} />
             </div>
             <div data-reveal className="relative max-w-2xl mx-auto text-center">
-              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09 — Commence maintenant</p>
+              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09  Commence maintenant</p>
               <h2 className="text-4xl sm:text-6xl font-bold text-slate-50 tracking-[-0.03em] leading-[1.04]">
                 Prospecte comme<br /><G>un closer.</G>
               </h2>
@@ -1087,12 +1067,12 @@ export default function Landing() {
             <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#111114]/95 border border-brand-500/15 backdrop-blur-xl
                             shadow-[0_0_40px_rgba(0,229,255,0.18),0_8px_32px_rgba(0,0,0,0.6)]">
               <span className="text-sm text-slate-300 font-medium flex-1 min-w-0 truncate">
-                Essai 14 jours — gratuit
+                Essai 14 jours  gratuit
               </span>
               <button onClick={() => pay("pro")} disabled={loading}
                 className="px-4 py-2 rounded-full bg-white text-[#0A0A0B] text-xs font-semibold
                            hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
-                {loading ? "…" : "Commencer →"}
+                {loading ? "" : "Commencer →"}
               </button>
               <button onClick={() => setShowSticky(false)}
                 className="text-slate-600 hover:text-slate-400 text-xl leading-none">×</button>
