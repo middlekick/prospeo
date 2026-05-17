@@ -114,6 +114,101 @@ function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean
   );
 }
 
+// ─── Réseau de nœuds animé ───────────────────────────────────────────────────
+function NodeNetwork() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Dimensions réelles
+    const setSize = () => {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    setSize();
+    window.addEventListener("resize", setSize);
+
+    type Node = { x: number; y: number; vx: number; vy: number; r: number; col: string; phase: number };
+    const COLORS = ["124,58,237", "6,182,212", "124,58,237", "139,92,246"];
+    const nodes: Node[] = Array.from({ length: 22 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: 1.5 + Math.random() * 2.5,
+      col: COLORS[Math.floor(Math.random() * COLORS.length)],
+      phase: Math.random() * Math.PI * 2,
+    }));
+
+    let raf: number;
+    function draw() {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      const W = canvas!.width, H = canvas!.height;
+
+      // Connexions
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[j].x - nodes[i].x;
+          const dy = nodes[j].y - nodes[i].y;
+          const d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < 190) {
+            ctx!.beginPath();
+            ctx!.moveTo(nodes[i].x, nodes[i].y);
+            ctx!.lineTo(nodes[j].x, nodes[j].y);
+            const a = (1 - d / 190) * 0.12;
+            ctx!.strokeStyle = `rgba(124,58,237,${a})`;
+            ctx!.lineWidth = 0.6;
+            ctx!.stroke();
+          }
+        }
+      }
+
+      // Nœuds
+      nodes.forEach(n => {
+        n.phase += 0.018;
+        const glow = 0.65 + Math.sin(n.phase) * 0.35;
+
+        // Halo
+        const g = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 5);
+        g.addColorStop(0, `rgba(${n.col},${glow * 0.35})`);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, n.r * 5, 0, Math.PI * 2);
+        ctx!.fillStyle = g;
+        ctx!.fill();
+
+        // Core
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(${n.col},${glow})`;
+        ctx!.fill();
+
+        // Déplacement + rebond
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      });
+
+      raf = requestAnimationFrame(draw);
+    }
+    draw();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", setSize);
+    };
+  }, []);
+
+  return (
+    <canvas ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none opacity-35" />
+  );
+}
+
 // ─── Carte 3D hero ────────────────────────────────────────────────────────────
 const FAKE_LEADS = [
   { nom: "Dupont Plomberie", metier: "Plombier",    badge: "Intéressé",   col: "violet" },
@@ -200,46 +295,30 @@ function HeroCard3D() {
           </div>
         </div>
 
-        {/* ── Badge orbital RDV ── */}
-        <motion.div
-          style={{ translateZ: 60, transformStyle: "preserve-3d" } as React.CSSProperties}
-          animate={{ y: [0, -8, 0] }}
-          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-          className="absolute -top-5 -right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full
-                     bg-[#0c0e16]/95 border border-cyan-400/25
-                     shadow-[0_0_20px_rgba(6,182,212,0.18)] text-[11px] whitespace-nowrap"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.9)]" />
-          <span className="text-cyan-300 font-medium">RDV pris · 14h30</span>
-        </motion.div>
-
-        {/* ── Badge orbital email ── */}
-        <motion.div
-          style={{ translateZ: 50, transformStyle: "preserve-3d" } as React.CSSProperties}
-          animate={{ y: [0, 7, 0] }}
-          transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut", delay: 1.5 }}
-          className="absolute -bottom-5 -left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full
-                     bg-[#0c0e16]/95 border border-violet-400/25
-                     shadow-[0_0_18px_rgba(124,58,237,0.18)] text-[11px] whitespace-nowrap"
-        >
-          <span className="text-xs">✉️</span>
-          <span className="text-violet-300 font-medium">Offre envoyée</span>
-        </motion.div>
-
-        {/* ── Badge orbital session ── */}
-        <motion.div
-          style={{ translateZ: 45, transformStyle: "preserve-3d" } as React.CSSProperties}
-          animate={{ y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 6.5, ease: "easeInOut", delay: 2.5 }}
-          className="absolute top-[40%] -right-12 flex items-center gap-1.5 px-2.5 py-1 rounded-full
-                     bg-[#0c0e16]/95 border border-emerald-400/20
-                     shadow-[0_0_14px_rgba(52,211,153,0.12)] text-[10px] whitespace-nowrap"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-emerald-300 font-mono">Session active</span>
-        </motion.div>
-
       </motion.div>
+
+      {/* ── Badges orbitaux (CSS pur — cross-browser garanti) ── */}
+      <div className="absolute -top-5 -right-4 floaty-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                   bg-[#0c0e16]/95 border border-cyan-400/25 z-10
+                   shadow-[0_0_22px_rgba(6,182,212,0.22)] text-[11px] whitespace-nowrap">
+        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.9)]" />
+        <span className="text-cyan-300 font-medium">RDV pris · 14h30</span>
+      </div>
+
+      <div className="absolute -bottom-5 -left-4 floaty-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                   bg-[#0c0e16]/95 border border-violet-400/25 z-10
+                   shadow-[0_0_20px_rgba(124,58,237,0.20)] text-[11px] whitespace-nowrap">
+        <span className="text-xs">✉️</span>
+        <span className="text-violet-300 font-medium">Offre envoyée</span>
+      </div>
+
+      <div className="absolute top-[38%] -right-12 floaty-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                   bg-[#0c0e16]/95 border border-emerald-400/20 z-10
+                   shadow-[0_0_16px_rgba(52,211,153,0.14)] text-[10px] whitespace-nowrap">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-emerald-300 font-mono">Session active</span>
+      </div>
+
     </div>
   );
 }
@@ -306,8 +385,14 @@ export default function Landing() {
         [data-rd="3"]{transition-delay:.21s}[data-rd="4"]{transition-delay:.28s}
         @keyframes aurora{0%,100%{transform:translate3d(-6%,0,0)scale(1)}50%{transform:translate3d(6%,4%,0)scale(1.14)}}
         @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+        @keyframes floaty1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes floaty2{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+        @keyframes floaty3{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
         .aurora{animation:aurora 22s ease-in-out infinite}
         .floaty{animation:floaty 7s ease-in-out infinite}
+        .floaty-1{animation:floaty1 4s ease-in-out infinite}
+        .floaty-2{animation:floaty2 5.5s ease-in-out infinite 1.3s}
+        .floaty-3{animation:floaty3 6.5s ease-in-out infinite 2.4s}
         .grain:before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
           background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
           opacity:.5}
@@ -379,40 +464,39 @@ export default function Landing() {
           {/* ══════════════════════════════════════════════════════════════════
               §00 — HERO
           ══════════════════════════════════════════════════════════════════ */}
-          <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid lg:grid-cols-[1fr_480px] gap-12 lg:gap-16 items-center">
+          <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16 overflow-hidden">
+
+            {/* Réseau de nœuds — fond du hero */}
+            <div className="absolute inset-0 pointer-events-none">
+              <NodeNetwork />
+            </div>
+
+            <div className="relative max-w-6xl mx-auto">
+              <div className="grid lg:grid-cols-[1fr_460px] gap-12 lg:gap-20 items-center">
 
                 {/* ── Colonne texte ── */}
                 <div>
                   <div data-reveal>
                     <Eyebrow>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                      §00 — Preuve · 14 jours offerts
+                      §00 — CRM de prospection · 14 jours offerts
                     </Eyebrow>
                   </div>
 
-                  {/* Claim B — le chiffre qui ancre */}
+                  {/* Headline principal */}
                   <div data-reveal data-rd="1" className="mt-8">
-                    <p className="font-mono text-[11px] text-slate-600 uppercase tracking-[0.18em] mb-3">
-                      Étude de cas · Paysagiste · France
-                    </p>
-                    <h1 className="text-[clamp(3.5rem,10vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.04em] text-slate-50">
-                      150 000€
+                    <h1 className="text-[clamp(3rem,9vw,5.8rem)] font-bold leading-[0.94] tracking-[-0.04em] text-slate-50">
+                      Trouve.<br />
+                      Appelle.<br />
+                      <G>Signe.</G>
                     </h1>
-                    <p className="mt-2 text-[clamp(1.1rem,3vw,1.5rem)] text-slate-400 font-light tracking-[-0.01em]">
-                      Un artisan. Trois mois.
-                    </p>
                   </div>
 
-                  {/* Claim A — la promesse outil */}
-                  <div data-reveal data-rd="2" className="mt-8">
-                    <p className="text-[clamp(1rem,2.5vw,1.25rem)] font-mono text-slate-500 tracking-tight">
-                      <G>Trouve.</G>{" "}<G>Appelle.</G>{" "}<G>Signe.</G>
-                    </p>
-                    <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
+                  <div data-reveal data-rd="2" className="mt-7">
+                    <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
                       Le CRM qui réunit le sourcing Maps + INPI, le téléprompter d&apos;appel,
-                      les relances et le suivi RDV — dans un seul flux pensé pour le terrain.
+                      les relances automatiques et le suivi RDV —
+                      dans un seul flux pensé pour le terrain.
                     </p>
                   </div>
 
