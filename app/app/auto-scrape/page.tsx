@@ -181,13 +181,21 @@ export default function AutoScrapePage() {
         <div className="max-w-2xl mx-auto space-y-6">
 
           {/* Bandeau info */}
-          <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-violet-500/[0.06] border border-violet-500/20">
-            <span className="text-lg shrink-0">⏰</span>
-            <div className="text-sm text-slate-400 leading-relaxed">
-              <span className="text-slate-200 font-medium">Chaque matin à 8h</span>
-              {" "}— Prospeo scrape automatiquement les leads correspondant à tes configs et les ajoute à ton CRM.
-              Les doublons sont automatiquement ignorés.
-              Tu peux aussi lancer le scraping manuellement à tout moment.
+          <div className="relative flex items-start gap-4 px-5 py-4 rounded-2xl border border-emerald-500/[0.15] bg-gradient-to-r from-emerald-500/[0.05] to-transparent overflow-hidden">
+            <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full blur-3xl bg-emerald-500/10 pointer-events-none" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/[0.12] border border-emerald-500/[0.20] flex items-center justify-center shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div className="flex-1 relative">
+              <div className="text-[13px] font-semibold text-slate-200 mb-0.5">
+                Automatisé chaque matin à <span className="text-emerald-300 font-mono">8h00</span>
+              </div>
+              <div className="text-[12px] text-slate-500 leading-relaxed">
+                Prospeo scrape automatiquement les leads et les ajoute à ton CRM. Les doublons sont ignorés. Tu peux aussi lancer manuellement à tout moment.
+              </div>
             </div>
           </div>
 
@@ -325,59 +333,74 @@ export default function AutoScrapePage() {
                 <div
                   key={cfg.id}
                   className={[
-                    "flex items-center gap-4 px-4 py-4 rounded-xl border transition-all",
+                    "flex items-center gap-4 px-4 py-4 rounded-2xl border transition-all",
                     cfg.enabled
-                      ? "border-white/[0.08] bg-white/[0.025]"
-                      : "border-white/[0.04] bg-white/[0.01] opacity-50",
+                      ? "border-emerald-500/[0.15] bg-gradient-to-r from-emerald-500/[0.04] to-transparent hover:from-emerald-500/[0.07]"
+                      : "border-white/[0.05] bg-white/[0.02] opacity-50",
                   ].join(" ")}
                 >
+                  {/* Icône métier */}
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
+                    cfg.enabled
+                      ? "bg-emerald-500/[0.10] border-emerald-500/[0.18]"
+                      : "bg-white/[0.04] border-white/[0.07]"
+                  }`}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+                      className={cfg.enabled ? "text-emerald-400" : "text-slate-600"}>
+                      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                  </div>
+
+                  {/* Infos */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[13px] font-semibold text-slate-200 capitalize">{cfg.metier}</span>
+                      <span className="text-slate-600">·</span>
+                      <span className="text-[13px] text-slate-300">{cfg.ville}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-slate-500 font-mono">
+                        {cfg.nb_per_run} leads/run
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-600 mt-1 flex items-center gap-2">
+                      {cfg.last_run_at ? (
+                        <>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                          <span>{fmtDate(cfg.last_run_at)}</span>
+                          {cfg.last_run_added !== null && (
+                            <span className="text-emerald-500/80 font-mono font-medium">+{cfg.last_run_added} ajoutés</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="italic">Pas encore exécuté</span>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Toggle */}
                   <button
                     onClick={() => toggleEnabled(cfg.id, cfg.enabled)}
                     title={cfg.enabled ? "Désactiver" : "Activer"}
                     className={[
-                      "w-10 h-6 rounded-full relative transition-colors shrink-0",
-                      cfg.enabled ? "bg-emerald-500/80" : "bg-slate-700",
+                      "w-11 h-6 rounded-full relative transition-colors shrink-0 border",
+                      cfg.enabled
+                        ? "bg-emerald-500/70 border-emerald-500/40 shadow-[0_0_10px_rgba(52,211,153,0.3)]"
+                        : "bg-slate-800 border-white/[0.10]",
                     ].join(" ")}
                   >
                     <span className={[
-                      "absolute top-1 w-4 h-4 rounded-full bg-white transition-all",
-                      cfg.enabled ? "left-5" : "left-1",
+                      "absolute top-[3px] w-[18px] h-[18px] rounded-full bg-white shadow transition-all",
+                      cfg.enabled ? "left-[22px]" : "left-[3px]",
                     ].join(" ")} />
                   </button>
-
-                  {/* Infos */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-200 capitalize">{cfg.metier}</span>
-                      <span className="text-slate-600">·</span>
-                      <span className="text-sm text-slate-300">{cfg.ville}</span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/[0.06] text-slate-500 mono">
-                        {cfg.nb_per_run} leads/run
-                      </span>
-                    </div>
-                    <div className="text-xs text-slate-600 mt-0.5">
-                      {cfg.last_run_at ? (
-                        <>
-                          Dernier run : <span className="text-slate-500">{fmtDate(cfg.last_run_at)}</span>
-                          {cfg.last_run_added !== null && (
-                            <> · <span className="text-emerald-500/80">+{cfg.last_run_added} ajoutés</span></>
-                          )}
-                        </>
-                      ) : (
-                        "Pas encore exécuté"
-                      )}
-                    </div>
-                  </div>
 
                   {/* Supprimer */}
                   <button
                     onClick={() => handleDelete(cfg.id)}
-                    className="h-7 w-7 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20
-                               text-red-400 text-xs transition-all shrink-0"
+                    className="h-7 w-7 rounded-lg bg-red-500/[0.07] hover:bg-red-500/20 border border-red-500/[0.15]
+                               text-red-400/70 hover:text-red-400 flex items-center justify-center transition-all shrink-0"
                     title="Supprimer"
                   >
-                    ✕
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
                   </button>
                 </div>
               ))}

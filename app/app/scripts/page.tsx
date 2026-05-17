@@ -745,28 +745,44 @@ function ScriptList({
     return (
       <div
         onClick={() => onOpen(script)}
-        className="group relative flex items-center gap-4 px-4 py-4 rounded-xl border border-white/[0.06]
-                   bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.10] cursor-pointer transition-all"
+        className={[
+          "group relative flex items-center gap-4 px-4 py-4 rounded-2xl border cursor-pointer transition-all overflow-hidden",
+          isCold
+            ? "border-cyan-500/[0.12] bg-gradient-to-r from-cyan-500/[0.04] to-transparent hover:border-cyan-500/[0.20] hover:from-cyan-500/[0.07]"
+            : "border-violet-500/[0.12] bg-gradient-to-r from-violet-500/[0.04] to-transparent hover:border-violet-500/[0.20] hover:from-violet-500/[0.07]",
+        ].join(" ")}
       >
-        {/* Badge type */}
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 ${
-          isCold ? "bg-cyan-500/10 border border-cyan-500/20" : "bg-violet-500/10 border border-violet-500/20"
+        {/* Icône type avec SVG */}
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${
+          isCold ? "bg-cyan-500/[0.12] border-cyan-500/[0.20]" : "bg-violet-500/[0.12] border-violet-500/[0.20]"
         }`}>
-          {isCold ? "📞" : "🤝"}
+          {isCold ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-violet-400">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          )}
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold text-slate-200 group-hover:text-white truncate transition-colors">
+          <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1">
             {script.title}
           </div>
-          <div className="text-xs text-slate-600 mt-0.5">
-            <span className={`font-medium ${isCold ? "text-cyan-600" : "text-violet-600"}`}>
+          <div className="flex items-center gap-2">
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono uppercase tracking-wide ${
+              isCold ? "bg-cyan-500/[0.12] text-cyan-400 border border-cyan-500/20" : "bg-violet-500/[0.12] text-violet-400 border border-violet-500/20"
+            }`}>
               {isCold ? "Cold Call" : "Closing"}
             </span>
-            <span className="mx-1.5">·</span>
-            <span>{count} {suffix}{count > 1 ? "s" : ""}</span>
-            <span className="mx-1.5">·</span>
-            <span className="mono">{new Date(script.updatedAt).toLocaleDateString("fr-FR")}</span>
+            <span className="text-[11px] text-slate-600 font-mono">{count} {suffix}{count > 1 ? "s" : ""}</span>
+            <span className="text-slate-700">·</span>
+            <span className="text-[11px] text-slate-700 font-mono">{new Date(script.updatedAt).toLocaleDateString("fr-FR")}</span>
           </div>
         </div>
 
@@ -775,21 +791,27 @@ function ScriptList({
           <button
             onClick={e => { e.stopPropagation(); onEdit(script); }}
             title="Modifier"
-            className="h-7 w-7 rounded-lg bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.08] text-slate-400 text-xs transition-all"
-          >✏️</button>
+            className="h-7 w-7 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] text-slate-400 hover:text-slate-200 text-xs transition-all flex items-center justify-center"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
           <button
             onClick={exportSingle}
             title="Exporter"
-            className="h-7 w-7 rounded-lg bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.08] text-slate-400 text-xs transition-all"
-          >⬇</button>
+            className="h-7 w-7 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] text-slate-400 hover:text-slate-200 text-xs transition-all flex items-center justify-center"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
           <button
             onClick={e => { e.stopPropagation(); onDelete(script.id); }}
             title="Supprimer"
-            className="h-7 w-7 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-xs transition-all"
-          >✕</button>
+            className="h-7 w-7 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-xs transition-all flex items-center justify-center"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          </button>
         </div>
 
-        <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs shrink-0">→</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-slate-700 group-hover:text-slate-400 transition-colors shrink-0"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
     );
   }
@@ -911,30 +933,33 @@ function ScriptList({
             {/* Carte script Google Ads intégré */}
             <section>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-bold tracking-widest text-orange-500/80 uppercase">Intégré</span>
-                <span className="text-[10px] mono text-slate-700">Formation</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                <span className="text-[10px] font-mono tracking-widest text-orange-400/70 uppercase">Formation intégrée</span>
               </div>
               <div
                 onClick={onOpenGads}
-                className="group relative flex items-center gap-4 px-4 py-4 rounded-xl border border-orange-500/20
-                           bg-orange-500/[0.04] hover:bg-orange-500/[0.08] hover:border-orange-500/30 cursor-pointer transition-all"
+                className="group relative flex items-center gap-4 px-4 py-4 rounded-2xl border border-orange-500/[0.18]
+                           bg-gradient-to-r from-orange-500/[0.06] to-transparent
+                           hover:from-orange-500/[0.10] hover:border-orange-500/[0.28] cursor-pointer transition-all overflow-hidden"
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 bg-orange-500/10 border border-orange-500/20">
-                  🎯
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 bg-orange-500/[0.12] border border-orange-500/[0.22]">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-orange-400">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="10 8 16 12 10 16 10 8"/>
+                  </svg>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-slate-200 group-hover:text-white truncate transition-colors">
+                  <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1">
                     Script Google Ads — Setting & Closing
                   </div>
-                  <div className="text-xs text-slate-600 mt-0.5">
-                    <span className="font-medium text-orange-500/80">Formation 10kchallenge</span>
-                    <span className="mx-1.5">·</span>
-                    <span>Phase 1 : Prospection (6 étapes)</span>
-                    <span className="mx-1.5">·</span>
-                    <span>Phase 2 : Closing (8 étapes)</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full font-mono uppercase tracking-wide bg-orange-500/[0.12] text-orange-400 border border-orange-500/20">
+                      10kchallenge
+                    </span>
+                    <span className="text-[11px] text-slate-600">6 étapes prospection · 8 étapes closing</span>
                   </div>
                 </div>
-                <span className="text-slate-700 group-hover:text-orange-400 transition-colors text-xs shrink-0">→</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-slate-700 group-hover:text-orange-400 transition-colors shrink-0"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
             </section>
 
@@ -942,8 +967,9 @@ function ScriptList({
             {coldCalls.length > 0 && (
               <section>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold tracking-widest text-cyan-600/80 uppercase">Cold Call</span>
-                  <span className="text-[10px] mono text-slate-700">{coldCalls.length}</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span className="text-[10px] font-mono tracking-widest text-cyan-400/70 uppercase">Cold Call</span>
+                  <span className="text-[10px] font-mono text-slate-700 ml-1">{coldCalls.length}</span>
                 </div>
                 <div className="space-y-2">
                   {coldCalls.map(s => <ScriptCard key={s.id} script={s} />)}
@@ -955,8 +981,9 @@ function ScriptList({
             {closings.length > 0 && (
               <section>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold tracking-widest text-violet-500/80 uppercase">Closing</span>
-                  <span className="text-[10px] mono text-slate-700">{closings.length}</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                  <span className="text-[10px] font-mono tracking-widest text-violet-400/70 uppercase">Closing</span>
+                  <span className="text-[10px] font-mono text-slate-700 ml-1">{closings.length}</span>
                 </div>
                 <div className="space-y-2">
                   {closings.map(s => <ScriptCard key={s.id} script={s} />)}

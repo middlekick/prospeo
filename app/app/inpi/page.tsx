@@ -87,31 +87,53 @@ export default function INPIPage() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Ligne gradient haut */}
+      {/* Trait de lumière haut */}
       <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
+
+      {/* Header INPI */}
+      <header className="flex items-center justify-between gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
+        <div>
+          <h1 className="text-[13px] font-semibold text-slate-200 tracking-tight">INPI / RNE</h1>
+          <p className="text-[11px] text-slate-600 mt-0.5">Base nationale des entreprises — Registre National des Entreprises</p>
+        </div>
+        {/* Chips capacités */}
+        <div className="hidden md:flex items-center gap-2">
+          {[
+            { label: "Dpt. & NAF", color: "text-cyan-400 bg-cyan-500/[0.07] border-cyan-500/[0.15]" },
+            { label: "Artisans RM", color: "text-violet-400 bg-violet-500/[0.07] border-violet-500/[0.15]" },
+            { label: "Auto-enrichissement", color: "text-emerald-400 bg-emerald-500/[0.07] border-emerald-500/[0.15]" },
+          ].map(c => (
+            <span key={c.label} className={`text-[10px] font-medium px-2.5 py-1 rounded-full border font-mono ${c.color}`}>
+              {c.label}
+            </span>
+          ))}
+        </div>
+      </header>
 
       {/* Bandeau d'enrichissement automatique */}
       {(enriching || enrichMsg) && (
-        <div className="flex items-center gap-3 px-5 py-2 bg-cyan-500/[0.06] border-b border-cyan-500/15 shrink-0">
+        <div className="flex items-center gap-3 px-5 py-2.5 bg-cyan-500/[0.05] border-b border-cyan-500/[0.12] shrink-0">
           {enriching ? (
             <>
-              <div className="h-1 w-32 bg-white/10 rounded-full overflow-hidden">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400 animate-spin shrink-0"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              <div className="h-1.5 w-36 bg-white/[0.06] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-cyan-500 rounded-full transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full transition-all duration-300"
                   style={{ width: `${enrichPct}%` }}
                 />
               </div>
-              <span className="text-xs text-cyan-400/70">
-                Enrichissement en cours — recherche des numéros via Google Maps…
+              <span className="text-[12px] text-cyan-400/70">
+                Enrichissement en cours — {enrichPct}% — recherche des numéros via Google Maps…
               </span>
             </>
           ) : (
-            <span className={`text-xs mono ${enrichMsg.startsWith("✓") ? "text-green-400" : "text-slate-500"}`}>
+            <span className={`text-[12px] font-mono ${enrichMsg.startsWith("✓") ? "text-emerald-400" : "text-slate-500"}`}>
               {enrichMsg}
             </span>
           )}
         </div>
       )}
+
       <INPISearch onAddLeads={handleAddLeads} />
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link                               from "next/link";
 import { Lead, TAG_COLORS }              from "@/components/leads/types";
 import { usePlan }                        from "@/hooks/usePlan";
@@ -154,7 +154,7 @@ function FunnelBar({
           <span className="text-xs text-slate-700 w-8 text-right">{pct}%</span>
         </div>
       </div>
-      <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+      <div className="h-[5px] bg-white/[0.05] rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-700 ${bg}`}
           style={{ width: `${pct}%` }} />
       </div>
@@ -165,21 +165,42 @@ function FunnelBar({
 // ── Carte stat ────────────────────────────────────────────────────────────────
 
 function StatCard({
-  label, value, sub, color, iconBg, icon, glow,
+  label, value, sub, color, borderColor, iconBg, iconSvg, active,
 }: {
   label: string; value: number | string; sub?: string;
-  color: string; iconBg: string; icon: string; glow?: string;
+  color: string; borderColor: string; iconBg: string;
+  iconSvg: React.ReactNode; active?: boolean;
 }) {
   return (
-    <div className={`rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5 flex flex-col gap-3 transition-all hover:bg-white/[0.09] ${glow || ""}`}>
+    <div className={[
+      "rounded-2xl border p-5 flex flex-col gap-3 transition-all group relative overflow-hidden",
+      active
+        ? `${borderColor} bg-white/[0.05] hover:bg-white/[0.08]`
+        : "border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.05]",
+    ].join(" ")}>
+      {/* Halo de fond subtil */}
+      {active && (
+        <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none"
+          style={{ background: "inherit" }} />
+      )}
+
       <div className="flex items-start justify-between gap-2">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${iconBg}`}>
-          {icon}
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
+          {iconSvg}
         </div>
-        <span className="text-xs text-slate-500 text-right leading-snug">{label}</span>
+        <span className="text-[11px] text-slate-500 text-right leading-snug font-medium tracking-wide">{label}</span>
       </div>
-      <div className={`text-4xl font-bold mono leading-none ${color}`}>{value}</div>
-      {sub && <div className="text-xs text-slate-600 leading-snug">{sub}</div>}
+
+      <div className={`text-[38px] font-bold font-mono leading-none ${active ? color : "text-slate-700"}`}>
+        {value}
+      </div>
+
+      {sub && (
+        <div className="text-[11px] leading-snug flex items-center gap-1.5">
+          {active && <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${color.replace("text-", "bg-")} opacity-60`} />}
+          <span className={active ? "text-slate-500" : "text-slate-700"}>{sub}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -408,39 +429,68 @@ export default function DashboardPage() {
         {/* ── Cartes stat ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            icon="📞"
             label={`Contactés — ${periodLabel}`}
             value={stats.contactedPeriod}
-            sub={stats.contactedPeriod === 0 ? "Aucun appel enregistré" : `leads démarchés`}
-            color={stats.contactedPeriod > 0 ? "text-violet-300" : "text-slate-600"}
+            sub={stats.contactedPeriod === 0 ? "Aucun appel enregistré" : "leads démarchés"}
+            color="text-violet-300"
+            borderColor="border-violet-500/[0.22]"
             iconBg="bg-violet-500/15"
-            glow={stats.contactedPeriod > 0 ? "shadow-[0_0_30px_rgba(124,58,237,0.08)]" : ""}
+            active={stats.contactedPeriod > 0}
+            iconSvg={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-violet-400">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.08 6.08l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+              </svg>
+            }
           />
           <StatCard
-            icon="➕"
             label={`Ajoutés — ${periodLabel}`}
             value={stats.addedPeriod}
             sub="nouveaux leads dans le CRM"
-            color={stats.addedPeriod > 0 ? "text-cyan-300" : "text-slate-600"}
-            iconBg="bg-cyan-500/15"
+            color="text-cyan-300"
+            borderColor="border-cyan-500/[0.20]"
+            iconBg="bg-cyan-500/12"
+            active={stats.addedPeriod > 0}
+            iconSvg={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+            }
           />
           <StatCard
-            icon="📅"
             label="RDV à venir"
             value={stats.rdvPeriod}
             sub={stats.rdvPeriod === 0 ? "Aucun RDV programmé" : "à partir d'aujourd'hui"}
-            color={stats.rdvPeriod > 0 ? "text-emerald-300" : "text-slate-600"}
-            iconBg={stats.rdvPeriod > 0 ? "bg-emerald-500/15" : "bg-white/[0.06]"}
-            glow={stats.rdvPeriod > 0 ? "shadow-[0_0_30px_rgba(52,211,153,0.07)]" : ""}
+            color="text-emerald-300"
+            borderColor="border-emerald-500/[0.20]"
+            iconBg="bg-emerald-500/12"
+            active={stats.rdvPeriod > 0}
+            iconSvg={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <polyline points="9 16 11 18 15 14"/>
+              </svg>
+            }
           />
           <StatCard
-            icon="⏰"
             label="Rappels en retard"
             value={stats.rappelsDus}
-            sub={stats.rappelsDus === 0 ? "Tout est à jour" : "à traiter dès maintenant"}
-            color={stats.rappelsDus > 0 ? "text-amber-300" : "text-slate-600"}
-            iconBg={stats.rappelsDus > 0 ? "bg-amber-500/15" : "bg-white/[0.06]"}
-            glow={stats.rappelsDus > 0 ? "shadow-[0_0_30px_rgba(251,191,36,0.08)]" : ""}
+            sub={stats.rappelsDus === 0 ? "Tout est à jour ✓" : "à traiter maintenant"}
+            color="text-amber-300"
+            borderColor="border-amber-500/[0.22]"
+            iconBg="bg-amber-500/12"
+            active={stats.rappelsDus > 0}
+            iconSvg={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-amber-400">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            }
           />
         </div>
 
@@ -448,18 +498,25 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
 
           {/* Graphique activité 30 jours */}
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
-            <div className="flex items-center justify-between mb-5">
+          <div className="rounded-2xl border border-violet-500/[0.10] bg-gradient-to-br from-violet-500/[0.04] to-transparent p-5 relative overflow-hidden">
+            {/* Glow coin haut-droit */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl bg-violet-500/10 pointer-events-none" />
+            <div className="flex items-center justify-between mb-5 relative">
               <div>
-                <h2 className="text-sm font-semibold text-slate-100">Activité — 30 derniers jours</h2>
-                <p className="text-xs text-slate-600 mt-0.5">Uniquement les leads réellement démarché</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                  <span className="text-[10px] font-mono tracking-widest text-violet-400/70 uppercase">Activité</span>
+                </div>
+                <h2 className="text-[13px] font-semibold text-slate-100">30 derniers jours</h2>
+                <p className="text-[11px] text-slate-600 mt-0.5">Leads réellement démarchés</p>
               </div>
-              <div className="flex items-center gap-4 text-xs text-slate-600">
-                <span>
-                  Moy. <span className="text-slate-400 font-medium mono">
+              <div className="flex items-center gap-3 text-[11px]">
+                <div className="text-right">
+                  <div className="font-mono font-bold text-violet-300 text-[15px]">
                     {(stats.totalContacted30 / 30).toFixed(1)}
-                  </span>/jour
-                </span>
+                  </div>
+                  <div className="text-slate-700">appels/jour</div>
+                </div>
               </div>
             </div>
             {stats.totalContacted30 === 0 ? (
@@ -473,9 +530,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Entonnoir */}
-          <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
-            <h2 className="text-sm font-semibold text-slate-100 mb-1">Entonnoir de conversion</h2>
-            <p className="text-xs text-slate-600 mb-4">Sur {stats.total} leads au total</p>
+          <div className="rounded-2xl border border-cyan-500/[0.10] bg-gradient-to-br from-cyan-500/[0.03] to-transparent p-5 relative overflow-hidden">
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full blur-3xl bg-cyan-500/10 pointer-events-none" />
+            <div className="flex items-center gap-2 mb-1 relative">
+              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span className="text-[10px] font-mono tracking-widest text-cyan-400/70 uppercase">Conversion</span>
+            </div>
+            <h2 className="text-[13px] font-semibold text-slate-100 mb-0.5 relative">Entonnoir</h2>
+            <p className="text-[11px] text-slate-600 mb-4 relative">Sur {stats.total} leads au total</p>
 
             <div className="space-y-3">
               {/* Niveau 1 — Tous les leads */}
@@ -518,20 +580,20 @@ export default function DashboardPage() {
 
             {/* Taux clés — recalculés sur les vrais échanges */}
             {stats.vraisConversations > 0 && (
-              <div className="mt-5 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
-                <div className="text-center">
-                  <div className="text-lg font-bold mono text-slate-300">{stats.tauxDecrochage}%</div>
-                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont décroché<br/>(sur appelés)</div>
+              <div className="mt-5 pt-4 border-t border-white/[0.06] grid grid-cols-3 gap-2 relative">
+                <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[22px] font-bold font-mono text-slate-300">{stats.tauxDecrochage}%</div>
+                  <div className="text-[10px] text-slate-600 leading-tight text-center">ont décroché</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-lg font-bold mono text-cyan-400">{stats.tauxInteret}%</div>
-                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">ont montré<br/>de l&apos;intérêt</div>
+                <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-cyan-500/[0.06] border border-cyan-500/[0.15]">
+                  <div className="text-[22px] font-bold font-mono text-cyan-300">{stats.tauxInteret}%</div>
+                  <div className="text-[10px] text-cyan-600 leading-tight text-center">intéressés</div>
                 </div>
-                <div className="text-center relative">
-                  <div className="text-lg font-bold mono text-green-400">{stats.tauxRdv}%</div>
-                  <div className="text-[10px] text-slate-700 leading-tight mt-0.5">closing RDV<br/>(vrais échanges)</div>
+                <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/[0.15] relative">
+                  <div className="text-[22px] font-bold font-mono text-emerald-300">{stats.tauxRdv}%</div>
+                  <div className="text-[10px] text-emerald-600 leading-tight text-center">closing RDV</div>
                   {stats.tauxRdv > 0 && (
-                    <div className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] animate-pulse" />
                   )}
                 </div>
               </div>
@@ -546,8 +608,12 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           {/* Prochains RDV */}
-          <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
-            <h2 className="text-sm font-semibold text-slate-100 mb-4">Prochains RDV</h2>
+          <div className="rounded-2xl border border-emerald-500/[0.10] bg-gradient-to-br from-emerald-500/[0.03] to-transparent p-5">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="text-[10px] font-mono tracking-widest text-emerald-400/70 uppercase">Planning</span>
+            </div>
+            <h2 className="text-[13px] font-semibold text-slate-100 mb-4">Prochains RDV</h2>
             {stats.upcomingRdv.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-slate-700 gap-2">
                 <span className="text-xl">📅</span>
@@ -594,8 +660,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Derniers leads contactés */}
-          <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
-            <h2 className="text-sm font-semibold text-slate-100 mb-4">Derniers leads contactés</h2>
+          <div className="rounded-2xl border border-violet-500/[0.10] bg-gradient-to-br from-violet-500/[0.03] to-transparent p-5">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+              <span className="text-[10px] font-mono tracking-widest text-violet-400/70 uppercase">Récents</span>
+            </div>
+            <h2 className="text-[13px] font-semibold text-slate-100 mb-4">Derniers leads contactés</h2>
             {stats.recentlyContacted.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-slate-700 gap-2">
                 <span className="text-xl">📞</span>
