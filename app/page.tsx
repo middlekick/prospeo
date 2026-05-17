@@ -9,7 +9,6 @@ import {
 } from "framer-motion";
 import Link            from "next/link";
 import dynamic         from "next/dynamic";
-import { useUser }     from "@clerk/nextjs";
 import ContactModal    from "@/components/ui/ContactModal";
 import { useToast }      from "@/components/ui/Toast";
 
@@ -37,6 +36,11 @@ async function startCheckout(
       cancelUrl:  `${window.location.origin}/?cancel`,
     }),
   });
+  // Non authentifié → on envoie vers l'inscription, retour sur le pricing ensuite
+  if (res.status === 401) {
+    window.location.href = `/sign-up?redirect_url=${encodeURIComponent("/#pricing")}`;
+    return;
+  }
   const data = await res.json() as { url?: string; error?: string };
   if (data.url) window.location.href = data.url;
   else onError(data.error || "Configuration Stripe manquante (STRIPE_PRICE_ID_PRO).");
@@ -386,7 +390,6 @@ export default function Landing() {
   const [scrolled,    setScrolled]    = useState(false);
   const [showSticky,  setShowSticky]  = useState(false);
   const [annual,      setAnnual]      = useState(false);
-  const { isSignedIn } = useUser();
   const { error: toastError } = useToast();
 
   useScrollReveal();
@@ -403,15 +406,13 @@ export default function Landing() {
   const openContact = (subject = "") => { setContactSubj(subject); setContactOpen(true); };
 
   const pay = useCallback(async (plan: "pro" | "agency" = "pro") => {
-    if (!isSignedIn) {
-      window.location.href = `/sign-up?redirect_url=${encodeURIComponent("/#pricing")}`;
-      return;
-    }
     if (!email) { setEmailModal(true); return; }
     setLoading(true);
+    // L'auth est vérifiée côté serveur : startCheckout redirige vers
+    // l'inscription si non connecté (plus de dépendance Clerk client ici).
     await startCheckout(plan, email, toastError);
     setLoading(false);
-  }, [email, isSignedIn, toastError]);
+  }, [email, toastError]);
 
   return (
     <>
@@ -478,23 +479,14 @@ export default function Landing() {
               </div>
 
               <div className="flex items-center gap-2.5">
-                {isSignedIn ? (
-                  <Link href="/app"
-                    className="flex items-center gap-1.5 text-[13px] font-medium bg-white text-[#0A0A0B] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
-                    Ouvrir l&apos;app →
-                  </Link>
-                ) : (
-                  <>
-                    <Link href="/sign-in"
-                      className="hidden sm:block text-[13px] text-slate-400 hover:text-slate-100 transition-colors px-3">
-                      Connexion
-                    </Link>
-                    <a href="#pricing"
-                      className="text-[13px] font-medium bg-white text-[#0A0A0B] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
-                      Essai gratuit
-                    </a>
-                  </>
-                )}
+                <Link href="/sign-in"
+                  className="hidden sm:block text-[13px] text-slate-400 hover:text-slate-100 transition-colors px-3">
+                  Connexion
+                </Link>
+                <a href="#pricing"
+                  className="text-[13px] font-medium bg-white text-[#0A0A0B] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
+                  Essai gratuit
+                </a>
               </div>
             </div>
           </nav>

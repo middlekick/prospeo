@@ -20,6 +20,11 @@ export async function POST(req: NextRequest) {
   }
 
   const { userId } = await auth();
+  // Auth requise : sans userId, le webhook ne peut pas attribuer le plan.
+  // La landing (sans Clerk client) s'appuie sur cette réponse pour rediriger.
+  if (!userId) {
+    return NextResponse.json({ error: "auth_required" }, { status: 401 });
+  }
   const origin     = req.headers.get("origin") || "";
 
   const { plan, email, successUrl, cancelUrl } = await req.json() as {
