@@ -3,15 +3,18 @@ import type { MetadataRoute } from "next";
 // Web App Manifest — rend Prospeo installable en PWA (mobile + desktop)
 export default function manifest(): MetadataRoute.Manifest {
   return {
+    id:               "/app",
     name:             "Prospeo — CRM de prospection",
     short_name:       "Prospeo",
     description:      "CRM de prospection commerciale : sourcing, suivi d'appels, RDV, relances.",
-    start_url:        "/",
+    start_url:        "/app",
+    scope:            "/",
     display:          "standalone",
     background_color: "#0b0d12",
-    theme_color:      "#7c3aed",
+    theme_color:      "#00E5FF",
     orientation:      "portrait-primary",
     lang:             "fr",
+    dir:              "ltr",
     categories:       ["business", "productivity"],
     icons: [
       {

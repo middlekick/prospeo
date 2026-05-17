@@ -153,7 +153,7 @@
 | 20 | 🟢 P3 | App | `/app/campagnes` — séquences de prospection | ⏳ À faire | — |
 | 21 | 🟢 P3 | App | `/app/parametres` — profil, billing, intégrations | ⏳ À faire | — |
 | 22 | 🟡 P2 | Perf | Optimisations perf landing : next/font self-hosted, dynamic imports, RAF off-screen | ✅ Fait | 2026-05-18 |
-| 23 | 🟢 P3 | Mobile | PWA installable — manifest.json + service worker | ⏳ À faire | — |
+| 23 | 🟢 P3 | Mobile | PWA installable — manifest.json + service worker | ✅ Fait | 2026-05-18 |
 | 24 | 🟢 P3 | UX | Notifications rappels in-app (badge + son) | ⏳ À faire | — |
 | 25 | 🟢 P3 | Import | Import LinkedIn CSV (format Sales Navigator) | ⏳ À faire | — |
 | 26 | 🟢 P3 | CRM | Tags personnalisables par user | ⏳ À faire | — |
@@ -206,6 +206,7 @@
 | 2026-05-18 | Perf | Fonts migrées `@fontsource @import` (render-blocking) → `next/font/local` self-hosted (preload, swap, anti-CLS) | `app/fonts/fonts.ts`, `app/layout.tsx`, `app/globals.css` |
 | 2026-05-18 | Perf | `ScrollDemoSection` + `ConstatSection` (lourdes, sous la ligne de flottaison, → `AnimatedDemo`) en `next/dynamic` — sorties du chunk initial de `/` | `app/page.tsx` |
 | 2026-05-18 | Perf | `NodeNetwork` — boucle RAF gelée hors-vue (IntersectionObserver) + onglet caché (visibilitychange) : fin du drain CPU continu | `app/page.tsx` |
+| 2026-05-18 | PWA | Manifest corrigé — `theme_color` #00E5FF (cohérent layout), `start_url`/`id` `/app`, `scope` `/`, `dir`. SW v2 — fallback hors-ligne brandé pour les navigations non cachées | `app/manifest.ts`, `public/sw.js` |
 
 ---
 
