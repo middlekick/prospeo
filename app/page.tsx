@@ -407,7 +407,7 @@ export default function Landing() {
         html{scroll-behavior:auto!important}
       `}</style>
 
-      <div className="grain relative min-h-screen bg-[#0A0A0B] text-slate-300 overflow-x-hidden antialiased">
+      <div className="grain relative min-h-screen bg-[#0A0A0B] text-slate-300 overflow-x-clip antialiased">
 
         {/* ── Atmosphère ────────────────────────────────────────────────────── */}
         <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
