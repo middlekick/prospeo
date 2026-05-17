@@ -63,7 +63,7 @@ const NAV = [
 
 export default function Sidebar() {
   const pathname                  = usePathname();
-  const { plan, refresh }         = usePlan();
+  const { plan, trial, refresh }  = usePlan();
   const [trialOpen, setTrialOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -213,7 +213,19 @@ export default function Sidebar() {
         <div className="px-2 pb-4 pt-2 shrink-0 space-y-1">
 
           {/* Badge plan */}
-          {isPaid ? (
+          {trial.hasTrial ? (
+            <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-amber-500/[0.08] border border-amber-500/[0.18]">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.8)] animate-pulse" />
+              <div className="flex-1 min-w-0">
+                <div className="text-[11px] font-semibold text-amber-300 tracking-wide leading-none">
+                  Essai {planLabel}
+                </div>
+                <div className="text-[10px] text-amber-500/70 mt-0.5 font-mono">
+                  {trial.daysLeft} {trial.daysLeft > 1 ? "jours restants" : "jour restant"}
+                </div>
+              </div>
+            </div>
+          ) : isPaid ? (
             <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-brand-500/[0.08] border border-brand-500/[0.15]">
               <div className="w-1.5 h-1.5 rounded-full bg-brand-400 shadow-[0_0_6px_rgba(167,139,250,0.8)]" />
               <span className="text-[11px] font-semibold text-brand-300 tracking-wide">Plan {planLabel}</span>

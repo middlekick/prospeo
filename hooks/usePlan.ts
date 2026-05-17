@@ -10,11 +10,18 @@
 import { useState, useEffect, useCallback } from "react";
 import type { PlanTier, PlanLimits } from "@/lib/plan";
 
+export interface TrialInfo {
+  hasTrial:  boolean;
+  daysLeft:  number;
+  expiresAt: string | null;
+}
+
 export interface PlanData {
   plan:       PlanTier;
   limits:     PlanLimits;
   scrapeUsed: number;
   scrapeMax:  number | null;
+  trial:      TrialInfo;
   loading:    boolean;
   refresh:    () => void;
 }
@@ -44,6 +51,7 @@ export function usePlan(): PlanData {
     limits:     DEFAULT_FREE_LIMITS,
     scrapeUsed: 0,
     scrapeMax:  3,
+    trial:      { hasTrial: false, daysLeft: 0, expiresAt: null },
   });
   const [loading, setLoading] = useState(true);
   const [tick,    setTick]    = useState(0);  // incrémenté par refresh()
@@ -76,6 +84,7 @@ export function usePlan(): PlanData {
         limits:     (json.limits     ?? DEFAULT_FREE_LIMITS) as PlanLimits,
         scrapeUsed: (json.scrapeUsed ?? 0)                   as number,
         scrapeMax:  (json.scrapeMax  ?? 3)                   as number | null,
+        trial:      (json.trial ?? { hasTrial: false, daysLeft: 0, expiresAt: null }) as TrialInfo,
       };
       setData(result);
       try {

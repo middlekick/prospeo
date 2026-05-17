@@ -144,9 +144,9 @@
 | 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle ✅ / SVG checkmarks ✅ / rideau noir ✅ / §02 scroll-pinned ✅ / Hero H1 animé ✅ | ✅ Fait | 2026-05-17 |
 | 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts ✅ / /api/og (OG images dynamiques) ❌ | ✅ Partiel | 2026-05-17 |
 | 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ✅ Fait | 2026-05-17 |
-| 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ⏳ À faire | — |
+| 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ✅ Fait | 2026-05-17 |
 | 15 | 🟡 P2 | Data | Déduplication fuzzy à l'import CSV | ⏳ À faire | — |
-| 16 | 🟡 P2 | UI | Badge trial restant dans la sidebar | ⏳ À faire | — |
+| 16 | 🟡 P2 | UI | Badge trial restant dans la sidebar | ✅ Fait | 2026-05-17 |
 | 17 | 🟢 P3 | Pages | `/produit`, `/cas-dusage`, `/integrations`, `/tarifs`, `/a-propos` | ⏳ À faire | — |
 | 18 | 🟢 P3 | Pages | `/blog` + `/blog/[slug]`, `/changelog` (timeline animée), `/contact` | ⏳ À faire | — |
 | 19 | 🟢 P3 | App | `/app/leads/[id]` route dédiée (vs drawer actuel) | ⏳ À faire | — |
@@ -192,8 +192,12 @@
 | 2026-05-17 | SEO | sitemap.ts + robots.ts créés
 | 2026-05-17 | Landing | Transitions de page — rideau noir (Curtain scaleY 1→0, 700ms) + PageFade (opacity delay 180ms) | ,  |
 | 2026-05-17 | Landing | Hero H1 — stagger word reveal (chaque mot slide depuis le bas, overflow masqué) |  |
-| 2026-05-17 | Landing | §02 scroll-pinned
-| 2026-05-17 | Landing | §04 démo scroll-pinned — ScrollDemoSection.tsx (500vh sticky, 5 étapes, forceScene contrôlé) | ,  | — ConstatSection.tsx (300vh sticky, 3 cartes révélées par useScroll) |  | | `app/sitemap.ts`, `app/robots.ts` |
+| 2026-05-17 | Landing | §02 ConstatSection — 320vh sticky, redesign 3 cartes (BadCard rouge / MidCard cyan "Recommandé" / GoodCard emerald grille 2×2 ROI), barre progression gradient | `components/landing/ConstatSection.tsx` |
+| 2026-05-17 | Landing | §04 démo scroll-pinned — ScrollDemoSection.tsx (500vh sticky, 5 étapes, forceScene contrôlé) | `components/landing/ScrollDemoSection.tsx` |
+| 2026-05-17 | Fix | **Scroll-pinned débloqué** : `overflow-x:hidden` forçait `overflow-y:auto` sur le div racine (conteneur de scroll) → `position:sticky` cassé pour §02 et §04. Remplacé par `overflow-x:clip` + hooks `getBoundingClientRect` RAF (compat Lenis) | `app/page.tsx`, `ConstatSection.tsx`, `ScrollDemoSection.tsx` |
+| 2026-05-17 | UX | Bannière post-checkout — redirect Stripe → `/app?checkout=success&plan=`, `CheckoutBanner` (toast bienvenue + refresh plan + URL nettoyée), monté dans LayoutShell | `api/checkout/route.ts`, `CheckoutBanner.tsx`, `LayoutShell.tsx` |
+| 2026-05-17 | UI | Badge trial sidebar — `/api/plan` expose `getTrialInfo`, `usePlan` typé `trial`, badge ambré pulsé "Essai · N jours restants" | `api/plan/route.ts`, `usePlan.ts`, `Sidebar.tsx` |
+| 2026-05-17 | Fix | Mojibake icônes Toast (✓ ✕ ⚠) corrigé | `components/ui/Toast.tsx` |
 
 ---
 

@@ -11,6 +11,7 @@
 import { usePathname }       from "next/navigation";
 import Sidebar               from "./Sidebar";
 import CommandPalette        from "@/components/ui/CommandPalette";
+import CheckoutBanner        from "@/components/ui/CheckoutBanner";
 import { Curtain, PageFade } from "@/components/ui/PageTransition";
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
@@ -47,6 +48,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
         <PageFade>{children}</PageFade>
       </main>
       <CommandPalette />
+      <CheckoutBanner />
     </>
   );
 }

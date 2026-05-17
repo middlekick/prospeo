@@ -5,7 +5,7 @@
 
 import { NextResponse }                         from "next/server";
 import { auth }                                  from "@clerk/nextjs/server";
-import { getUserPlan, PLAN_LIMITS, getScrapeUsage } from "@/lib/plan";
+import { getUserPlan, PLAN_LIMITS, getScrapeUsage, getTrialInfo } from "@/lib/plan";
 
 export async function GET() {
   const { userId } = await auth();
@@ -17,8 +17,9 @@ export async function GET() {
     const plan   = await getUserPlan(userId);
     const limits = PLAN_LIMITS[plan];
     const { used: scrapeUsed, max: scrapeMax } = await getScrapeUsage(userId);
+    const trial = await getTrialInfo(userId);
 
-    return NextResponse.json({ plan, limits, scrapeUsed, scrapeMax });
+    return NextResponse.json({ plan, limits, scrapeUsed, scrapeMax, trial });
   } catch (e) {
     console.error("[PLAN]", (e as Error).message);
     // Fallback plan free en cas d'erreur DB — l'app reste fonctionnelle

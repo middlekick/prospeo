@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       customer_email:       email,
       line_items:           [{ price: priceId, quantity: 1 }],
-      success_url:          successUrl || `${origin}/?checkout=success`,
+      success_url:          successUrl || `${origin}/app?checkout=success&plan=${plan}`,
       cancel_url:           cancelUrl  || `${origin}/?checkout=cancel`,
       // Métadonnées pour le webhook → mise à jour du plan en base
       metadata: {
