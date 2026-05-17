@@ -444,6 +444,16 @@ trial_expires_at, trial_code_used  // trial par code d'invitation
 3. **Après chaque feature** : `npx tsc --noEmit` + résumé
 4. **Fin de session** : mettre à jour ce fichier + `git push prospeo main`
 
+## 📝 Suivi des modifications — UPDATE.md
+
+**`UPDATE.md`** est le fichier de suivi vivant du projet. Il doit être mis à jour **à chaque requête** :
+- ✅ Cocher une tâche quand elle est accomplie (statut → `✅ Fait` + date)
+- ➕ Ajouter une ligne dans "Historique des modifications" pour chaque changement effectué
+- ➕ Ajouter une nouvelle tâche si un besoin est identifié en cours de session
+- La priorité P1/P2/P3 peut évoluer selon les décisions prises
+
+Voir : [`UPDATE.md`](./UPDATE.md)
+
 ---
 
 ## 🗺️ Roadmap
