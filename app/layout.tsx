@@ -1,16 +1,24 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { ClerkProvider }  from "@clerk/nextjs";
-import { frFR }           from "@clerk/localizations";
-import LayoutShell        from "@/components/layout/LayoutShell";
-import { ToastProvider }  from "@/components/ui/Toast";
-import { ConfirmProvider } from "@/components/ui/ConfirmModal";
-import ServiceWorker      from "@/components/layout/ServiceWorker";
+import { ClerkProvider }        from "@clerk/nextjs";
+import { frFR }                 from "@clerk/localizations";
+import LayoutShell              from "@/components/layout/LayoutShell";
+import { ToastProvider }        from "@/components/ui/Toast";
+import { ConfirmProvider }      from "@/components/ui/ConfirmModal";
+import ServiceWorker            from "@/components/layout/ServiceWorker";
+import GlowCursor               from "@/components/ui/GlowCursor";
+import SmoothScrollProvider     from "@/components/ui/SmoothScrollProvider";
 
 export const metadata: Metadata = {
-  title: "Prospeo — CRM",
-  description: "CRM de prospection commerciale",
-  manifest: "/manifest.webmanifest",
+  title:       "Prospeo — CRM de prospection",
+  description: "Le CRM qui réunit sourcing, appels, relances et RDV — pour les commerciaux qui prospectent.",
+  manifest:    "/manifest.webmanifest",
+  openGraph: {
+    title:       "Prospeo — CRM de prospection",
+    description: "Trouve. Appelle. Signe. Le CRM pensé pour le terrain.",
+    type:        "website",
+    locale:      "fr_FR",
+  },
   appleWebApp: {
     capable:        true,
     title:          "Prospeo",
@@ -23,11 +31,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor:           "#7c3aed",
-  width:                "device-width",
-  initialScale:         1,
-  maximumScale:         1,
-  viewportFit:          "cover",
+  themeColor:   "#00E5FF",   // cyan électrique (brand)
+  width:        "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit:  "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -40,12 +48,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       signUpFallbackRedirectUrl="/app"
     >
       <html lang="fr">
-        <body className="bg-[#0b0d12]">
-          <ToastProvider>
-            <ConfirmProvider>
-              <LayoutShell>{children}</LayoutShell>
-            </ConfirmProvider>
-          </ToastProvider>
+        <body className="bg-[#0A0A0B]">
+          {/* Curseur custom global — désactivé automatiquement sur mobile */}
+          <GlowCursor />
+          <SmoothScrollProvider>
+            <ToastProvider>
+              <ConfirmProvider>
+                <LayoutShell>{children}</LayoutShell>
+              </ConfirmProvider>
+            </ToastProvider>
+          </SmoothScrollProvider>
           <ServiceWorker />
         </body>
       </html>

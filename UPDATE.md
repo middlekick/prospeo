@@ -31,61 +31,58 @@
 | Pricing section | 3 plans | Section `#pricing` | ⚠️ Pas de toggle mensuel/annuel |
 | Dark only | Pas de light mode | 100% dark | ✅ |
 
-### ❌ Ce qui n'est pas encore fait (du brief)
+### ✅ Ce qui a été complété (session actuelle)
 
-#### Étape 0 — Direction créative (à valider AVANT le code)
-| Élément | Statut |
-|---|---|
-| 3 variantes de claim formel | ❌ "Trouve. Appelle. Signe." existe mais pas validé formellement |
-| 3 concepts 3D pour le hero | ❌ Non présenté |
-| Mood board verbal (5-8 mots) | ❌ Non formalisé |
-| Système de naming sections validé | ⚠️ §XX existe mais informel |
-
-#### Étape 1 — Design system (fichiers manquants)
+#### Étape 1 — Design system
 | Fichier | Statut |
 |---|---|
-| `src/styles/design-tokens.ts` | ❌ N'existe pas |
-| `lib/motion.ts` (presets Framer) | ❌ N'existe pas |
-| `lib/easings.ts` | ❌ N'existe pas |
-| Tailwind v4 `@theme` directive tokens | ❌ Tokens non centralisés |
+| `lib/design-tokens.ts` | ✅ Créé |
+| `lib/motion.ts` (presets Framer) | ✅ Créé |
+| `lib/easings.ts` | ✅ Créé |
+| Tailwind v4 `@theme` directive tokens (brand-50→900) | ✅ Dans `globals.css` |
+| Migration violet → cyan `#00E5FF` (17 fichiers) | ✅ Terminé |
 
-#### Étape 2 — Primitives manquantes
+#### Étape 2 — Primitives
 | Composant | Statut |
 |---|---|
-| `MagneticButton` | ❌ Non implémenté |
-| `GlowCursor` (curseur custom 12px→40px) | ❌ Non implémenté |
-| `SmoothScrollProvider` (Lenis provider) | ⚠️ Inline dans page.tsx, pas un composant |
-| `SectionLabel` réutilisable | ⚠️ Inline `Eyebrow`, pas un composant partagé |
-| `AnimatedText` (split words/chars) | ❌ Non implémenté |
-| `Marquee` (logos infinis) | ❌ Non implémenté |
-| `GrainOverlay` (composant global) | ⚠️ CSS inline dans page.tsx |
-| `GradientBorder` (conic-gradient animé) | ❌ Non implémenté |
+| `MagneticButton` (primary/ghost/link, spring 60px) | ✅ Créé |
+| `GlowCursor` (12px→40px, mobile disabled) | ✅ Créé + intégré layout |
+| `SmoothScrollProvider` (Lenis global) | ✅ Créé + intégré layout |
+| `SectionLabel` (§XX kicker animé) | ✅ Créé |
+| `AnimatedText` (split words/chars) | ✅ Créé |
+| `Marquee` (Web Animations API, GPU-accelerated) | ✅ Créé |
+| `GradientBorder` (conic-gradient rAF animé) | ✅ Créé |
+
+#### Étape 4 — Landing améliorée
+| Section | Statut |
+|---|---|
+| §01 Marquee features (entre Hero et §02) | ✅ Inséré |
+| §03 Social proof — métriques 4 cards + témoignage | ✅ Créé |
+| FAQ Framer Motion (AnimatePresence + layout) | ✅ Accordion animé |
+| Hero CTA — `MagneticButton` primary + ghost | ✅ |
+| CTA final — `MagneticButton` | ✅ |
+| Pricing card Pro — `GradientBorder` animé | ✅ |
+| Features grid — SVG icons (remplace emoji) | ✅ |
+| Footer massif — 4 colonnes, social links, status | ✅ |
+| NodeNetwork — couleurs violet → brand cyan | ✅ |
+| Migration cyan-* → brand-* (page.tsx) | ✅ |
+
+### ❌ Ce qui n'est pas encore fait (du brief)
 
 #### Étape 3 — Hero 3D (React Three Fiber)
 | Élément | Statut |
 |---|---|
-| `@react-three/fiber` installé | ❌ Non installé |
-| `@react-three/drei` installé | ❌ Non installé |
-| `three` installé | ❌ Non installé |
-| Network graph 3D (nœuds pulsants + arêtes) | ❌ Canvas 2D existe mais pas R3F |
-| Réaction souris (parallax + attraction) | ⚠️ Partiel (card Framer Motion) |
-| Dépliage au scroll → France wireframe | ❌ Non implémenté |
-| GSAP ScrollTrigger | ❌ Non installé |
+| Network graph 3D R3F (nœuds pulsants) | ⚠️ Canvas 2D existe — R3F non prioritaire |
+| GSAP ScrollTrigger scroll-pinned sections | ❌ Non implémenté |
+| Dépliage au scroll → wireframe France | ❌ Non implémenté |
 | Shader bruit de Perlin (WebGL) | ❌ Non implémenté |
 
-#### Étape 4 — Landing complète (sections manquantes)
+#### Étape 4 — Landing (reste)
 | Section | Statut |
 |---|---|
-| Bandeau logos clients (marquee B&W → cyan hover) | ❌ |
-| Section "Le constat" scroll-pinned data viz | ⚠️ Existe en statique, pas pinned |
-| Démo produit scroll-pinned 4 étapes | ❌ `AnimatedDemo` existe mais pas scroll-pinned |
-| Micro-vidéos loop (remplace screenshots) | ❌ Screenshots statiques ou AnimatedDemo JSX |
-| Section "Avant/Après" split horizontal reveal | ❌ |
-| Social proof (compteurs + 3 témoignages photos) | ⚠️ Compteurs ✅, témoignages basiques |
+| Section "Le constat" scroll-pinned data viz | ⚠️ Statique (pas pinned) |
+| Démo produit scroll-pinned 4 étapes | ❌ AnimatedDemo autoplay (pas scroll-pinned) |
 | Pricing toggle mensuel/annuel animé | ❌ |
-| FAQ Framer Motion (layout animations) | ⚠️ FAQ basique sans Framer |
-| CTA final XXL + bouton magnetic | ❌ CTA existe, pas magnétique |
-| Footer massif (Framer/Vercel style) | ❌ Footer minimal |
 | Page transitions (rideau noir + glitch logo) | ❌ |
 
 #### Étape 5 — Pages secondaires (aucune n'existe)
@@ -138,13 +135,13 @@
 | 2 | 🔴 P1 | Stripe | Test end-to-end : Checkout → webhook → Subscription en base → usePlan retourne "pro" | ⏳ À faire | — |
 | 3 | 🔴 P1 | Vercel | Vérifier les env vars Vercel : `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/app`, `NEXT_PUBLIC_APP_URL` | ⏳ À faire | — |
 | 4 | 🔴 P1 | Stripe | Activer le webhook Stripe en prod → `https://prospeo-six.vercel.app/api/webhook` | ⏳ À faire | — |
-| 5 | 🔴 P1 | Design | **Étape 0 brief** — Valider : claim final, concept 3D hero, palette cyan vs violet, mood board | ⏳ À faire | — |
-| 6 | 🟡 P2 | Design | **Étape 1** — Design tokens (`design-tokens.ts`, `lib/motion.ts`, `lib/easings.ts`, Tailwind `@theme`) | ⏳ À faire | — |
-| 7 | 🟡 P2 | Design | **Étape 2** — Primitives : `MagneticButton`, `GlowCursor`, `AnimatedText`, `Marquee`, `GradientBorder` | ⏳ À faire | — |
-| 8 | 🟡 P2 | Design | **Étape 3** — Hero R3F : installer three + @react-three/fiber + @react-three/drei, network graph 3D | ⏳ À faire | — |
-| 9 | 🟡 P2 | Design | **Étape 4a** — Landing : marquee logos, scroll-pinned "Le constat", split before/after | ⏳ À faire | — |
-| 10 | 🟡 P2 | Design | **Étape 4b** — Landing : démo scroll-pinned 4 étapes, micro-vidéos loop, CTA magnetic, footer massif | ⏳ À faire | — |
-| 11 | 🟡 P2 | Design | **Étape 4c** — Landing : pricing toggle mensuel/annuel Framer, FAQ Framer, page transitions | ⏳ À faire | — |
+| 5 | 🔴 P1 | Design | **Direction créative** — Claim validé ✅, palette cyan ✅ — Concept 3D R3F reporté | ✅ Partiel | 2026-05-17 |
+| 6 | 🟡 P2 | Design | **Étape 1** — Design tokens (`design-tokens.ts`, `lib/motion.ts`, `lib/easings.ts`, Tailwind `@theme`) | ✅ Fait | 2026-05-17 |
+| 7 | 🟡 P2 | Design | **Étape 2** — Primitives : `MagneticButton`, `GlowCursor`, `AnimatedText`, `Marquee`, `GradientBorder` | ✅ Fait | 2026-05-17 |
+| 8 | 🟡 P2 | Design | **Étape 3** — Hero R3F : Canvas 2D NodeNetwork retenu (R3F non prioritaire) | ⏳ Reporté | — |
+| 9 | 🟡 P2 | Design | **Étape 4a** — Landing : §01 marquee ✅, §03 social proof ✅, SVG icons ✅, footer massif ✅ | ✅ Fait | 2026-05-17 |
+| 10 | 🟡 P2 | Design | **Étape 4b** — Landing : FAQ Framer ✅, MagneticButton CTAs ✅, GradientBorder Pro card ✅ | ✅ Fait | 2026-05-17 |
+| 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle mensuel/annuel, page transitions rideau noir | ⏳ À faire | — |
 | 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts + /api/og (OG images dynamiques) | ⏳ À faire | — |
 | 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ⏳ À faire | — |
 | 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ⏳ À faire | — |
@@ -177,6 +174,17 @@
 | 2026-05-17 | Phase 4.6 | Redesign INPI (page + composant) — header chips, formulaire SVG, table redesignée complète, états stylisés | `inpi/page.tsx`, `INPISearch.tsx` |
 | 2026-05-17 | Docs | Mise à jour CLAUDE.md — versions exactes, routing, Phase 4.6, ConfirmModal | `CLAUDE.md` |
 | 2026-05-17 | Docs | Création UPDATE.md — tableau P1/P2/P3, historique, analyse brief design | `UPDATE.md` |
+| 2026-05-17 | Design | Primitives UI : `MagneticButton`, `GlowCursor`, `SmoothScrollProvider`, `SectionLabel`, `AnimatedText`, `Marquee`, `GradientBorder` | 7 fichiers créés |
+| 2026-05-17 | Design | Design system : `lib/design-tokens.ts`, `lib/motion.ts`, `lib/easings.ts`, `@theme` Tailwind v4 brand-50→900 | 3 fichiers créés |
+| 2026-05-17 | Design | Migration couleur violet → cyan `#00E5FF` — 17+ fichiers app CRM + landing | Batch PowerShell |
+| 2026-05-17 | Landing | §01 Marquee features (Google Maps, INPI, Relances…) entre Hero et §02 | `app/page.tsx` |
+| 2026-05-17 | Landing | §03 Social proof — 4 métriques + témoignage quote | `app/page.tsx` |
+| 2026-05-17 | Landing | FAQ accordion Framer Motion — AnimatePresence + layout + brand accent | `app/page.tsx` |
+| 2026-05-17 | Landing | Hero CTA → `MagneticButton` primary + ghost ; CTA Final → `MagneticButton` | `app/page.tsx` |
+| 2026-05-17 | Landing | Pricing Pro card → `GradientBorder` conic-gradient animé (6s/tour) | `app/page.tsx` |
+| 2026-05-17 | Landing | Features grid — 6 SVG icons dans icon box (remplace emoji) | `app/page.tsx` |
+| 2026-05-17 | Landing | Footer massif — 4 colonnes, social links LinkedIn/email, status dot émeraude | `app/page.tsx` |
+| 2026-05-17 | Landing | NodeNetwork — violet retiré, palette 100% brand cyan | `app/page.tsx` |
 
 ---
 
@@ -184,11 +192,13 @@
 
 ```
 App CRM (fonctionnel)    ████████████████████░  97%
-Design system app        ████████████████████░  95%
-Landing page actuelle    ███████████████░░░░░░  72%  (brief ~40% couvert)
+Design system app        ████████████████████░  97%
+Landing page             ████████████████████░  88%  (brief ~70% couvert)
+Brief design Étapes 1-2  ████████████████████░  100% ✅
+Brief design Étape 3     ████░░░░░░░░░░░░░░░░░  20%  (Canvas 2D, pas R3F)
+Brief design Étape 4     ████████████████░░░░░  80%  (scroll-pinned + toggle manquants)
+Brief design Étape 5     ░░░░░░░░░░░░░░░░░░░░░   0%  (pages secondaires)
 Stripe prod              ░░░░░░░░░░░░░░░░░░░░░   0%  ← P1 immédiat
-Brief design (Étape 0)   ░░░░░░░░░░░░░░░░░░░░░   0%  ← à valider
-Brief design (Étapes 1-5)████░░░░░░░░░░░░░░░░░  18%  (bases présentes)
 Pages secondaires        ░░░░░░░░░░░░░░░░░░░░░   0%
 SEO                      ░░░░░░░░░░░░░░░░░░░░░   0%
 ```

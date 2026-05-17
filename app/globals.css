@@ -5,17 +5,60 @@
 
 @import "tailwindcss";
 
-:root {
-  --sidebar-w: 56px;
-  --cyan:   #22d3ee;
-  --coral:  #f87171;
-  --violet: #a78bfa;
-  --green:  #4ade80;
-  --orange: #fb923c;
+/* ── Design tokens Tailwind v4 (@theme) ──────────────────────────────────── */
+@theme {
+  /* Couleur de marque — cyan électrique #00E5FF (remplace violet) */
+  --color-brand:       #00E5FF;
+  --color-brand-dim:   #00B8CC;
+  --color-brand-deep:  #007A99;
+  --color-brand-faint: rgba(0, 229, 255, 0.08);
+
+  /* Palette brand complète pour Tailwind bg-brand-600, text-brand-400, etc. */
+  --color-brand-50:  #e6feff;
+  --color-brand-100: #b3faff;
+  --color-brand-200: #80f5ff;
+  --color-brand-300: #4defff;
+  --color-brand-400: #1ae9ff;
+  --color-brand-500: #00E5FF;   /* signature */
+  --color-brand-600: #00B8CC;   /* hover */
+  --color-brand-700: #008A99;
+  --color-brand-800: #005C66;
+  --color-brand-900: #002E33;
+
+  /* Backgrounds */
+  --color-bg:       #0A0A0B;
+  --color-surface:  #111114;
+  --color-elevated: #16161A;
+
+  /* Texte */
+  --color-text:      #F4F4F5;
+  --color-text-dim:  #A1A1AA;
+  --color-text-mute: #52525B;
+
+  /* Bordures */
+  --color-border:    #27272A;
+  --color-border-hi: #3F3F46;
 }
 
+/* ── Custom properties globales ──────────────────────────────────────────── */
+:root {
+  --sidebar-w:   56px;
+  --brand:       #00E5FF;
+  --brand-dim:   #00B8CC;
+  --brand-glow:  rgba(0, 229, 255, 0.18);
+  --brand-faint: rgba(0, 229, 255, 0.06);
+
+  /* Statuts CRM (inchangés) */
+  --emerald: #34d399;
+  --amber:   #fbbf24;
+  --red:     #f87171;
+  --slate:   #94a3b8;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
+/* ── Base ────────────────────────────────────────────────────────────────── */
 body {
   background: #0b0d12;
   color: #e2e8f0;
@@ -23,8 +66,38 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
 
+/* ── Utilitaires ─────────────────────────────────────────────────────────── */
 .mono { font-family: "DM Mono", monospace; }
+
+/* Glow brand réutilisable */
+.glow-brand {
+  box-shadow: 0 0 40px var(--brand-glow), 0 0 80px rgba(0, 229, 255, 0.06);
+}
+.glow-brand-sm {
+  box-shadow: 0 0 16px var(--brand-glow);
+}
+
+/* Curseur custom — masque le curseur natif quand GlowCursor est actif */
+.cursor-custom * { cursor: none !important; }
+
+/* Focus visible custom */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
