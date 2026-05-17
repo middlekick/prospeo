@@ -81,7 +81,7 @@
 | Section | Statut |
 |---|---|
 | Section "Le constat" scroll-pinned data viz | ✅ ConstatSection.tsx — 300vh sticky, 3 cartes révélées au scroll |
-| Démo produit scroll-pinned 4 étapes | ❌ AnimatedDemo autoplay (pas scroll-pinned) |
+| Démo produit scroll-pinned 5 scènes | ✅ ScrollDemoSection.tsx — 500vh sticky, forceScene prop |
 | Pricing toggle mensuel/annuel animé | ✅ Done |
 | Page transitions (rideau noir) | ✅ Curtain + PageFade dans LayoutShell |
 
@@ -192,7 +192,8 @@
 | 2026-05-17 | SEO | sitemap.ts + robots.ts créés
 | 2026-05-17 | Landing | Transitions de page — rideau noir (Curtain scaleY 1→0, 700ms) + PageFade (opacity delay 180ms) | ,  |
 | 2026-05-17 | Landing | Hero H1 — stagger word reveal (chaque mot slide depuis le bas, overflow masqué) |  |
-| 2026-05-17 | Landing | §02 scroll-pinned — ConstatSection.tsx (300vh sticky, 3 cartes révélées par useScroll) |  | | `app/sitemap.ts`, `app/robots.ts` |
+| 2026-05-17 | Landing | §02 scroll-pinned
+| 2026-05-17 | Landing | §04 démo scroll-pinned — ScrollDemoSection.tsx (500vh sticky, 5 étapes, forceScene contrôlé) | ,  | — ConstatSection.tsx (300vh sticky, 3 cartes révélées par useScroll) |  | | `app/sitemap.ts`, `app/robots.ts` |
 
 ---
 
@@ -201,10 +202,10 @@
 ```
 App CRM (fonctionnel)    ████████████████████░  97%
 Design system app        ████████████████████░  97%
-Landing page             █████████████████████  95%  (brief ~80% couvert)
+Landing page             █████████████████████  97%  (brief ~85% couvert)
 Brief design Étapes 1-2  ████████████████████░  100% ✅
 Brief design Étape 3     ████░░░░░░░░░░░░░░░░░  20%  (Canvas 2D, pas R3F)
-Brief design Étape 4     ████████████████████░  97%  (démo scroll-pinned seule reste)
+Brief design Étape 4     █████████████████████  100% ✅
 Brief design Étape 5     ░░░░░░░░░░░░░░░░░░░░░   0%  (pages secondaires)
 Stripe prod              ░░░░░░░░░░░░░░░░░░░░░   0%  ← P1 immédiat
 Pages secondaires        ░░░░░░░░░░░░░░░░░░░░░   0%
