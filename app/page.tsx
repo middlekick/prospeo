@@ -603,23 +603,12 @@ export default function Landing() {
 
               <div className="flex flex-col gap-4">
 
-                {/* ── Démo animée — pleine largeur ── */}
-                <div data-reveal className="relative rounded-3xl border border-white/[0.08] bg-[#0a0b10]/80
-                                            overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)]">
-                  <div className="absolute -inset-x-0 -top-12 h-40 -z-0 blur-3xl opacity-40 pointer-events-none"
-                       style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.35), transparent 65%)" }} />
-                  <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.025] relative z-10">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
-                    <div className="ml-3 flex items-center gap-1.5 h-5 w-[170px] rounded-md bg-white/[0.04] px-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/70" />
-                      <span className="text-[10px] text-slate-600 font-mono">prospeo.app/app</span>
-                    </div>
-                  </div>
-                  <div className="relative z-10">
-                    <AnimatedDemo />
-                  </div>
+                {/* ── Démo animée — pleine largeur, chrome intégré dans le composant ── */}
+                <div data-reveal className="relative rounded-3xl border border-white/[0.08] overflow-hidden
+                                            shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
+                  <div className="absolute -inset-x-0 -top-16 h-48 -z-10 blur-[80px] opacity-40 pointer-events-none"
+                       style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.40), rgba(6,182,212,0.10) 55%, transparent 75%)" }} />
+                  <AnimatedDemo />
                 </div>
 
                 {/* ── Grille 3×2 — aucune carte isolée ── */}
@@ -752,106 +741,6 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* ══════════════════════════════════════════════════════════════════
-              §07 — ARTISANS (redesign visuel)
-          ══════════════════════════════════════════════════════════════════ */}
-          <section className="relative overflow-hidden border-t border-white/[0.05]">
-            {/* Fond gradient immersif */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-950/50 via-[#050508] to-cyan-950/20" />
-              <div className="absolute inset-0"
-                   style={{
-                     backgroundImage: "linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px)",
-                     backgroundSize: "40px 40px",
-                   }} />
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full blur-[140px] opacity-30"
-                   style={{ background: "radial-gradient(ellipse,rgba(124,58,237,0.5),rgba(6,182,212,0.1) 50%,transparent 70%)" }} />
-            </div>
-
-            <div className="relative max-w-6xl mx-auto px-5 sm:px-6 py-28 sm:py-36">
-
-              {/* Header */}
-              <div data-reveal className="text-center mb-16">
-                <Eyebrow>§07 — Pour les artisans</Eyebrow>
-                <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Plus de clients.<br /><G>Zéro frais d&apos;agence.</G>
-                </h2>
-                <p className="mt-5 text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
-                  Téo gère votre campagne Google Ads locale.
-                  La semaine de test est entièrement à sa charge.
-                  Vous ne payez que le budget publicitaire directement à Google.
-                </p>
-              </div>
-
-              {/* Stats visuelles */}
-              <div data-reveal className="grid md:grid-cols-3 gap-4 mb-12">
-                <div className="relative p-8 rounded-3xl border border-violet-400/20 bg-violet-500/[0.07] text-center overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-violet-500/10 to-transparent" />
-                  <div className="relative">
-                    <div className="text-[11px] font-mono text-violet-400 uppercase tracking-widest mb-3">Semaine de test</div>
-                    <div className="text-5xl sm:text-6xl font-bold text-slate-50 tracking-tight">12k€</div>
-                    <div className="mt-2 text-sm text-slate-400">de CA généré · J1 à J7</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-center">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-px h-8 bg-gradient-to-b from-violet-400/30 to-cyan-400/30" />
-                    <div className="text-2xl text-slate-600">→</div>
-                    <div className="w-px h-8 bg-gradient-to-b from-cyan-400/30 to-transparent" />
-                    <div className="mt-2 text-[10px] font-mono text-slate-600 uppercase tracking-widest text-center">
-                      3 000€<br />budget Google
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative p-8 rounded-3xl border border-cyan-400/20 bg-cyan-500/[0.05] text-center overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/8 to-transparent" />
-                  <div className="relative">
-                    <div className="text-[11px] font-mono text-cyan-400 uppercase tracking-widest mb-3">3 mois de campagne</div>
-                    <div className="text-5xl sm:text-6xl font-bold text-slate-50 tracking-tight">150k€</div>
-                    <div className="mt-2 text-sm text-slate-400">de CA · un paysagiste</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Artisan types — plus grands, plus visuels */}
-              <div data-reveal className="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-12">
-                {[
-                  { ic: "🔨", lb: "Plombiers",      col: "violet" },
-                  { ic: "⚡", lb: "Électriciens",   col: "cyan"   },
-                  { ic: "🌿", lb: "Paysagistes",    col: "violet" },
-                  { ic: "🎨", lb: "Peintres",       col: "cyan"   },
-                  { ic: "🧱", lb: "Maçons",         col: "violet" },
-                  { ic: "🏠", lb: "Couvreurs",      col: "cyan"   },
-                ].map(({ ic, lb, col }) => (
-                  <div key={lb}
-                       className={`flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all hover:scale-105
-                         ${col === "violet" ? "border-violet-400/15 bg-violet-500/[0.06] hover:bg-violet-500/[0.12]"
-                                            : "border-cyan-400/12  bg-cyan-500/[0.04]   hover:bg-cyan-500/[0.10]"}`}>
-                    <span className="text-2xl">{ic}</span>
-                    <span className="text-[11px] text-slate-400 font-medium">{lb}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA centré */}
-              <div data-reveal className="text-center">
-                <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-6">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                  <span className="text-sm text-slate-400">0€ de frais d&apos;agence sur la semaine de test</span>
-                </div>
-                <br />
-                <button onClick={() => openContact("Intéressé par une campagne Google Ads")}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#050508]
-                             text-sm font-semibold hover:bg-slate-200 transition-all hover:scale-[1.02]
-                             shadow-[0_0_40px_rgba(124,58,237,0.25)]">
-                  Contacter Téo →
-                </button>
-              </div>
-
-            </div>
-          </section>
 
           {/* ══════════════════════════════════════════════════════════════════
               §07 — PRICING
