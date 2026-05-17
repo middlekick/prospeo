@@ -26,9 +26,9 @@
 | Section kickers | §XX DM Mono | `Eyebrow` + §00 §02… | ✅ Numbering présent |
 | Claim hero | Max 8 mots, percutant | "Trouve. Appelle. Signe." | ✅ 3 mots choc |
 | Gradient text | Titres colorés | `G()` component | ✅ Violet→cyan |
-| FAQ accordion | Transitions layout | `FAQItem` | ⚠️ Basique (pas Framer) |
+| FAQ accordion | Transitions layout | `FAQItem` + AnimatePresence | ✅ Framer Motion |
 | Sticky CTA | Après 400px scroll | Implémenté | ✅ |
-| Pricing section | 3 plans | Section `#pricing` | ⚠️ Pas de toggle mensuel/annuel |
+| Pricing section | 3 plans | Section `#pricing` + toggle | ✅ Toggle annuel -20% |
 | Dark only | Pas de light mode | 100% dark | ✅ |
 
 ### ✅ Ce qui a été complété (session actuelle)
@@ -80,10 +80,10 @@
 #### Étape 4 — Landing (reste)
 | Section | Statut |
 |---|---|
-| Section "Le constat" scroll-pinned data viz | ⚠️ Statique (pas pinned) |
+| Section "Le constat" scroll-pinned data viz | ✅ ConstatSection.tsx — 300vh sticky, 3 cartes révélées au scroll |
 | Démo produit scroll-pinned 4 étapes | ❌ AnimatedDemo autoplay (pas scroll-pinned) |
-| Pricing toggle mensuel/annuel animé | ❌ |
-| Page transitions (rideau noir + glitch logo) | ❌ |
+| Pricing toggle mensuel/annuel animé | ✅ Done |
+| Page transitions (rideau noir) | ✅ Curtain + PageFade dans LayoutShell |
 
 #### Étape 5 — Pages secondaires (aucune n'existe)
 | Page | Statut |
@@ -110,8 +110,8 @@
 #### SEO & Performance
 | Élément | Statut |
 |---|---|
-| `app/sitemap.ts` | ❌ |
-| `app/robots.ts` | ❌ |
+| `app/sitemap.ts` | ✅ |
+| `app/robots.ts` | ✅ |
 | `/api/og` (OG images dynamiques) | ❌ |
 | OpenGraph metadata par page | ⚠️ Partiel |
 | Lighthouse > 90 (audit) | ❌ Non mesuré |
@@ -141,7 +141,7 @@
 | 8 | 🟡 P2 | Design | **Étape 3** — Hero R3F : Canvas 2D NodeNetwork retenu (R3F non prioritaire) | ⏳ Reporté | — |
 | 9 | 🟡 P2 | Design | **Étape 4a** — Landing : §01 marquee ✅, §03 social proof ✅, SVG icons ✅, footer massif ✅ | ✅ Fait | 2026-05-17 |
 | 10 | 🟡 P2 | Design | **Étape 4b** — Landing : FAQ Framer ✅, MagneticButton CTAs ✅, GradientBorder Pro card ✅ | ✅ Fait | 2026-05-17 |
-| 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle mensuel/annuel ✅ / SVG checkmarks ✅ / page transitions rideau noir ❌ | ✅ Partiel | 2026-05-17 |
+| 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle ✅ / SVG checkmarks ✅ / rideau noir ✅ / §02 scroll-pinned ✅ / Hero H1 animé ✅ | ✅ Fait | 2026-05-17 |
 | 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts ✅ / /api/og (OG images dynamiques) ❌ | ✅ Partiel | 2026-05-17 |
 | 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ✅ Fait | 2026-05-17 |
 | 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ⏳ À faire | — |
@@ -189,7 +189,10 @@
 | 2026-05-17 | Landing | ✓/✕ → SVG inline dans features compare, comparatif tableau, pricing feats | `app/page.tsx` |
 | 2026-05-17 | Landing | Toggle mensuel/annuel animé (spring) — Pro 15€, Agence 39€/mois en annuel, badge -20% | `app/page.tsx` |
 | 2026-05-17 | Landing | Refs résiduelles cyan-*/violet-* → brand-* supprimées | `app/page.tsx` |
-| 2026-05-17 | SEO | sitemap.ts + robots.ts créés | `app/sitemap.ts`, `app/robots.ts` |
+| 2026-05-17 | SEO | sitemap.ts + robots.ts créés
+| 2026-05-17 | Landing | Transitions de page — rideau noir (Curtain scaleY 1→0, 700ms) + PageFade (opacity delay 180ms) | ,  |
+| 2026-05-17 | Landing | Hero H1 — stagger word reveal (chaque mot slide depuis le bas, overflow masqué) |  |
+| 2026-05-17 | Landing | §02 scroll-pinned — ConstatSection.tsx (300vh sticky, 3 cartes révélées par useScroll) |  | | `app/sitemap.ts`, `app/robots.ts` |
 
 ---
 
@@ -198,10 +201,10 @@
 ```
 App CRM (fonctionnel)    ████████████████████░  97%
 Design system app        ████████████████████░  97%
-Landing page             █████████████████████  92%  (brief ~75% couvert)
+Landing page             █████████████████████  95%  (brief ~80% couvert)
 Brief design Étapes 1-2  ████████████████████░  100% ✅
 Brief design Étape 3     ████░░░░░░░░░░░░░░░░░  20%  (Canvas 2D, pas R3F)
-Brief design Étape 4     █████████████████░░░░  87%  (scroll-pinned + transitions manquants)
+Brief design Étape 4     ████████████████████░  97%  (démo scroll-pinned seule reste)
 Brief design Étape 5     ░░░░░░░░░░░░░░░░░░░░░   0%  (pages secondaires)
 Stripe prod              ░░░░░░░░░░░░░░░░░░░░░   0%  ← P1 immédiat
 Pages secondaires        ░░░░░░░░░░░░░░░░░░░░░   0%
