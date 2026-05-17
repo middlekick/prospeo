@@ -354,6 +354,7 @@ export default function Landing() {
   const [emailModal,  setEmailModal]  = useState(false);
   const [scrolled,    setScrolled]    = useState(false);
   const [showSticky,  setShowSticky]  = useState(false);
+  const [annual,      setAnnual]      = useState(false);
   const { isSignedIn } = useUser();
   const { error: toastError } = useToast();
 
@@ -580,12 +581,10 @@ export default function Landing() {
                       {c.items.map(it => (
                         <li key={it} className={`flex items-start gap-2.5 text-sm
                           ${c.tone === "bad" ? "text-slate-500" : "text-slate-300"}`}>
-                          <span className={
-                            c.tone === "bad"  ? "text-slate-700" :
-                            c.tone === "mid"  ? "text-brand-400" : "text-brand-400"
-                          }>
-                            {c.tone === "bad" ? "✕" : "✓"}
-                          </span>
+                          {c.tone === "bad"
+                            ? <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-slate-700" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                            : <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand-400" viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3.5 3.5 5.5-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          }
                           {it}
                         </li>
                       ))}
@@ -747,7 +746,7 @@ export default function Landing() {
               </div>
               <div className="grid md:grid-cols-3 gap-5 relative">
                 <div className="hidden md:block absolute top-7 left-[16%] right-[16%] h-px
-                                bg-gradient-to-r from-brand-500/30 via-cyan-500/20 to-brand-500/30" />
+                                bg-gradient-to-r from-brand-500/30 via-brand-500/20 to-brand-500/30" />
                 {[
                   { n: "01", t: "Source",    d: "Scrape Maps, importe l'INPI ou un CSV. Leads normalisés, prêts à appeler.", col: "violet" },
                   { n: "02", t: "Appelle",   d: "Lance une session : script affiché, résultat en 1 touche, journal auto.", col: "cyan"   },
@@ -810,9 +809,9 @@ export default function Landing() {
                           <td key={j} className={`p-3.5 text-center text-sm ${j === 0 ? "bg-brand-500/[0.05]" : ""}`}>
                             {typeof v === "boolean"
                               ? (v
-                                  ? <span className={j === 0 ? "text-brand-300 font-bold" : "text-emerald-500/50"}>✓</span>
-                                  : <span className="text-slate-700">✕</span>)
-                              : <span className={j === 0 ? "text-violet-200 font-medium" : "text-slate-500"}>{v as string}</span>}
+                                  ? <svg className={`w-4 h-4 mx-auto ${j === 0 ? "text-brand-300" : "text-emerald-500/50"}`} viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3.5 3.5 5.5-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                  : <svg className="w-4 h-4 mx-auto text-slate-700" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>)
+                              : <span className={j === 0 ? "text-brand-200 font-medium" : "text-slate-500"}>{v as string}</span>}
                           </td>
                         ))}
                       </tr>
@@ -834,6 +833,25 @@ export default function Landing() {
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em]">
                   Simple. <G>Transparent.</G>
                 </h2>
+
+                {/* Toggle mensuel / annuel */}
+                <div className="mt-8 flex items-center justify-center gap-3">
+                  <span className={`text-sm transition-colors ${!annual ? "text-slate-200" : "text-slate-500"}`}>Mensuel</span>
+                  <button
+                    onClick={() => setAnnual(a => !a)}
+                    className="relative w-12 h-6 rounded-full bg-white/[0.08] border border-white/[0.1] transition-colors"
+                    style={{ background: annual ? "rgba(0,229,255,0.15)" : undefined }}>
+                    <motion.span
+                      className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-brand-400 shadow-[0_0_10px_rgba(0,229,255,0.5)]"
+                      animate={{ x: annual ? 24 : 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }} />
+                  </button>
+                  <span className={`text-sm transition-colors ${annual ? "text-slate-200" : "text-slate-500"}`}>
+                    Annuel
+                    <span className="ml-1.5 px-1.5 py-0.5 rounded-md text-[10px] font-mono bg-brand-500/20 text-brand-300">-20%</span>
+                  </span>
+                </div>
+
                 <div className="mt-8 max-w-sm mx-auto">
                   <input
                     type="email" value={email} onChange={e => setEmail(e.target.value)}
@@ -848,30 +866,28 @@ export default function Landing() {
               <div className="grid md:grid-cols-3 gap-5 items-start">
                 {[
                   {
-                    name: "Gratuit", price: "0€",
+                    name: "Gratuit", monthlyPrice: "0", annualPrice: "0",
                     desc: "Pour découvrir et faire ses premiers appels.",
                     feats: ["100 leads max", "3 scrapings Maps/mois", "Rappels & RDV", "Journal d'activité"],
                     cta: "Créer un compte", onClick: () => { window.location.href = "/sign-up"; }, hl: false,
                   },
                   {
-                    name: "Pro", price: "19€",
+                    name: "Pro", monthlyPrice: "19", annualPrice: "15",
                     desc: "La prospection systématique, sans limite.",
                     feats: ["Leads illimités", "Maps + INPI illimités", "Mode session d'appels", "Scripts téléprompter", "Dashboard + funnel", "Emails & relances auto", "Import / Export CSV"],
                     cta: "Commencer 14j gratuit", onClick: () => pay("pro"), hl: true,
                   },
                   {
-                    name: "Agence", price: "49€",
+                    name: "Agence", monthlyPrice: "49", annualPrice: "39",
                     desc: "Pour les équipes à fort volume.",
                     feats: ["Tout Pro inclus", "5 utilisateurs", "Leads partagés", "Onboarding dédié", "Support prioritaire"],
                     cta: "Nous contacter", onClick: () => openContact("Plan Agence Prospeo"), hl: false,
                   },
                 ].map(p => {
+                  const displayPrice = annual ? p.annualPrice : p.monthlyPrice;
                   const card = (
                     <div key={p.name} data-reveal
-                      className={`relative flex flex-col p-7 rounded-3xl transition-all
-                        ${p.hl
-                          ? "bg-gradient-to-b from-brand-500/[0.06] to-transparent md:-mt-3 md:pb-10"
-                          : "border border-white/[0.07] bg-white/[0.02]"}`}>
+                      className={`relative flex flex-col p-7 rounded-3xl transition-all ${p.hl ? "bg-gradient-to-b from-brand-500/[0.06] to-transparent md:-mt-3 md:pb-10" : "border border-white/[0.07] bg-white/[0.02]"}`}>
                       {p.hl && (
                         <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full
                                          text-[11px] font-semibold bg-white text-[#0A0A0B]">
@@ -879,24 +895,38 @@ export default function Landing() {
                         </span>
                       )}
                       <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500">{p.name}</div>
-                      <div className="mt-3 flex items-end gap-1">
-                        <span className="text-4xl font-bold text-slate-50">{p.price}</span>
-                        {p.price !== "0" && <span className="text-slate-500 mb-1 text-sm">/mois</span>}
+                      <div className="mt-3 flex items-end gap-1.5">
+                        <motion.span
+                          key={displayPrice}
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-4xl font-bold text-slate-50">
+                          {displayPrice}€
+                        </motion.span>
+                        {displayPrice !== "0" && (
+                          <span className="text-slate-500 mb-1 text-sm">/mois
+                            {annual && <span className="ml-1 text-[10px] text-brand-400 font-mono">· annuel</span>}
+                          </span>
+                        )}
                       </div>
+                      {annual && p.monthlyPrice !== "0" && (
+                        <p className="text-[11px] text-slate-600 mt-0.5 font-mono">
+                          soit {parseInt(p.annualPrice) * 12}€/an — économie {(parseInt(p.monthlyPrice) - parseInt(p.annualPrice)) * 12}€
+                        </p>
+                      )}
                       <p className="mt-2 text-sm text-slate-500">{p.desc}</p>
                       <ul className="mt-6 space-y-2.5 flex-1">
                         {p.feats.map(f => (
                           <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                            <span className="text-brand-400 mt-0.5 shrink-0">✓</span>{f}
+                            <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand-400" viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3.5 3.5 5.5-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            {f}
                           </li>
                         ))}
                       </ul>
                       <button onClick={p.onClick} disabled={loading && p.hl}
-                        className={`mt-7 w-full py-3 rounded-full text-sm font-semibold transition-all
-                          ${p.hl
-                            ? "bg-white text-[#0A0A0B] hover:bg-slate-200 disabled:opacity-50"
-                            : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
-                        {loading && p.hl ? "Redirection" : p.cta}
+                        className={`mt-7 w-full py-3 rounded-full text-sm font-semibold transition-all ${p.hl ? "bg-white text-[#0A0A0B] hover:bg-slate-200 disabled:opacity-50" : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
+                        {loading && p.hl ? "Redirection" : p.cta}
                       </button>
                     </div>
                   );
