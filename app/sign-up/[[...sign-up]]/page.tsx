@@ -1,4 +1,4 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 
 const CLERK_APPEARANCE = {
@@ -29,10 +29,10 @@ const CLERK_APPEARANCE = {
   },
 };
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-[#050508] overflow-hidden">
-      {/* Fond atmosphérique */}
+      {/* Fond */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full blur-[160px]"
              style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.16), transparent 65%)" }} />
@@ -46,7 +46,7 @@ export default function SignInPage() {
           <span className="text-slate-100 font-semibold text-[17px] tracking-tight">Prospeo</span>
         </Link>
 
-        <SignIn appearance={CLERK_APPEARANCE} />
+        <SignUp appearance={CLERK_APPEARANCE} />
       </div>
     </div>
   );
