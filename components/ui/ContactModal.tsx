@@ -9,7 +9,7 @@ import { useState } from "react";
 
 interface Props {
   onClose:  () => void;
-  /** Sujet pré-rempli optionnel (ex: "Plan Agence", "Campagne Google Ads") */
+  /** Sujet pré-rempli optionnel (ex: "Plan Agence", "Plan Pro") */
   defaultSubject?: string;
 }
 

@@ -58,7 +58,7 @@ function formatActivityDate(iso: string): string {
 type EmailTemplate = "offre" | "rdv_confirmation" | "rdv_rappel";
 
 const EMAIL_TEMPLATES: { value: EmailTemplate; label: string; icon: string; desc: string }[] = [
-  { value: "offre",            icon: "🚀", label: "Offre semaine gratuite", desc: "Présente la semaine de test Google Ads"       },
+  { value: "offre",            icon: "🚀", label: "Offre semaine gratuite", desc: "Présente la semaine d'acquisition offerte"   },
   { value: "rdv_confirmation", icon: "✅", label: "Confirmation RDV",       desc: "Confirme la date et l'heure de l'échange"    },
   { value: "rdv_rappel",       icon: "⏰", label: "Rappel J-1",             desc: "Rappel la veille du RDV"                     },
 ];
@@ -483,7 +483,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                   : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
-              {t === "suivi" ? "Suivi" : t === "ads" ? "Google Ads" : "RDV"}
+              {t === "suivi" ? "Suivi" : t === "ads" ? "Formulaire client" : "RDV"}
               {tab === t && (
                 <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] rounded-t-full bg-gradient-to-r from-brand-500 to-brand-400" />
               )}
@@ -544,7 +544,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             </>
           )}
 
-          {/* ── Onglet Google Ads ── */}
+          {/* ── Onglet Formulaire client ── */}
           {tab === "ads" && (
             <UpgradeGate feature="ads" plan={plan} loading={planLoading} blur>
               <div className="grid grid-cols-2 gap-3">
@@ -600,7 +600,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 </div>
               </Field>
 
-              <Field label="Notes Ads">
+              <Field label="Notes">
                 <textarea value={form.ads_notes} onChange={e => set("ads_notes", e.target.value)}
                   rows={3} className="input-base w-full resize-none" />
               </Field>

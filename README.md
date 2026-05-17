@@ -10,7 +10,7 @@ Prospeo est un CRM SaaS pensé pour les commerciaux indépendants et freelances 
 - **Auto-scraping quotidien** — cron Vercel qui alimente le CRM automatiquement chaque matin
 - **Recherche INPI / RNE** — entreprises récentes avec filtres (département, NAF, artisans)
 - **CRM complet** — tags, rappels, journal d'activité, RDV, notes
-- **Scripts d'appel** — téléprompter Cold Call & Closing, script Google Ads interactif
+- **Scripts d'appel** — téléprompter Cold Call & Closing interactif
 - **Envoi d'emails** — 3 templates (offre, confirmation RDV, rappel RDV) via Gmail
 - **Dashboard** — métriques, funnel de conversion, graphique 30j
 - **Import / Export CSV** — avec auto-détection des colonnes

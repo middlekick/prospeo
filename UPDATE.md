@@ -201,6 +201,8 @@
 | 2026-05-17 | Fix | Build Vercel cassé — CheckoutBanner importait lib/plan (→ Prisma/pg dans bundle navigateur). Labels plan inline client-safe | `components/ui/CheckoutBanner.tsx` |
 | 2026-05-17 | Landing | ConstatSection — métrique « 12 k€ semaine de test » (activité Ads perso, hors sujet CRM) remplacée par « +3h gagnées/jour » | `components/landing/ConstatSection.tsx` |
 | 2026-05-17 | Data | Déduplication fuzzy import CSV — `normalizePhoneKey` (tous formats → 10 chiffres) + `normalizeNameKey` (accents/formes juridiques/tokens triés). Dédup par tel canonique prioritaire, repli nom+ville. Retour `skipped` affiché dans ImportCSV | `lib/phone.ts`, `api/leads/import/route.ts`, `ImportCSV.tsx` |
+| 2026-05-17 | Cleanup | Suppression du marketing Google Ads / stat paysagiste (12k€/150k€) — email "offre" génériqué (sans la stat), landing "closing Google Ads"→"scripts de closing", CLAUDE.md (section "Activité personnelle de Téo" retirée), README, ContactModal | `lib/email.ts`, `app/page.tsx`, `CLAUDE.md`, `README.md`, `ContactModal.tsx` |
+| 2026-05-17 | CRM | LeadDrawer — onglet « Suivi Google Ads » renommé « Formulaire client » (feature et colonnes `ads_*` conservées, non destructif) | `components/leads/LeadDrawer.tsx` |
 
 ---
 

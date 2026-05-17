@@ -12,14 +12,6 @@
 ### Cible principale du SaaS
 **Commerciaux indépendants, freelances en acquisition, et petites agences** qui prospectent des artisans et TPE locales (plombiers, électriciens, paysagistes, peintres…). Ils ont besoin de sourcer des leads, suivre leurs appels, gérer leurs RDV et relances — le tout centralisé. Prospeo est le seul outil qui intègre le sourcing (Google Maps + INPI) **et** le suivi CRM en un seul endroit.
 
-### Activité personnelle de Téo (parenthèse sur la landing)
-- Acquisition client pour **artisans français** via **campagnes Google Ads locales**, semaine de test offerte
-  - Le prospect paie uniquement le budget Google (~100€/semaine, 10-15€/jour) **directement à Google**
-  - Téo ne se facture rien sur la semaine de test — il se rémunère sur les mois suivants
-- **Preuve sociale clé** : un paysagiste a généré 12 000€ de CA sur la semaine de test,
-  puis 150 000€ de CA sur 3 mois pour 3 000€ de budget Google total
-- Cette activité est présentée dans une section dédiée de la landing — elle est **secondaire** par rapport au SaaS
-
 ### Objectif du CRM
 Centraliser la prospection : sourcing de leads (Google Maps + INPI), suivi des appels,
 gestion des RDV, scripts d'appel, relances automatiques, journal d'activité — le tout sur une interface unique.
@@ -97,7 +89,7 @@ Prospeo/
 │   │   ├── LeadsTable.tsx             # Table + tag inline + tri + log rapide hover + sélection multiple
 │   │   ├── KanbanView.tsx             # Vue kanban drag & drop natif par statut
 │   │   ├── CallSession.tsx            # Mode session d'appels plein écran (portal) + stats live
-│   │   ├── LeadDrawer.tsx             # Drawer — Suivi/Ads(gated)/RDV + EmailPanel + Journal + voix
+│   │   ├── LeadDrawer.tsx             # Drawer — Suivi/Formulaire client(gated)/RDV + EmailPanel + Journal + voix
 │   │   ├── FilterPills.tsx            # Filtres par statut + badge rappels pulsé
 │   │   ├── StatsBar.tsx               # Stats globales (total, rappels, intéressés, RDV…)
 │   │   ├── ScrapeForm.tsx             # Formulaire scraping + badge quota Free
@@ -209,7 +201,7 @@ note        // texte libre
 created_at  // YYYY-MM-DD — date d'ajout dans le CRM
 contacted_at // YYYY-MM-DD — date du 1er vrai contact (tag quitte non_appele)
 
-// Suivi Google Ads
+// Formulaire client (champs ads_* — nom interne historique conservé)
 ads_prenom, ads_nomclient, ads_entreprise, ads_tel, ads_email,
 ads_zone, ads_rayon, ads_statut, ads_budget, ads_type,
 ads_services (Json → string[]), ads_notes
@@ -259,7 +251,7 @@ trial_expires_at, trial_code_used  // trial par code d'invitation
 - Scraping Google Maps direct (quota 3/mois en free), Import/Export CSV (Pro+), enrichissement batch, lien "Trouver"
 - **Skeleton de chargement** animé
 - **Relances multi-paliers** : passage en `ne_repond_pas` → rappel auto escaladé (J+3 → J+7 → J+15)
-- **Drawer lead** : 3 onglets (Suivi / Google Ads / RDV)
+- **Drawer lead** : 3 onglets (Suivi / Formulaire client / RDV)
   - Journal d'activité avec timeline (statuts, emails, notes, appels)
   - Ajout note manuelle + **dictée vocale** (Web Speech API fr-FR)
   - EmailPanel : 3 templates, champ email, envoi + log automatique (Pro+)
@@ -318,7 +310,7 @@ trial_expires_at, trial_code_used  // trial par code d'invitation
 | Envoi d'emails | ✗ | ✓ | ✓ |
 | Dashboard analytics | ✗ | ✓ | ✓ |
 | Scripts téléprompter | ✗ | ✓ | ✓ |
-| Suivi Google Ads | ✗ | ✓ | ✓ |
+| Formulaire client | ✗ | ✓ | ✓ |
 | Prix | 0€ | 19€/mois | 49€/mois |
 
 - **`lib/plan.ts`** : `PLAN_LIMITS`, `getUserPlan()`, `checkAndIncrementScrape()` (reset mensuel auto), `getScrapeUsage()`

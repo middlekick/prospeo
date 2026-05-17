@@ -89,7 +89,7 @@ function footer(): string {
   <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0">
     <p style="${FONT};font-size:13px;color:#64748b;margin:0;line-height:1.6">
       <strong style="color:#0f172a">${MON_PRENOM} ${MON_NOM}</strong><br/>
-      Acquisition client  Google Ads pour artisans
+      Acquisition client pour artisans
       ${MON_TEL ? `<br/><a href="tel:${intlTel}" style="color:#7c3aed;text-decoration:none">${MON_TEL}</a>` : ""}
       ${GMAIL_USER ? `&nbsp;·&nbsp;<a href="mailto:${GMAIL_USER}" style="color:#7c3aed;text-decoration:none">${GMAIL_USER}</a>` : ""}
     </p>
@@ -182,21 +182,15 @@ export function buildEmailHTML({ prenom, nomEntreprise, urlSite, screenshotUrl }
             Ma proposition
           </p>
           <p style="${FONT};font-size:15px;color:#1e1b4b;font-weight:600;margin:0 0 6px">
-            1 semaine de Google Ads  sans frais d'agence
+            1 semaine d'acquisition sans frais d'agence
           </p>
           <p style="${FONT};font-size:14px;color:#475569;line-height:1.6;margin:0">
-            Vous payez uniquement le budget publicitaire (~100 ) directement à Google.
+            Vous payez uniquement le budget publicitaire (~100 ) directement à la régie publicitaire.
             Je ne me facture rien sur la semaine test  je vous prouve les résultats d'abord.
           </p>
         </td>
       </tr>
     </table>
-
-    <p style="${FONT};font-size:14px;color:#64748b;line-height:1.7;margin:20px 0 0">
-      Un paysagiste avec qui je travaille a généré <strong style="color:#0f172a">12 000  de CA</strong>
-      dès la première semaine, puis <strong style="color:#0f172a">150 000  sur 3 mois</strong>
-      pour 3 000  de budget Google total. C'est le genre de résultat que je vise pour vous.
-    </p>
 
     ${ctaButtons()}
     ${footer()}
