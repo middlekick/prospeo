@@ -141,9 +141,9 @@
 | 8 | 🟡 P2 | Design | **Étape 3** — Hero R3F : Canvas 2D NodeNetwork retenu (R3F non prioritaire) | ⏳ Reporté | — |
 | 9 | 🟡 P2 | Design | **Étape 4a** — Landing : §01 marquee ✅, §03 social proof ✅, SVG icons ✅, footer massif ✅ | ✅ Fait | 2026-05-17 |
 | 10 | 🟡 P2 | Design | **Étape 4b** — Landing : FAQ Framer ✅, MagneticButton CTAs ✅, GradientBorder Pro card ✅ | ✅ Fait | 2026-05-17 |
-| 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle mensuel/annuel, page transitions rideau noir | ⏳ À faire | — |
-| 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts + /api/og (OG images dynamiques) | ⏳ À faire | — |
-| 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ⏳ À faire | — |
+| 11 | 🟡 P2 | Design | **Étape 4c** — Pricing toggle mensuel/annuel ✅ / SVG checkmarks ✅ / page transitions rideau noir ❌ | ✅ Partiel | 2026-05-17 |
+| 12 | 🟡 P2 | SEO | sitemap.ts + robots.ts ✅ / /api/og (OG images dynamiques) ❌ | ✅ Partiel | 2026-05-17 |
+| 13 | 🟡 P2 | UI/Design | Remplacer l'emoji 🔒 dans `UpgradeGate.tsx` par un SVG cadenas | ✅ Fait | 2026-05-17 |
 | 14 | 🟡 P2 | UX | Page de succès post-checkout : toast/bannière "Bienvenue en Pro" quand `?checkout=success` | ⏳ À faire | — |
 | 15 | 🟡 P2 | Data | Déduplication fuzzy à l'import CSV | ⏳ À faire | — |
 | 16 | 🟡 P2 | UI | Badge trial restant dans la sidebar | ⏳ À faire | — |
@@ -185,6 +185,11 @@
 | 2026-05-17 | Landing | Features grid — 6 SVG icons dans icon box (remplace emoji) | `app/page.tsx` |
 | 2026-05-17 | Landing | Footer massif — 4 colonnes, social links LinkedIn/email, status dot émeraude | `app/page.tsx` |
 | 2026-05-17 | Landing | NodeNetwork — violet retiré, palette 100% brand cyan | `app/page.tsx` |
+| 2026-05-17 | Fix | Mojibake UTF-8/cp1252 corrigé — 26 fichiers TSX (é, à, §, —, →) via fix-encoding2.js | Batch 26 fichiers |
+| 2026-05-17 | Landing | ✓/✕ → SVG inline dans features compare, comparatif tableau, pricing feats | `app/page.tsx` |
+| 2026-05-17 | Landing | Toggle mensuel/annuel animé (spring) — Pro 15€, Agence 39€/mois en annuel, badge -20% | `app/page.tsx` |
+| 2026-05-17 | Landing | Refs résiduelles cyan-*/violet-* → brand-* supprimées | `app/page.tsx` |
+| 2026-05-17 | SEO | sitemap.ts + robots.ts créés | `app/sitemap.ts`, `app/robots.ts` |
 
 ---
 
@@ -193,10 +198,10 @@
 ```
 App CRM (fonctionnel)    ████████████████████░  97%
 Design system app        ████████████████████░  97%
-Landing page             ████████████████████░  88%  (brief ~70% couvert)
+Landing page             █████████████████████  92%  (brief ~75% couvert)
 Brief design Étapes 1-2  ████████████████████░  100% ✅
 Brief design Étape 3     ████░░░░░░░░░░░░░░░░░  20%  (Canvas 2D, pas R3F)
-Brief design Étape 4     ████████████████░░░░░  80%  (scroll-pinned + toggle manquants)
+Brief design Étape 4     █████████████████░░░░  87%  (scroll-pinned + transitions manquants)
 Brief design Étape 5     ░░░░░░░░░░░░░░░░░░░░░   0%  (pages secondaires)
 Stripe prod              ░░░░░░░░░░░░░░░░░░░░░   0%  ← P1 immédiat
 Pages secondaires        ░░░░░░░░░░░░░░░░░░░░░   0%
