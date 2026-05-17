@@ -18,22 +18,22 @@ interface Props {
 }
 
 const RDV_STATUTS = [
-  { value: "",           label: "â€”"          },
+  { value: "",           label: "—"          },
   { value: "en_attente", label: "En attente" },
-  { value: "confirme",   label: "ConfirmÃ©"   },
-  { value: "annule",     label: "AnnulÃ©"     },
-  { value: "effectue",   label: "EffectuÃ©"   },
+  { value: "confirme",   label: "Confirmé"   },
+  { value: "annule",     label: "Annulé"     },
+  { value: "effectue",   label: "Effectué"   },
 ];
 
-const ADS_TYPES = ["", "Leads", "Appels", "Trafic", "VisibilitÃ©"];
+const ADS_TYPES = ["", "Leads", "Appels", "Trafic", "Visibilité"];
 
-// â”€â”€ IcÃ´nes et couleurs du journal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Icônes et couleurs du journal ─────────────────────────────────────────────
 
 const ACTIVITY_ICONS: Record<string, string> = {
-  statut: "ðŸ”„",
-  email:  "ðŸ“§",
-  note:   "ðŸ’¬",
-  appel:  "ðŸ“ž",
+  statut: "🔄",
+  email:  "📧",
+  note:   "💬",
+  appel:  "📞",
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -48,19 +48,19 @@ function formatActivityDate(iso: string): string {
   const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
   const date      = iso.slice(0, 10);
   const time      = iso.slice(11, 16);
-  if (date === today)     return `Aujourd'hui Â· ${time}`;
-  if (date === yesterday) return `Hier Â· ${time}`;
-  return `${new Date(date + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" })} Â· ${time}`;
+  if (date === today)     return `Aujourd'hui · ${time}`;
+  if (date === yesterday) return `Hier · ${time}`;
+  return `${new Date(date + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" })} · ${time}`;
 }
 
-// â”€â”€ Panel email inline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Panel email inline ────────────────────────────────────────────────────────
 
 type EmailTemplate = "offre" | "rdv_confirmation" | "rdv_rappel";
 
 const EMAIL_TEMPLATES: { value: EmailTemplate; label: string; icon: string; desc: string }[] = [
-  { value: "offre",            icon: "ðŸš€", label: "Offre semaine gratuite", desc: "PrÃ©sente la semaine de test Google Ads"       },
-  { value: "rdv_confirmation", icon: "âœ…", label: "Confirmation RDV",       desc: "Confirme la date et l'heure de l'Ã©change"    },
-  { value: "rdv_rappel",       icon: "â°", label: "Rappel J-1",             desc: "Rappel la veille du RDV"                     },
+  { value: "offre",            icon: "🚀", label: "Offre semaine gratuite", desc: "Présente la semaine de test Google Ads"       },
+  { value: "rdv_confirmation", icon: "✅", label: "Confirmation RDV",       desc: "Confirme la date et l'heure de l'échange"    },
+  { value: "rdv_rappel",       icon: "⏰", label: "Rappel J-1",             desc: "Rappel la veille du RDV"                     },
 ];
 
 interface EmailPanelProps {
@@ -78,7 +78,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
   async function send() {
     if (!to.trim()) { setError("Entrez l'adresse email du contact."); return; }
     if (template === "offre" && !lead.site) { setError("Ce lead n'a pas de site web (requis pour le template Offre)."); return; }
-    if (template === "rdv_confirmation" && !lead.rdv_date) { setError("Aucune date de RDV renseignÃ©e."); return; }
+    if (template === "rdv_confirmation" && !lead.rdv_date) { setError("Aucune date de RDV renseignée."); return; }
 
     setSending(true);
     setError("");
@@ -90,7 +90,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
           template,
           to:            to.trim(),
           nomEntreprise: lead.nom,
-          prenom:        lead.ads_prenom || "lÃ ",
+          prenom:        lead.ads_prenom || "là",
           urlSite:       lead.site,
           rdvDate:       lead.rdv_date,
           rdvHeure:      lead.rdv_heure,
@@ -101,11 +101,11 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur envoi");
 
-      // ActivitÃ© synthÃ©tique pour mise Ã  jour immÃ©diate du journal
+      // Activité synthétique pour mise à jour immédiate du journal
       const labels: Record<string, string> = {
-        offre:            "Offre semaine gratuite envoyÃ©e",
-        rdv_confirmation: "Confirmation RDV envoyÃ©e",
-        rdv_rappel:       "Rappel J-1 envoyÃ©",
+        offre:            "Offre semaine gratuite envoyée",
+        rdv_confirmation: "Confirmation RDV envoyée",
+        rdv_rappel:       "Rappel J-1 envoyé",
       };
       onSent({
         id:      Date.now().toString(),
@@ -115,7 +115,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
         meta:    to.trim(),
       });
       onClose();
-      // Toast succÃ¨s gÃ©rÃ© par le parent via onSent
+      // Toast succès géré par le parent via onSent
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -130,10 +130,10 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
           Envoyer un email
         </span>
-        <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-sm transition-colors">âœ•</button>
+        <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-sm transition-colors">✕</button>
       </div>
 
-      {/* SÃ©lecteur de template */}
+      {/* Sélecteur de template */}
       <div className="grid grid-cols-3 gap-2">
         {EMAIL_TEMPLATES.map(t => (
           <button
@@ -153,7 +153,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
         ))}
       </div>
 
-      {/* Description du template sÃ©lectionnÃ© */}
+      {/* Description du template sélectionné */}
       <p className="text-xs text-slate-600 italic">
         {EMAIL_TEMPLATES.find(t => t.value === template)?.desc}
       </p>
@@ -177,13 +177,13 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
         disabled={sending}
         className="w-full h-8 rounded-md bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/30 text-cyan-300 text-xs font-medium transition-colors disabled:opacity-40"
       >
-        {sending ? "Envoiâ€¦" : "Envoyer"}
+        {sending ? "Envoi…" : "Envoyer"}
       </button>
     </div>
   );
 }
 
-// â”€â”€ Journal d'activitÃ© â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Journal d'activité ────────────────────────────────────────────────────────
 
 interface JournalProps {
   lead: Lead;
@@ -223,7 +223,7 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
           value={note}
           onChange={e => setNote(e.target.value)}
           onKeyDown={e => e.key === "Enter" && addNote()}
-          placeholder="Ajouter une note rapideâ€¦"
+          placeholder="Ajouter une note rapide…"
           className="input-base flex-1 text-xs"
         />
         <VoiceButton
@@ -242,8 +242,8 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
       {/* Timeline */}
       {activities.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-8 text-slate-700 gap-2">
-          <span className="text-xl">ðŸ“‹</span>
-          <p className="text-xs text-center">Aucune activitÃ© enregistrÃ©e.<br/>Les changements de statut apparaÃ®tront ici.</p>
+          <span className="text-xl">📋</span>
+          <p className="text-xs text-center">Aucune activité enregistrée.<br/>Les changements de statut apparaîtront ici.</p>
         </div>
       ) : (
         <div className="relative">
@@ -268,7 +268,7 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="text-xs text-slate-700">{formatActivityDate(a.date)}</span>
                     {a.meta && a.type === "email" && (
-                      <span className="text-xs text-slate-700">Â· {a.meta}</span>
+                      <span className="text-xs text-slate-700">· {a.meta}</span>
                     )}
                   </div>
                 </div>
@@ -281,7 +281,7 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
   );
 }
 
-// â”€â”€ Drawer principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Drawer principal ──────────────────────────────────────────────────────────
 
 export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props) {
   const [form,       setForm]       = useState<Lead | null>(null);
@@ -289,7 +289,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
   const [tab,        setTab]        = useState<"suivi" | "ads" | "rdv">("suivi");
   const [newService, setNewService] = useState("");
   const [emailOpen,  setEmailOpen]  = useState(false);
-  // Copie locale des activitÃ©s pour mise Ã  jour immÃ©diate sans recharger
+  // Copie locale des activités pour mise à jour immédiate sans recharger
   const [activities, setActivities] = useState<Activity[]>([]);
   const { plan, loading: planLoading } = usePlan();
   const { success, error: toastError } = useToast();
@@ -322,7 +322,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur sauvegarde");
 
-      // Utiliser le lead retournÃ© par l'API directement (pas de re-fetch global)
+      // Utiliser le lead retourné par l'API directement (pas de re-fetch global)
       if (data.lead) {
         const updatedActivities = Array.isArray(data.lead.activities)
           ? (data.lead.activities as unknown as Activity[])
@@ -332,7 +332,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       } else {
         onSaved(form);
       }
-      success("Lead sauvegardÃ©");
+      success("Lead sauvegardé");
     } catch (e) {
       toastError((e as Error).message);
     } finally {
@@ -344,7 +344,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
     if (!lead) return;
     const ok = await confirm({
       title:        `Supprimer "${lead.nom}" ?`,
-      message:      "Le lead et son journal d'activitÃ© seront dÃ©finitivement supprimÃ©s.",
+      message:      "Le lead et son journal d'activité seront définitivement supprimés.",
       confirmLabel: "Supprimer",
       danger:       true,
     });
@@ -357,7 +357,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       });
       if (!res.ok) throw new Error("Erreur suppression");
       onDeleted(lead);
-      success("Lead supprimÃ©");
+      success("Lead supprimé");
     } catch (e) {
       toastError((e as Error).message);
     }
@@ -390,17 +390,17 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
       {/* Drawer */}
       <aside className="fixed right-0 top-0 h-screen w-full sm:w-[480px] bg-[#090c14] border-l border-white/[0.07] z-50 flex flex-col">
 
-        {/* Trait de lumiÃ¨re haut */}
+        {/* Trait de lumière haut */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-500/20 to-transparent" />
 
         {/* Header */}
         <div className="flex items-start justify-between px-5 py-4 border-b border-white/[0.06]">
           <div>
             <h2 className="text-[15px] font-semibold text-slate-100 leading-tight">{form.nom}</h2>
-            <p className="text-[12px] text-slate-500 mt-0.5 tracking-wide">{form.metier}{form.emplacement ? ` Â· ${form.emplacement}` : ""}</p>
+            <p className="text-[12px] text-slate-500 mt-0.5 tracking-wide">{form.metier}{form.emplacement ? ` · ${form.emplacement}` : ""}</p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Bouton email â€” masquÃ© si plan free */}
+            {/* Bouton email — masqué si plan free */}
             {!planLoading && (plan === "pro" || plan === "agency") ? (
               <button
                 onClick={() => setEmailOpen(v => !v)}
@@ -420,10 +420,10 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             ) : !planLoading ? (
               <a
                 href="/#pricing"
-                title="FonctionnalitÃ© Pro â€” Passer Pro"
+                title="Fonctionnalité Pro — Passer Pro"
                 className="h-8 px-3 rounded-md text-xs font-medium border border-white/10 bg-white/5 text-slate-600 flex items-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
               >
-                ðŸ”’ Email
+                🔒 Email
               </a>
             ) : null}
             {/* Bouton WhatsApp */}
@@ -441,7 +441,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               </a>
             )}
             <button onClick={onClose} className="w-8 h-8 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] text-slate-500 hover:text-slate-300 transition-colors flex items-center justify-center text-[13px]">
-              âœ•
+              ✕
             </button>
           </div>
         </div>
@@ -451,7 +451,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
           <EmailPanel
             lead={form}
             onClose={() => setEmailOpen(false)}
-            onSent={(a) => { handleActivityAdded(a); setEmailOpen(false); success("Email envoyÃ© âœ“"); }}
+            onSent={(a) => { handleActivityAdded(a); setEmailOpen(false); success("Email envoyé ✓"); }}
           />
         )}
 
@@ -494,7 +494,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
         {/* Corps */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
 
-          {/* â”€â”€ Onglet Suivi â”€â”€ */}
+          {/* ── Onglet Suivi ── */}
           {tab === "suivi" && (
             <>
               <Field label="Statut">
@@ -527,12 +527,12 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                   className="input-base w-full resize-none" />
               </Field>
 
-              {/* â”€â”€ Journal d'activitÃ© â”€â”€ */}
+              {/* ── Journal d'activité ── */}
               <div className="pt-2 border-t border-white/5">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold text-slate-400">Journal d&apos;activitÃ©</span>
+                  <span className="text-xs font-semibold text-slate-400">Journal d&apos;activité</span>
                   {activities.length > 0 && (
-                    <span className="text-xs text-slate-700 mono">{activities.length} entrÃ©e{activities.length > 1 ? "s" : ""}</span>
+                    <span className="text-xs text-slate-700 mono">{activities.length} entrée{activities.length > 1 ? "s" : ""}</span>
                   )}
                 </div>
                 <Journal
@@ -544,11 +544,11 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             </>
           )}
 
-          {/* â”€â”€ Onglet Google Ads â”€â”€ */}
+          {/* ── Onglet Google Ads ── */}
           {tab === "ads" && (
             <UpgradeGate feature="ads" plan={plan} loading={planLoading} blur>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="PrÃ©nom client">
+                <Field label="Prénom client">
                   <input value={form.ads_prenom} onChange={e => set("ads_prenom", e.target.value)} className="input-base w-full" />
                 </Field>
                 <Field label="Nom client">
@@ -557,7 +557,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 <Field label="Entreprise">
                   <input value={form.ads_entreprise} onChange={e => set("ads_entreprise", e.target.value)} className="input-base w-full" />
                 </Field>
-                <Field label="TÃ©lÃ©phone">
+                <Field label="Téléphone">
                   <input value={form.ads_tel} onChange={e => set("ads_tel", e.target.value)} className="input-base w-full mono" />
                 </Field>
                 <Field label="Email">
@@ -577,7 +577,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 </Field>
                 <Field label="Type de campagne">
                   <select value={form.ads_type} onChange={e => set("ads_type", e.target.value)} className="input-base w-full">
-                    {ADS_TYPES.map(t => <option key={t} value={t}>{t || "â€”"}</option>)}
+                    {ADS_TYPES.map(t => <option key={t} value={t}>{t || "—"}</option>)}
                   </select>
                 </Field>
               </div>
@@ -587,14 +587,14 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                   {form.ads_services.map(s => (
                     <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-violet-900/40 text-brand-300 text-xs">
                       {s}
-                      <button onClick={() => removeService(s)} className="hover:text-red-400">Ã—</button>
+                      <button onClick={() => removeService(s)} className="hover:text-red-400">×</button>
                     </span>
                   ))}
                 </div>
                 <div className="flex gap-2">
                   <input value={newService} onChange={e => setNewService(e.target.value)}
                     onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addService())}
-                    placeholder="Ajouter un serviceâ€¦"
+                    placeholder="Ajouter un service…"
                     className="input-base flex-1" />
                   <button onClick={addService} className="px-3 py-1 rounded-md bg-brand-600/30 text-brand-300 text-xs hover:bg-brand-600/50">+</button>
                 </div>
@@ -607,7 +607,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             </UpgradeGate>
           )}
 
-          {/* â”€â”€ Onglet RDV â”€â”€ */}
+          {/* ── Onglet RDV ── */}
           {tab === "rdv" && (
             <>
               <div className="grid grid-cols-2 gap-3">
@@ -648,19 +648,19 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               {/* Raccourcis email RDV */}
               {(form.rdv_date || form.rdv_heure) && (
                 <div className="pt-3 border-t border-white/5">
-                  <p className="text-xs text-slate-600 mb-2">Envoyer un email liÃ© au RDV :</p>
+                  <p className="text-xs text-slate-600 mb-2">Envoyer un email lié au RDV :</p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setEmailOpen(true)}
                       className="flex items-center gap-1.5 h-7 px-3 rounded-md bg-white/5 border border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/10 text-xs transition-colors"
                     >
-                      âœ… Confirmer le RDV
+                      ✅ Confirmer le RDV
                     </button>
                     <button
                       onClick={() => setEmailOpen(true)}
                       className="flex items-center gap-1.5 h-7 px-3 rounded-md bg-white/5 border border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/10 text-xs transition-colors"
                     >
-                      â° Rappel J-1
+                      ⏰ Rappel J-1
                     </button>
                   </div>
                 </div>
@@ -693,7 +693,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               {saving ? (
                 <span className="flex items-center gap-1.5">
                   <svg className="animate-spin" width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity=".3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
-                  Sauvegardeâ€¦
+                  Sauvegarde…
                 </span>
               ) : "Sauvegarder"}
             </button>

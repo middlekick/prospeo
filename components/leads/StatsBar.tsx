@@ -53,12 +53,12 @@ function StatCard({ item }: { item: StatItem }) {
 
   return (
     <div className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl border shrink-0 transition-all ${styles.card}`}>
-      {/* IcÃ´ne */}
+      {/* Icône */}
       <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${styles.icon}`}>
         {item.icon}
       </div>
 
-      {/* DonnÃ©es */}
+      {/* Données */}
       <div className="flex flex-col leading-none">
         <div className={`text-[15px] font-bold font-mono leading-none ${item.active ? styles.num : "text-slate-500"}`}>
           {item.value}
@@ -68,7 +68,7 @@ function StatCard({ item }: { item: StatItem }) {
         </div>
       </div>
 
-      {/* Point pulsÃ© si actif */}
+      {/* Point pulsé si actif */}
       {item.active && item.accent !== "slate" && (
         <div className={`w-1.5 h-1.5 rounded-full ml-0.5 shrink-0 ${styles.dot} opacity-70`} />
       )}
@@ -113,7 +113,7 @@ export default function StatsBar({ leads }: Props) {
       ),
     },
     {
-      label:  "IntÃ©ressÃ©s",
+      label:  "Intéressés",
       value:  interesses,
       accent: "cyan",
       active: interesses > 0,

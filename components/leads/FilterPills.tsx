@@ -8,7 +8,7 @@ interface Props {
   onChange: (tag: TagValue) => void;
 }
 
-// Couleur par statut (cohÃ©rente avec le reste de l'app)
+// Couleur par statut (cohérente avec le reste de l'app)
 const TAG_ACCENT: Record<string, { active: string; badge: string }> = {
   tous:          { active: "bg-brand-500/[0.14] border-brand-500/[0.30] text-brand-200",  badge: "text-brand-400" },
   non_appele:    { active: "bg-slate-500/[0.14] border-slate-500/[0.25] text-slate-200",     badge: "text-slate-400" },
@@ -33,7 +33,7 @@ export default function FilterPills({ active, counts, onChange }: Props) {
         const isActive = active === value;
         const styles   = TAG_ACCENT[value] ?? TAG_ACCENT.tous;
 
-        // Badge pulsÃ© pour rappels non-sÃ©lectionnÃ©s
+        // Badge pulsé pour rappels non-sélectionnés
         const hasPulse = isRappel && count > 0 && !isActive;
 
         return (
@@ -45,7 +45,7 @@ export default function FilterPills({ active, counts, onChange }: Props) {
               isActive ? styles.active : DEFAULT_INACTIVE,
             ].join(" ")}
           >
-            {/* Point pulsÃ© */}
+            {/* Point pulsé */}
             {hasPulse && (
               <span className="absolute -top-[3px] -right-[3px] w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.7)] animate-pulse" />
             )}

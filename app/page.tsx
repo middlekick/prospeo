@@ -17,7 +17,7 @@ import Marquee         from "@/components/ui/Marquee";
 import GradientBorder  from "@/components/ui/GradientBorder";
 import SectionLabel    from "@/components/ui/SectionLabel";
 
-// â”€â”€â”€ Stripe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Stripe ───────────────────────────────────────────────────────────────────
 async function startCheckout(
   plan: "pro" | "agency",
   email: string,
@@ -39,7 +39,7 @@ async function startCheckout(
 
 // Lenis est maintenant global via SmoothScrollProvider dans layout.tsx
 
-// â”€â”€â”€ Scroll reveal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Scroll reveal ────────────────────────────────────────────────────────────
 function useScrollReveal() {
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]");
@@ -54,7 +54,7 @@ function useScrollReveal() {
   }, []);
 }
 
-// â”€â”€â”€ Compteur animÃ© â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Compteur animé ───────────────────────────────────────────────────────────
 function Counter({ end, suffix = "", duration = 1800 }: {
   end: number; suffix?: string; duration?: number;
 }) {
@@ -80,8 +80,8 @@ function Counter({ end, suffix = "", duration = 1800 }: {
   return <span ref={ref}>{n}{suffix}</span>;
 }
 
-// â”€â”€â”€ Gradient text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Gradient text — cyan électrique (brand)
+// ─── Gradient text ────────────────────────────────────────────────────────────
+// Gradient text  cyan électrique (brand)
 function G({ children }: { children: React.ReactNode }) {
   return (
     <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-dim">
@@ -90,7 +90,7 @@ function G({ children }: { children: React.ReactNode }) {
   );
 }
 
-// â”€â”€â”€ Eyebrow / kicker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Eyebrow / kicker ────────────────────────────────────────────────────────
 function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean }) {
   return (
     <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full
@@ -103,7 +103,7 @@ function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean
   );
 }
 
-// â”€â”€â”€ RÃ©seau de nÅ“uds animÃ© â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Réseau de nœuds animé ───────────────────────────────────────────────────
 function NodeNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -113,7 +113,7 @@ function NodeNetwork() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Dimensions rÃ©elles
+    // Dimensions réelles
     const setSize = () => {
       canvas.width  = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
@@ -156,7 +156,7 @@ function NodeNetwork() {
         }
       }
 
-      // NÅ“uds
+      // Nœuds
       nodes.forEach(n => {
         n.phase += 0.018;
         const glow = 0.65 + Math.sin(n.phase) * 0.35;
@@ -176,7 +176,7 @@ function NodeNetwork() {
         ctx!.fillStyle = `rgba(${n.col},${glow})`;
         ctx!.fill();
 
-        // DÃ©placement + rebond
+        // Déplacement + rebond
         n.x += n.vx; n.y += n.vy;
         if (n.x < 0 || n.x > W) n.vx *= -1;
         if (n.y < 0 || n.y > H) n.vy *= -1;
@@ -198,12 +198,12 @@ function NodeNetwork() {
   );
 }
 
-// â”€â”€â”€ Carte 3D hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Carte 3D hero ────────────────────────────────────────────────────────────
 const FAKE_LEADS = [
-  { nom: "Dupont Plomberie", metier: "Plombier",    badge: "IntÃ©ressÃ©",   col: "violet" },
-  { nom: "Ã‰lec Martin",      metier: "Ã‰lectricien", badge: "RDV pris",    col: "cyan"   },
-  { nom: "Jardins LÃ©a",      metier: "Paysagiste",  badge: "Ne rÃ©p. pas", col: "slate"  },
-  { nom: "Peinture Sohier",  metier: "Peintre",     badge: "IntÃ©ressÃ©",   col: "violet" },
+  { nom: "Dupont Plomberie", metier: "Plombier",    badge: "Intéressé",   col: "violet" },
+  { nom: "Élec Martin",      metier: "Électricien", badge: "RDV pris",    col: "cyan"   },
+  { nom: "Jardins Léa",      metier: "Paysagiste",  badge: "Ne rép. pas", col: "slate"  },
+  { nom: "Peinture Sohier",  metier: "Peintre",     badge: "Intéressé",   col: "violet" },
 ];
 const badgeClass = (c: string) =>
   c === "violet" ? "text-brand-400 bg-brand-500/15 border-brand-500/15"
@@ -234,7 +234,7 @@ function HeroCard3D() {
 
       <motion.div style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}>
 
-        {/* â”€â”€ Interface principale â”€â”€ */}
+        {/* ── Interface principale ── */}
         <div className="rounded-2xl border border-white/[0.09] bg-[#090b11]/95 backdrop-blur-md overflow-hidden
                         shadow-[0_40px_100px_-20px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
 
@@ -253,8 +253,8 @@ function HeroCard3D() {
           <div className="grid grid-cols-3 gap-2 p-3">
             {[
               { l: "Leads totaux", v: "48",  c: "text-slate-100"   },
-              { l: "IntÃ©ressÃ©s",   v: "12",  c: "text-brand-300"  },
-              { l: "RDV Ã  venir",  v: "3",   c: "text-brand-400"    },
+              { l: "Intéressés",   v: "12",  c: "text-brand-300"  },
+              { l: "RDV à venir",  v: "3",   c: "text-brand-400"    },
             ].map(s => (
               <div key={s.l} className="bg-white/[0.03] rounded-xl p-2 border border-white/[0.05] text-center">
                 <div className={`text-base font-bold leading-none ${s.c}`}>{s.v}</div>
@@ -266,7 +266,7 @@ function HeroCard3D() {
           {/* Table mini */}
           <div className="px-3 pb-3">
             <div className="grid grid-cols-[1fr_72px_68px] gap-1.5 px-2 pb-1.5 border-b border-white/[0.05]">
-              {["Prospect", "MÃ©tier", "Statut"].map(h => (
+              {["Prospect", "Métier", "Statut"].map(h => (
                 <span key={h} className="text-[9px] text-slate-600 uppercase tracking-wider">{h}</span>
               ))}
             </div>
@@ -286,19 +286,19 @@ function HeroCard3D() {
 
       </motion.div>
 
-      {/* â”€â”€ Badges orbitaux (CSS pur â€” cross-browser garanti) â”€â”€ */}
+      {/* ── Badges orbitaux (CSS pur — cross-browser garanti) ── */}
       <div className="absolute -top-5 -right-4 floaty-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full
                    bg-[#0c0e16]/95 border border-brand-400/25 z-10
                    shadow-[0_0_22px_rgba(0,229,255,0.22)] text-[11px] whitespace-nowrap">
         <span className="w-1.5 h-1.5 rounded-full bg-brand-400 shadow-[0_0_6px_rgba(0,229,255,0.9)]" />
-        <span className="text-brand-300 font-medium">RDV pris Â· 14h30</span>
+        <span className="text-brand-300 font-medium">RDV pris · 14h30</span>
       </div>
 
       <div className="absolute -bottom-5 -left-4 floaty-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full
                    bg-[#0c0e16]/95 border border-brand-500/20 z-10
                    shadow-[0_0_20px_rgba(0,229,255,0.20)] text-[11px] whitespace-nowrap">
-        <span className="text-xs">âœ‰ï¸</span>
-        <span className="text-brand-300 font-medium">Offre envoyÃ©e</span>
+        <span className="text-xs">✉️</span>
+        <span className="text-brand-300 font-medium">Offre envoyée</span>
       </div>
 
       <div className="absolute top-[38%] -right-12 floaty-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full
@@ -345,7 +345,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Landing() {
   const [email,       setEmail]       = useState("");
   const [loading,     setLoading]     = useState(false);
@@ -407,7 +407,7 @@ export default function Landing() {
 
       <div className="grain relative min-h-screen bg-[#0A0A0B] text-slate-300 overflow-x-hidden antialiased">
 
-        {/* â”€â”€ AtmosphÃ¨re â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Atmosphère ────────────────────────────────────────────────────── */}
         <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
           <div className="aurora absolute -top-[25%] left-1/2 -translate-x-1/2 w-[1200px] h-[800px] rounded-full blur-[180px]"
                style={{ background: "radial-gradient(ellipse at center, rgba(0,229,255,0.20) 0%, rgba(0,229,255,0.06) 50%, transparent 70%)" }} />
@@ -425,9 +425,9 @@ export default function Landing() {
 
         <div className="relative z-10">
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          {/* ══════════════════════════════════════════════════════════════════
               NAV
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          ══════════════════════════════════════════════════════════════════ */}
           <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300
             ${scrolled ? "bg-[#0A0A0B]/80 backdrop-blur-xl border-b border-white/[0.06]" : "bg-transparent"}`}>
             <div className="max-w-6xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
@@ -440,7 +440,7 @@ export default function Landing() {
               </Link>
 
               <div className="hidden md:flex items-center gap-8 text-[13px] text-slate-500">
-                {[["#produit","Produit"],["#features","FonctionnalitÃ©s"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l]) => (
+                {[["#produit","Produit"],["#features","Fonctionnalités"],["#pricing","Tarifs"],["#faq","FAQ"]].map(([h,l]) => (
                   <a key={h} href={h} className="hover:text-slate-200 transition-colors">{l}</a>
                 ))}
               </div>
@@ -449,7 +449,7 @@ export default function Landing() {
                 {isSignedIn ? (
                   <Link href="/app"
                     className="flex items-center gap-1.5 text-[13px] font-medium bg-white text-[#0A0A0B] px-4 py-2 rounded-full hover:bg-slate-200 transition-colors">
-                    Ouvrir l&apos;app â†’
+                    Ouvrir l&apos;app →
                   </Link>
                 ) : (
                   <>
@@ -467,12 +467,12 @@ export default function Landing() {
             </div>
           </nav>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§00 â€” HERO
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §00 — HERO
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16 overflow-hidden">
 
-            {/* RÃ©seau de nÅ“uds â€” fond du hero */}
+            {/* Réseau de nœuds — fond du hero */}
             <div className="absolute inset-0 pointer-events-none">
               <NodeNetwork />
             </div>
@@ -480,12 +480,12 @@ export default function Landing() {
             <div className="relative max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-[1fr_460px] gap-12 lg:gap-20 items-center">
 
-                {/* â”€â”€ Colonne texte â”€â”€ */}
+                {/* ── Colonne texte ── */}
                 <div>
                   <div data-reveal>
                     <Eyebrow>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                      Â§00 â€” CRM de prospection Â· 14 jours offerts
+                      §00 — CRM de prospection · 14 jours offerts
                     </Eyebrow>
                   </div>
 
@@ -500,34 +500,34 @@ export default function Landing() {
 
                   <div data-reveal data-rd="2" className="mt-7">
                     <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
-                      Le CRM qui rÃ©unit le sourcing Maps + INPI, le tÃ©lÃ©prompter d&apos;appel,
-                      les relances automatiques et le suivi RDV â€”
-                      dans un seul flux pensÃ© pour le terrain.
+                      Le CRM qui réunit le sourcing Maps + INPI, le téléprompter d&apos;appel,
+                      les relances automatiques et le suivi RDV —
+                      dans un seul flux pensé pour le terrain.
                     </p>
                   </div>
 
                   <div data-reveal data-rd="3" className="mt-8 flex flex-col sm:flex-row gap-3">
-<MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>{loading ? "Redirection…" : <>«Commencer gratuitement<span className="ml-1">→</span></>}</MagneticButton>
+<MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>{loading ? "Redirection" : <>«Commencer gratuitement<span className="ml-1">→</span></>}</MagneticButton>
                     <MagneticButton variant="ghost" href="#produit">Voir le produit</MagneticButton>
                   </div>
                   <p data-reveal data-rd="4" className="mt-3 text-xs text-slate-700">
-                    Sans carte bancaire Â· rÃ©siliable Ã  tout moment
+                    Sans carte bancaire · résiliable à tout moment
                   </p>
                 </div>
 
-                {/* â”€â”€ Carte 3D â”€â”€ */}
+                {/* ── Carte 3D ── */}
                 <div data-reveal data-rd="2" className="hidden lg:block">
                   <HeroCard3D />
                 </div>
               </div>
 
-              {/* MÃ©triques */}
+              {/* Métriques */}
               <div data-reveal className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center border-t border-white/[0.05] pt-14">
                 {[
                   { v: <Counter end={50}  suffix="+" />, l: "leads en 1 clic",       c: "text-slate-100" },
-                  { v: <Counter end={100} suffix="%" />, l: "relances tracÃ©es",       c: "text-brand-300" },
+                  { v: <Counter end={100} suffix="%" />, l: "relances tracées",       c: "text-brand-300" },
                   { v: <Counter end={14}  suffix="j" />, l: "d'essai offert",         c: "text-brand-400"   },
-                  { v: "0â‚¬",                             l: "pour dÃ©marrer",          c: "text-slate-100"  },
+                  { v: "0€",                             l: "pour démarrer",          c: "text-slate-100"  },
                 ].map((s, i) => (
                   <div key={i}>
                     <div className={`text-2xl sm:text-3xl font-bold tracking-tight ${s.c}`}>{s.v}</div>
@@ -538,7 +538,7 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* §01 — MARQUEE */}
+          {/* §01  MARQUEE */}
           <div className="border-y border-white/[0.05] py-5 overflow-hidden">
             <Marquee speed={38} gap={56} className="opacity-35 hover:opacity-60 transition-opacity duration-700">
               {["Google Maps API", "API RNE / INPI", "Relances auto",
@@ -556,16 +556,16 @@ export default function Landing() {
           <section id="produit" className="px-5 sm:px-6 py-24 sm:py-32">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>Â§02 â€” Le constat</Eyebrow>
+                <Eyebrow>§02 — Le constat</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Le tableur ne t&apos;a jamais<br />rappelÃ© un seul client.
+                  Le tableur ne t&apos;a jamais<br />rappelé un seul client.
                 </h2>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {[
-                  { t: "Avant",         tone: "bad", items: ["Leads Ã©parpillÃ©s dans Excel", "Scripts sur un bout de papier", "Rappels oubliÃ©s systÃ©matiquement", "ZÃ©ro visibilitÃ© sur la conversion"] },
-                  { t: "Avec Prospeo",  tone: "mid", items: ["Sourcing auto Maps + INPI", "TÃ©lÃ©prompter en direct d'appel", "Rappels visuels + alertes auto", "Funnel temps rÃ©el"] },
-                  { t: "Le rÃ©sultat",   tone: "good", items: ["2Ã— plus de leads qualifiÃ©s", "Meilleur taux de closing", "0 relance oubliÃ©e", "DÃ©cisions basÃ©es sur les donnÃ©es"] },
+                  { t: "Avant",         tone: "bad", items: ["Leads éparpillés dans Excel", "Scripts sur un bout de papier", "Rappels oubliés systématiquement", "Zéro visibilité sur la conversion"] },
+                  { t: "Avec Prospeo",  tone: "mid", items: ["Sourcing auto Maps + INPI", "Téléprompter en direct d'appel", "Rappels visuels + alertes auto", "Funnel temps réel"] },
+                  { t: "Le résultat",   tone: "good", items: ["2× plus de leads qualifiés", "Meilleur taux de closing", "0 relance oubliée", "Décisions basées sur les données"] },
                 ].map((c, i) => (
                   <div key={i} data-reveal data-rd={String(i + 1)}
                     className={`p-7 rounded-2xl border backdrop-blur-sm transition-all
@@ -584,7 +584,7 @@ export default function Landing() {
                             c.tone === "bad"  ? "text-slate-700" :
                             c.tone === "mid"  ? "text-brand-400" : "text-brand-400"
                           }>
-                            {c.tone === "bad" ? "âœ•" : "âœ“"}
+                            {c.tone === "bad" ? "✕" : "✓"}
                           </span>
                           {it}
                         </li>
@@ -597,7 +597,7 @@ export default function Landing() {
           </section>
 
 
-          {/* §03 — SOCIAL PROOF */}
+          {/* §03  SOCIAL PROOF */}
           <section className="px-5 sm:px-6 py-20 sm:py-28 border-t border-white/[0.05] overflow-hidden">
             <div className="max-w-5xl mx-auto">
 
@@ -607,7 +607,7 @@ export default function Landing() {
                   { v: "50+",    l: "Leads sourcés",          sub: "en moins de 5 min",  accent: "text-brand" },
                   { v: "8 RDV",  l: "Première semaine",       sub: "mode session d'appels", accent: "text-text" },
                   { v: "3 →",    l: "Paliers de relance auto", sub: "J+3, J+7, J+15",    accent: "text-text" },
-                  { v: "0€",     l: "Pour démarrer",          sub: "14j Pro offerts",    accent: "text-brand" },
+                  { v: "0",     l: "Pour démarrer",          sub: "14j Pro offerts",    accent: "text-brand" },
                 ].map((s, i) => (
                   <div key={i} data-reveal data-rd={String(i+1)}
                     className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] flex flex-col gap-1">
@@ -633,28 +633,28 @@ export default function Landing() {
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand/30 to-brand-deep/30 border border-brand/20 flex items-center justify-center text-brand font-bold text-sm">T</div>
                   <div>
                     <div className="text-sm font-semibold text-text">Commercial indépendant</div>
-                    <div className="text-[11px] font-mono text-text-mute">Prospection artisans — Paris</div>
+                    <div className="text-[11px] font-mono text-text-mute">Prospection artisans  Paris</div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§04 â€” FEATURES + dÃ©mo intÃ©grÃ©e
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §04 — FEATURES + démo intégrée
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-6xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>Â§04 â€” FonctionnalitÃ©s</Eyebrow>
+                <Eyebrow>§04 — Fonctionnalités</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Tout le pipeline.<br /><G>Un seul Ã©cran.</G>
+                  Tout le pipeline.<br /><G>Un seul écran.</G>
                 </h2>
               </div>
 
               <div className="flex flex-col gap-4">
 
-                {/* â”€â”€ DÃ©mo animÃ©e â€” pleine largeur, chrome intÃ©grÃ© dans le composant â”€â”€ */}
+                {/* ── Démo animée — pleine largeur, chrome intégré dans le composant ── */}
                 <div data-reveal className="relative rounded-3xl border border-white/[0.08] overflow-hidden
                                             shadow-[0_40px_100px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
                   <div className="absolute -inset-x-0 -top-16 h-48 -z-10 blur-[80px] opacity-40 pointer-events-none"
@@ -662,7 +662,7 @@ export default function Landing() {
                   <AnimatedDemo />
                 </div>
 
-                {/* â”€â”€ Grille 3Ã—2 â€” aucune carte isolÃ©e â”€â”€ */}
+                {/* ── Grille 3×2 — aucune carte isolée ── */}
                 <div className="grid md:grid-cols-3 gap-4">
                   {[
                     {
@@ -680,7 +680,7 @@ export default function Landing() {
                     {
                       icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
                       t: "Recherche INPI",
-                      d: "Entreprises créées < 3 mois — les prospects les plus chauds du marché, triés par date de création.",
+                      d: "Entreprises créées < 3 mois  les prospects les plus chauds du marché, triés par date de création.",
                       col: "cyan"
                     },
                     {
@@ -734,24 +734,24 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§05 â€” HOW
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §05 — HOW
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-16">
-                <Eyebrow cyan>Â§05 â€” En pratique</Eyebrow>
+                <Eyebrow cyan>§05 — En pratique</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  ZÃ©ro Ã  ton premier RDV<br /><G>en moins d&apos;une heure.</G>
+                  Zéro à ton premier RDV<br /><G>en moins d&apos;une heure.</G>
                 </h2>
               </div>
               <div className="grid md:grid-cols-3 gap-5 relative">
                 <div className="hidden md:block absolute top-7 left-[16%] right-[16%] h-px
                                 bg-gradient-to-r from-brand-500/30 via-cyan-500/20 to-brand-500/30" />
                 {[
-                  { n: "01", t: "Source",    d: "Scrape Maps, importe l'INPI ou un CSV. Leads normalisÃ©s, prÃªts Ã  appeler.", col: "violet" },
-                  { n: "02", t: "Appelle",   d: "Lance une session : script affichÃ©, rÃ©sultat en 1 touche, journal auto.", col: "cyan"   },
-                  { n: "03", t: "Convertis", d: "Relances multi-paliers automatiques, emails de suivi, funnel temps rÃ©el.", col: "violet" },
+                  { n: "01", t: "Source",    d: "Scrape Maps, importe l'INPI ou un CSV. Leads normalisés, prêts à appeler.", col: "violet" },
+                  { n: "02", t: "Appelle",   d: "Lance une session : script affiché, résultat en 1 touche, journal auto.", col: "cyan"   },
+                  { n: "03", t: "Convertis", d: "Relances multi-paliers automatiques, emails de suivi, funnel temps réel.", col: "violet" },
                 ].map((s, i) => (
                   <div key={i} data-reveal data-rd={String(i + 1)} className="relative text-center md:text-left">
                     <div className={`inline-flex w-14 h-14 rounded-2xl items-center justify-center font-mono font-bold
@@ -769,13 +769,13 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§06 â€” COMPARATIF
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §06 — COMPARATIF
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-4xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>Â§06 â€” Comparatif</Eyebrow>
+                <Eyebrow>§06 — Comparatif</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Pourquoi pas Notion ou HubSpot&nbsp;?
                 </h2>
@@ -784,8 +784,8 @@ export default function Landing() {
                 <table className="w-full min-w-[520px]">
                   <thead>
                     <tr className="border-b border-white/[0.07] bg-white/[0.025]">
-                      <th className="p-4 text-left text-[11px] text-slate-600 uppercase tracking-widest font-semibold w-[40%]">CritÃ¨re</th>
-                      {[["âœ¦ Prospeo", true], ["Notion CRM", false], ["HubSpot Free", false]].map(([n, h]) => (
+                      <th className="p-4 text-left text-[11px] text-slate-600 uppercase tracking-widest font-semibold w-[40%]">Critère</th>
+                      {[["✦ Prospeo", true], ["Notion CRM", false], ["HubSpot Free", false]].map(([n, h]) => (
                         <th key={n as string} className={`p-4 text-center text-sm font-semibold ${h ? "text-brand-300" : "text-slate-500"}`}>
                           {n as string}
                         </th>
@@ -795,14 +795,14 @@ export default function Landing() {
                   <tbody>
                     {[
                       ["Sourcing leads (Maps + INPI)",   true,      false,      false],
-                      ["TÃ©lÃ©prompter d'appel en direct", true,      false,      false],
+                      ["Téléprompter d'appel en direct", true,      false,      false],
                       ["Relances multi-paliers auto",    true,      false,      true ],
-                      ["Journal d'activitÃ© automatique", true,      false,      true ],
-                      ["Funnel & taux de dÃ©crochage",    true,      false,      true ],
+                      ["Journal d'activité automatique", true,      false,      true ],
+                      ["Funnel & taux de décrochage",    true,      false,      true ],
                       ["Vue Kanban + session d'appels",  true,      false,      false],
                       ["Import/export CSV",              true,      true,       true ],
-                      ["Prix mensuel",                  "19â‚¬",     "0-16â‚¬",    "0â‚¬ (trÃ¨s limitÃ©)"],
-                      ["Prise en main",                 "< 1h",    "Moyenne",  "Ã‰levÃ©e"],
+                      ["Prix mensuel",                  "19€",     "0-16€",    "0€ (très limité)"],
+                      ["Prise en main",                 "< 1h",    "Moyenne",  "Élevée"],
                     ].map((r, i) => (
                       <tr key={i} className={`border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.01]" : ""}`}>
                         <td className="p-3.5 text-sm text-slate-400">{r[0] as string}</td>
@@ -810,8 +810,8 @@ export default function Landing() {
                           <td key={j} className={`p-3.5 text-center text-sm ${j === 0 ? "bg-brand-500/[0.05]" : ""}`}>
                             {typeof v === "boolean"
                               ? (v
-                                  ? <span className={j === 0 ? "text-brand-300 font-bold" : "text-emerald-500/50"}>âœ“</span>
-                                  : <span className="text-slate-700">âœ•</span>)
+                                  ? <span className={j === 0 ? "text-brand-300 font-bold" : "text-emerald-500/50"}>✓</span>
+                                  : <span className="text-slate-700">✕</span>)
                               : <span className={j === 0 ? "text-violet-200 font-medium" : "text-slate-500"}>{v as string}</span>}
                           </td>
                         ))}
@@ -824,13 +824,13 @@ export default function Landing() {
           </section>
 
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§07 â€” PRICING
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §07 — PRICING
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="pricing" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-12">
-                <Eyebrow>Â§07 â€” Tarifs</Eyebrow>
+                <Eyebrow>§07 — Tarifs</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em]">
                   Simple. <G>Transparent.</G>
                 </h2>
@@ -848,21 +848,21 @@ export default function Landing() {
               <div className="grid md:grid-cols-3 gap-5 items-start">
                 {[
                   {
-                    name: "Gratuit", price: "0â‚¬",
-                    desc: "Pour dÃ©couvrir et faire ses premiers appels.",
-                    feats: ["100 leads max", "3 scrapings Maps/mois", "Rappels & RDV", "Journal d'activitÃ©"],
-                    cta: "CrÃ©er un compte", onClick: () => { window.location.href = "/sign-up"; }, hl: false,
+                    name: "Gratuit", price: "0€",
+                    desc: "Pour découvrir et faire ses premiers appels.",
+                    feats: ["100 leads max", "3 scrapings Maps/mois", "Rappels & RDV", "Journal d'activité"],
+                    cta: "Créer un compte", onClick: () => { window.location.href = "/sign-up"; }, hl: false,
                   },
                   {
-                    name: "Pro", price: "19â‚¬",
-                    desc: "La prospection systÃ©matique, sans limite.",
-                    feats: ["Leads illimitÃ©s", "Maps + INPI illimitÃ©s", "Mode session d'appels", "Scripts tÃ©lÃ©prompter", "Dashboard + funnel", "Emails & relances auto", "Import / Export CSV"],
+                    name: "Pro", price: "19€",
+                    desc: "La prospection systématique, sans limite.",
+                    feats: ["Leads illimités", "Maps + INPI illimités", "Mode session d'appels", "Scripts téléprompter", "Dashboard + funnel", "Emails & relances auto", "Import / Export CSV"],
                     cta: "Commencer 14j gratuit", onClick: () => pay("pro"), hl: true,
                   },
                   {
-                    name: "Agence", price: "49â‚¬",
-                    desc: "Pour les Ã©quipes Ã  fort volume.",
-                    feats: ["Tout Pro inclus", "5 utilisateurs", "Leads partagÃ©s", "Onboarding dÃ©diÃ©", "Support prioritaire"],
+                    name: "Agence", price: "49€",
+                    desc: "Pour les équipes à fort volume.",
+                    feats: ["Tout Pro inclus", "5 utilisateurs", "Leads partagés", "Onboarding dédié", "Support prioritaire"],
                     cta: "Nous contacter", onClick: () => openContact("Plan Agence Prospeo"), hl: false,
                   },
                 ].map(p => {
@@ -881,7 +881,7 @@ export default function Landing() {
                       <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500">{p.name}</div>
                       <div className="mt-3 flex items-end gap-1">
                         <span className="text-4xl font-bold text-slate-50">{p.price}</span>
-                        {p.price !== "0€" && <span className="text-slate-500 mb-1 text-sm">/mois</span>}
+                        {p.price !== "0" && <span className="text-slate-500 mb-1 text-sm">/mois</span>}
                       </div>
                       <p className="mt-2 text-sm text-slate-500">{p.desc}</p>
                       <ul className="mt-6 space-y-2.5 flex-1">
@@ -896,7 +896,7 @@ export default function Landing() {
                           ${p.hl
                             ? "bg-white text-[#0A0A0B] hover:bg-slate-200 disabled:opacity-50"
                             : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
-                        {loading && p.hl ? "Redirection…" : p.cta}
+                        {loading && p.hl ? "Redirection" : p.cta}
                       </button>
                     </div>
                   );
@@ -909,49 +909,49 @@ export default function Landing() {
                 })}
               </div>
               <p data-reveal className="text-center text-xs text-slate-600 mt-10">
-                14 jours gratuits sur Pro Â· sans carte bancaire Â· rÃ©siliable Ã  tout moment
+                14 jours gratuits sur Pro · sans carte bancaire · résiliable à tout moment
               </p>
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§08 â€” FAQ
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §08 — FAQ
+          ══════════════════════════════════════════════════════════════════ */}
           <section id="faq" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-2xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>Â§08 â€” FAQ</Eyebrow>
+                <Eyebrow>§08 — FAQ</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Questions directes.
                 </h2>
               </div>
               <div data-reveal className="space-y-1">
                 {[
-                  { q: "Faut-il une carte bancaire pour l'essai ?", a: "Non. L'essai de 14 jours ne demande aucune carte. Vous n'Ãªtes dÃ©bitÃ© qu'Ã  la fin si vous continuez." },
-                  { q: "Mes donnÃ©es sont-elles sÃ©curisÃ©es ?", a: "Oui. Chaque compte est totalement isolÃ© â€” vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffrÃ© SSL." },
-                  { q: "Puis-je importer mes leads existants ?", a: "Oui : CSV avec auto-dÃ©tection des colonnes, import INPI, ou scraping Google Maps direct." },
-                  { q: "Comment marche le scraping Google Maps ?", a: "MÃ©tier + ville â†’ Prospeo interroge Maps et remplit le tableau (nom, tel, site, adresse). Doublons filtrÃ©s automatiquement." },
-                  { q: "Puis-je annuler Ã  tout moment ?", a: "Oui, sans frais. Annulation depuis l'espace client, accÃ¨s conservÃ© jusqu'Ã  la fin de la pÃ©riode payÃ©e." },
-                  { q: "Les emails partent depuis mon Gmail ?", a: "Oui, via un mot de passe applicatif. Meilleure dÃ©livrabilitÃ© et confiance car ils partent de votre adresse." },
+                  { q: "Faut-il une carte bancaire pour l'essai ?", a: "Non. L'essai de 14 jours ne demande aucune carte. Vous n'êtes débité qu'à la fin si vous continuez." },
+                  { q: "Mes données sont-elles sécurisées ?", a: "Oui. Chaque compte est totalement isolé — vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffré SSL." },
+                  { q: "Puis-je importer mes leads existants ?", a: "Oui : CSV avec auto-détection des colonnes, import INPI, ou scraping Google Maps direct." },
+                  { q: "Comment marche le scraping Google Maps ?", a: "Métier + ville → Prospeo interroge Maps et remplit le tableau (nom, tel, site, adresse). Doublons filtrés automatiquement." },
+                  { q: "Puis-je annuler à tout moment ?", a: "Oui, sans frais. Annulation depuis l'espace client, accès conservé jusqu'à la fin de la période payée." },
+                  { q: "Les emails partent depuis mon Gmail ?", a: "Oui, via un mot de passe applicatif. Meilleure délivrabilité et confiance car ils partent de votre adresse." },
                 ].map((f, i) => <FAQItem key={i} {...f} />)}
               </div>
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-              Â§09 â€” CTA FINAL
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          {/* ══════════════════════════════════════════════════════════════════
+              §09 — CTA FINAL
+          ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-28 sm:py-44 relative overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-[1000px] h-[550px] rounded-full blur-[180px] opacity-50"
                    style={{ background: "radial-gradient(ellipse, rgba(0,229,255,0.25) 0%, rgba(0,229,255,0.08) 50%, transparent 70%)" }} />
             </div>
             <div data-reveal className="relative max-w-2xl mx-auto text-center">
-              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">Â§09 â€” Commence maintenant</p>
+              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09 — Commence maintenant</p>
               <h2 className="text-4xl sm:text-6xl font-bold text-slate-50 tracking-[-0.03em] leading-[1.04]">
                 Prospecte comme<br /><G>un closer.</G>
               </h2>
-              <p className="mt-6 text-slate-400">Structure ta prospection. Mesure tes rÃ©sultats. Signe plus.</p>
+              <p className="mt-6 text-slate-400">Structure ta prospection. Mesure tes résultats. Signe plus.</p>
               <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
                 <input
                   type="email" value={email} onChange={e => setEmail(e.target.value)}
@@ -960,15 +960,15 @@ export default function Landing() {
                              text-center sm:text-left text-slate-200 placeholder-slate-600 text-sm
                              focus:outline-none focus:border-brand-500/50 transition-colors" />
                 <MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>
-                  {loading ? "…" : "Commencer →"}
+                  {loading ? "" : "Commencer →"}
                 </MagneticButton>
               </div>
             </div>
           </section>
 
-          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          {/* ══════════════════════════════════════════════════════════════════
               FOOTER
-          â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+          ══════════════════════════════════════════════════════════════════ */}
           <footer className="relative border-t border-white/[0.05] px-5 sm:px-6 pt-16 pb-10 overflow-hidden">
             {/* Glow top */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-brand/30 to-transparent" />
@@ -1038,7 +1038,7 @@ export default function Landing() {
               {/* Bottom bar */}
               <div className="mt-14 pt-8 border-t border-white/[0.04]
                               flex flex-col sm:flex-row justify-between gap-2 items-center">
-                <span className="text-[11px] font-mono text-text-mute">© 2026 Prospeo — Tous droits réservés</span>
+                <span className="text-[11px] font-mono text-text-mute">© 2026 Prospeo  Tous droits réservés</span>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                   <span className="text-[11px] font-mono text-text-mute">Système opérationnel</span>
@@ -1050,27 +1050,27 @@ export default function Landing() {
 
         </div>{/* /relative z-10 */}
 
-        {/* â”€â”€ Sticky CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Sticky CTA ────────────────────────────────────────────────────── */}
         <div className={`fixed bottom-0 inset-x-0 z-40 transition-all duration-500
           ${showSticky ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}>
           <div className="mx-auto max-w-xl mb-4 px-4">
             <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#111114]/95 border border-brand-500/15 backdrop-blur-xl
                             shadow-[0_0_40px_rgba(0,229,255,0.18),0_8px_32px_rgba(0,0,0,0.6)]">
               <span className="text-sm text-slate-300 font-medium flex-1 min-w-0 truncate">
-                Essai 14 jours â€” gratuit
+                Essai 14 jours — gratuit
               </span>
               <button onClick={() => pay("pro")} disabled={loading}
                 className="px-4 py-2 rounded-full bg-white text-[#0A0A0B] text-xs font-semibold
                            hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
-                {loading ? "â€¦" : "Commencer â†’"}
+                {loading ? "…" : "Commencer →"}
               </button>
               <button onClick={() => setShowSticky(false)}
-                className="text-slate-600 hover:text-slate-400 text-xl leading-none">Ã—</button>
+                className="text-slate-600 hover:text-slate-400 text-xl leading-none">×</button>
             </div>
           </div>
         </div>
 
-        {/* â”€â”€ Modals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Modals ────────────────────────────────────────────────────────── */}
         {contactOpen && (
           <ContactModal defaultSubject={contactSubj} onClose={() => setContactOpen(false)} />
         )}
@@ -1081,7 +1081,7 @@ export default function Landing() {
             <div className="bg-[#111114] border border-white/10 rounded-2xl p-8 max-w-sm w-full"
                  onClick={e => e.stopPropagation()}>
               <h3 className="text-slate-100 font-semibold mb-2">Votre email</h3>
-              <p className="text-slate-500 text-sm mb-4">Pour dÃ©marrer votre essai gratuit de 14 jours.</p>
+              <p className="text-slate-500 text-sm mb-4">Pour démarrer votre essai gratuit de 14 jours.</p>
               <input
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="vous@exemple.com" autoFocus
@@ -1091,7 +1091,7 @@ export default function Landing() {
               <button onClick={() => { setEmailModal(false); pay(); }} disabled={!email}
                 className="w-full py-3 bg-white text-[#0A0A0B] disabled:opacity-40
                            rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
-                Continuer â†’
+                Continuer →
               </button>
             </div>
           </div>

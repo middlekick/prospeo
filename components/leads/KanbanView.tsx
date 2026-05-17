@@ -12,11 +12,11 @@ interface Props {
 
 // Colonnes kanban dans l'ordre du pipeline
 const COLUMNS = [
-  { value: "non_appele",    label: "Non appelÃ©",     icon: "â—‹"  },
-  { value: "ne_repond_pas", label: "Ne rÃ©pond pas",  icon: "ðŸ“µ" },
-  { value: "interesse",     label: "IntÃ©ressÃ©",       icon: "â­" },
-  { value: "rdv_pris",      label: "RDV pris",        icon: "ðŸ“…" },
-  { value: "pas_interesse", label: "Pas intÃ©ressÃ©",  icon: "âœ—"  },
+  { value: "non_appele",    label: "Non appelé",     icon: "○"  },
+  { value: "ne_repond_pas", label: "Ne répond pas",  icon: "📵" },
+  { value: "interesse",     label: "Intéressé",       icon: "⭐" },
+  { value: "rdv_pris",      label: "RDV pris",        icon: "📅" },
+  { value: "pas_interesse", label: "Pas intéressé",  icon: "✗"  },
 ] as const;
 
 const COLUMN_ACCENT: Record<string, string> = {
@@ -35,7 +35,7 @@ const COLUMN_COUNT_BG: Record<string, string> = {
   pas_interesse: "bg-red-900/40 text-red-400",
 };
 
-// Surbrillance de la colonne survolÃ©e pendant le drag
+// Surbrillance de la colonne survolée pendant le drag
 const COLUMN_DROP_BG: Record<string, string> = {
   non_appele:    "bg-slate-500/[0.08] border-slate-500/40",
   ne_repond_pas: "bg-orange-500/[0.08] border-orange-500/40",
@@ -44,7 +44,7 @@ const COLUMN_DROP_BG: Record<string, string> = {
   pas_interesse: "bg-red-500/[0.08] border-red-500/40",
 };
 
-// â”€â”€ Carte lead â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Carte lead ────────────────────────────────────────────────────────────────
 
 function KanbanCard({
   lead, onOpen, dragging, onDragStart, onDragEnd,
@@ -69,15 +69,15 @@ function KanbanCard({
         dragging ? "opacity-40 scale-95 ring-2 ring-brand-500/50" : "",
       ].join(" ")}
     >
-      {/* PoignÃ©e de drag (indicateur visuel) */}
+      {/* Poignée de drag (indicateur visuel) */}
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-700 text-xs select-none">
-        â ¿
+        ⠿
       </div>
 
       <p className="text-xs font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1 pr-4">
-        {lead.nom || "â€”"}
+        {lead.nom || "—"}
       </p>
-      <p className="text-[11px] text-slate-600 truncate mb-2">{lead.metier || "â€”"}</p>
+      <p className="text-[11px] text-slate-600 truncate mb-2">{lead.metier || "—"}</p>
 
       {lead.telephone ? (
         <a
@@ -98,19 +98,19 @@ function KanbanCard({
 
       {lead.rappel && (
         <div className={`mt-1.5 text-[10px] mono ${due ? "text-amber-400 font-semibold" : "text-slate-700"}`}>
-          {due ? "â° " : "ðŸ“… "}{lead.rappel}
+          {due ? "⏰ " : "📅 "}{lead.rappel}
         </div>
       )}
     </div>
   );
 }
 
-// â”€â”€ Vue kanban avec drag & drop natif â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Vue kanban avec drag & drop natif ─────────────────────────────────────────
 
 export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
-  // Lead en cours de dÃ©placement
+  // Lead en cours de déplacement
   const [draggedKey, setDraggedKey] = useState<string | null>(null);
-  // Colonne survolÃ©e pendant le drag
+  // Colonne survolée pendant le drag
   const [dragOverCol, setDragOverCol] = useState<string | null>(null);
 
   const draggedLead = draggedKey
@@ -123,7 +123,7 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
     setDraggedKey(null);
     if (!lead || lead.tag === targetTag) return;
 
-    // Mise Ã  jour optimiste
+    // Mise à jour optimiste
     onTagChange(lead, targetTag);
     try {
       await fetch("/api/leads/save", {
@@ -150,7 +150,7 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
             key={col.value}
             onDragOver={e => { e.preventDefault(); setDragOverCol(col.value); }}
             onDragLeave={e => {
-              // Ne rÃ©initialiser que si on quitte vraiment la colonne (pas un enfant)
+              // Ne réinitialiser que si on quitte vraiment la colonne (pas un enfant)
               if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOverCol(null);
             }}
             onDrop={() => handleDrop(col.value)}
@@ -161,7 +161,7 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
                 : "border-transparent",
             ].join(" ")}
           >
-            {/* En-tÃªte colonne */}
+            {/* En-tête colonne */}
             <div className={`flex items-center gap-2 px-2 py-2 rounded-lg border-l-2 ${accentCls} bg-white/[0.02] m-1 mb-0`}>
               <span className="text-sm">{col.icon}</span>
               <span className="text-xs font-semibold text-slate-400 flex-1">{col.label}</span>
@@ -180,7 +180,7 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
                   ].join(" ")}
                 >
                   <p className="text-[10px] text-slate-700">
-                    {isDropTarget ? "DÃ©poser ici" : "Aucun lead"}
+                    {isDropTarget ? "Déposer ici" : "Aucun lead"}
                   </p>
                 </div>
               ) : (
@@ -199,10 +199,10 @@ export default function KanbanView({ leads, onOpen, onTagChange }: Props) {
                 })
               )}
 
-              {/* Zone de dÃ©pÃ´t en bas si la colonne a dÃ©jÃ  des cartes */}
+              {/* Zone de dépôt en bas si la colonne a déjà des cartes */}
               {colLeads.length > 0 && isDropTarget && (
                 <div className="flex items-center justify-center h-10 border border-dashed border-brand-500/50 bg-brand-500/[0.05] rounded-xl">
-                  <p className="text-[10px] text-brand-400">DÃ©poser ici</p>
+                  <p className="text-[10px] text-brand-400">Déposer ici</p>
                 </div>
               )}
             </div>

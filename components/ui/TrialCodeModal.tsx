@@ -1,16 +1,16 @@
 ﻿"use client";
 
 /**
- * TrialCodeModal â€” Modal de saisie du code d'invitation.
+ * TrialCodeModal — Modal de saisie du code d'invitation.
  * S'affiche automatiquement sur le plan free si l'utilisateur
- * n'a pas encore activÃ© de trial.
- * Peut aussi Ãªtre ouvert manuellement via le bouton dans la sidebar.
+ * n'a pas encore activé de trial.
+ * Peut aussi être ouvert manuellement via le bouton dans la sidebar.
  */
 
 import { useState } from "react";
 
 interface Props {
-  onSuccess: () => void;  // appelÃ© aprÃ¨s activation â†’ recharge le plan
+  onSuccess: () => void;  // appelé après activation → recharge le plan
   onClose:   () => void;
 }
 
@@ -45,7 +45,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
         onClose();
       }, 1800);
     } catch {
-      setError("Erreur rÃ©seau â€” rÃ©essayez");
+      setError("Erreur réseau — réessayez");
     } finally {
       setLoading(false);
     }
@@ -58,28 +58,28 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-sm bg-[#13151e] border border-white/[0.10] rounded-2xl shadow-2xl p-6">
-        {/* IcÃ´ne */}
+        {/* Icône */}
         <div className="flex justify-center mb-4">
           <div className="relative">
             <div className="w-14 h-14 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-2xl">
-              ðŸŽŸï¸
+              🎟️
             </div>
             <div className="absolute inset-0 rounded-2xl bg-brand-500/10 blur-xl -z-10" />
           </div>
         </div>
 
         {success ? (
-          /* Ã‰tat succÃ¨s */
+          /* État succès */
           <div className="text-center">
-            <div className="text-2xl mb-2">âœ…</div>
-            <h2 className="text-base font-bold text-slate-100 mb-1">AccÃ¨s Pro activÃ© !</h2>
-            <p className="text-xs text-slate-500">Toutes les fonctionnalitÃ©s sont maintenant disponibles.</p>
+            <div className="text-2xl mb-2">✅</div>
+            <h2 className="text-base font-bold text-slate-100 mb-1">Accès Pro activé !</h2>
+            <p className="text-xs text-slate-500">Toutes les fonctionnalités sont maintenant disponibles.</p>
           </div>
         ) : (
           <>
             <h2 className="text-base font-bold text-slate-100 text-center mb-1">Code d&apos;invitation</h2>
             <p className="text-xs text-slate-500 text-center mb-5">
-              Entrez votre code pour activer l&apos;accÃ¨s Pro pendant la formation.
+              Entrez votre code pour activer l&apos;accès Pro pendant la formation.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -105,7 +105,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
                            transition-colors disabled:opacity-40 disabled:cursor-not-allowed
                            shadow-[0_0_20px_rgba(0,229,255,0.25)]"
               >
-                {loading ? "VÃ©rificationâ€¦" : "Activer l'accÃ¨s"}
+                {loading ? "Vérification…" : "Activer l'accès"}
               </button>
 
               <button

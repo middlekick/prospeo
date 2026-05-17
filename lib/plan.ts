@@ -1,5 +1,5 @@
 /**
- * lib/plan.ts — Gestion des plans d'abonnement Prospeo
+ * lib/plan.ts  Gestion des plans d'abonnement Prospeo
  *
  * Plans : free | pro | agency
  * Limites définies ici, utilisées côté API et côté UI.

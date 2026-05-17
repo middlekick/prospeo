@@ -6,7 +6,7 @@ import { Lead } from "./types";
 import { toWhatsAppUrl } from "@/lib/phone";
 import { useToast } from "@/components/ui/Toast";
 
-// â”€â”€ Types script (miroir de app/scripts/page.tsx) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Types script (miroir de app/scripts/page.tsx) ─────────────────────────────
 
 interface Block { t: string; label: string; text: string }
 interface UserScript {
@@ -26,24 +26,24 @@ function loadColdCallScript(): UserScript | null {
   }
 }
 
-// â”€â”€ RÃ©sultats possibles d'un appel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Résultats possibles d'un appel ────────────────────────────────────────────
 
 const OUTCOMES = [
-  { tag: "ne_repond_pas", label: "Pas rÃ©pondu",   key: "1", cls: "bg-orange-500/15 hover:bg-orange-500/25 border-orange-500/30 text-orange-300", picked: false },
-  { tag: "interesse",     label: "IntÃ©ressÃ©",      key: "2", cls: "bg-cyan-500/15 hover:bg-cyan-500/25 border-cyan-500/30 text-cyan-300",        picked: true  },
-  { tag: "rdv_pris",      label: "RDV pris âœ“",     key: "3", cls: "bg-green-500/15 hover:bg-green-500/25 border-green-500/30 text-green-300",     picked: true  },
-  { tag: "pas_interesse", label: "Pas intÃ©ressÃ©",  key: "4", cls: "bg-red-500/15 hover:bg-red-500/25 border-red-500/30 text-red-300",            picked: true  },
+  { tag: "ne_repond_pas", label: "Pas répondu",   key: "1", cls: "bg-orange-500/15 hover:bg-orange-500/25 border-orange-500/30 text-orange-300", picked: false },
+  { tag: "interesse",     label: "Intéressé",      key: "2", cls: "bg-cyan-500/15 hover:bg-cyan-500/25 border-cyan-500/30 text-cyan-300",        picked: true  },
+  { tag: "rdv_pris",      label: "RDV pris ✓",     key: "3", cls: "bg-green-500/15 hover:bg-green-500/25 border-green-500/30 text-green-300",     picked: true  },
+  { tag: "pas_interesse", label: "Pas intéressé",  key: "4", cls: "bg-red-500/15 hover:bg-red-500/25 border-red-500/30 text-red-300",            picked: true  },
 ] as const;
 
 interface SessionStats {
-  calls:    number;  // appels traitÃ©s
-  answered: number;  // dÃ©crochÃ©s (intÃ©ressÃ© + rdv + pas intÃ©ressÃ©)
+  calls:    number;  // appels traités
+  answered: number;  // décrochés (intéressé + rdv + pas intéressé)
   rdv:      number;  // RDV pris
   interested: number;
 }
 
 interface Props {
-  leads: Lead[];                       // leads Ã  appeler (dÃ©jÃ  filtrÃ©s non_appelÃ©)
+  leads: Lead[];                       // leads à appeler (déjà filtrés non_appelé)
   onClose: () => void;
   onLeadUpdated: (lead: Lead, tag: string) => void;
 }
@@ -55,14 +55,14 @@ function fmtDuration(ms: number): string {
   return `${m}min ${sec.toString().padStart(2, "0")}s`;
 }
 
-// â”€â”€ Bloc script (tÃ©lÃ©prompter compact) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Bloc script (téléprompter compact) ────────────────────────────────────────
 
 function ScriptBlocks({ blocks, lead }: { blocks: Block[]; lead: Lead }) {
   // Remplacement variables simples dans le script
   function fill(text: string): string {
     return text
       .replace(/\[PRENOM\]/gi, lead.ads_prenom || lead.nom?.split(" ")[0] || "")
-      .replace(/\[METIER\]/gi, lead.metier || "votre mÃ©tier")
+      .replace(/\[METIER\]/gi, lead.metier || "votre métier")
       .replace(/\[ENTREPRISE\]/gi, lead.nom || "");
   }
   return (
@@ -81,11 +81,11 @@ function ScriptBlocks({ blocks, lead }: { blocks: Block[]; lead: Lead }) {
   );
 }
 
-// â”€â”€ Composant principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Composant principal ───────────────────────────────────────────────────────
 
 export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
   const { success } = useToast();
-  const [queue]      = useState<Lead[]>(() => [...leads]); // figÃ© au lancement
+  const [queue]      = useState<Lead[]>(() => [...leads]); // figé au lancement
   const [idx,  setIdx]  = useState(0);
   const [stats, setStats] = useState<SessionStats>({ calls: 0, answered: 0, rdv: 0, interested: 0 });
   const [saving, setSaving] = useState(false);
@@ -97,7 +97,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
 
   if (script.current === null) script.current = loadColdCallScript();
 
-  // Portal montÃ© uniquement cÃ´tÃ© client
+  // Portal monté uniquement côté client
   useEffect(() => { setMounted(true); }, []);
 
   const current = queue[idx];
@@ -139,7 +139,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
     advance();
   }
 
-  // Raccourcis clavier 1-4 + S (skip) + Ã‰chap
+  // Raccourcis clavier 1-4 + S (skip) + Échap
   useEffect(() => {
     function handler(e: KeyboardEvent) {
       if (finished) return;
@@ -155,7 +155,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
 
   if (!mounted) return null;
 
-  // â”€â”€ Ã‰cran de fin â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Écran de fin ────────────────────────────────────────────────────────────
   if (finished || !current) {
     const rate = stats.calls > 0 ? Math.round((stats.answered / stats.calls) * 100) : 0;
     const avgMs = stats.calls > 0 ? elapsed / stats.calls : 0;
@@ -163,10 +163,10 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
       <div className="fixed inset-0 z-[100] bg-[#0b0d12] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-3xl">
-            ðŸŽ¯
+            🎯
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-100 mb-1">Session terminÃ©e</h2>
+            <h2 className="text-2xl font-bold text-slate-100 mb-1">Session terminée</h2>
             <p className="text-sm text-slate-500">
               {stats.calls} appel{stats.calls > 1 ? "s" : ""} en {fmtDuration(elapsed)}
             </p>
@@ -174,10 +174,10 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
 
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Appels traitÃ©s",  value: stats.calls,       color: "text-slate-200" },
-              { label: "DÃ©crochÃ©s",       value: stats.answered,    color: "text-cyan-300"  },
+              { label: "Appels traités",  value: stats.calls,       color: "text-slate-200" },
+              { label: "Décrochés",       value: stats.answered,    color: "text-cyan-300"  },
               { label: "RDV pris",        value: stats.rdv,         color: "text-green-300" },
-              { label: "Taux dÃ©crochage", value: `${rate}%`,        color: "text-brand-300" },
+              { label: "Taux décrochage", value: `${rate}%`,        color: "text-brand-300" },
             ].map(s => (
               <div key={s.label} className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
                 <div className={`text-3xl font-bold mono ${s.color}`}>{s.value}</div>
@@ -188,8 +188,8 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
 
           {stats.calls > 0 && (
             <p className="text-xs text-slate-600">
-              Rythme : 1 appel toutes les {fmtDuration(avgMs)} Â·{" "}
-              {stats.interested} Ã  rappeler
+              Rythme : 1 appel toutes les {fmtDuration(avgMs)} ·{" "}
+              {stats.interested} à rappeler
             </p>
           )}
 
@@ -205,7 +205,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
     );
   }
 
-  // â”€â”€ Ã‰cran d'appel actif â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Écran d'appel actif ─────────────────────────────────────────────────────
   const progress = Math.round((idx / queue.length) * 100);
 
   return createPortal(
@@ -220,9 +220,9 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
             <span className="text-xs text-slate-500 shrink-0">
               <span className="text-slate-200 font-semibold">{idx + 1}</span>/{queue.length}
             </span>
-            <span className="text-xs mono text-slate-600 shrink-0">â± {fmtDuration(elapsed)}</span>
-            <span className="text-xs text-cyan-400 shrink-0">âœ“ {stats.answered}</span>
-            <span className="text-xs text-green-400 shrink-0">ðŸ“… {stats.rdv}</span>
+            <span className="text-xs mono text-slate-600 shrink-0">⏱ {fmtDuration(elapsed)}</span>
+            <span className="text-xs text-cyan-400 shrink-0">✓ {stats.answered}</span>
+            <span className="text-xs text-green-400 shrink-0">📅 {stats.rdv}</span>
           </div>
           <button
             onClick={onClose}
@@ -236,16 +236,16 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
       {/* Contenu : lead + script */}
       <div className="flex-1 overflow-y-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-[380px_1fr]">
 
-        {/* Colonne gauche â€” fiche lead + numÃ©ro */}
+        {/* Colonne gauche — fiche lead + numéro */}
         <div className="border-b md:border-b-0 md:border-r border-white/[0.06] p-5 md:p-8 flex flex-col md:overflow-y-auto bg-white/[0.01]">
           <div className="text-[10px] font-bold tracking-widest text-slate-700 uppercase mb-2">
-            {current.metier || "Lead"} Â· {current.emplacement || "â€”"}
+            {current.metier || "Lead"} · {current.emplacement || "—"}
           </div>
           <h1 className="text-2xl font-bold text-slate-100 leading-tight mb-6">
-            {current.nom || "â€”"}
+            {current.nom || "—"}
           </h1>
 
-          {/* NumÃ©ro gÃ©ant cliquable */}
+          {/* Numéro géant cliquable */}
           {current.telephone ? (
             <div className="space-y-3">
               <a
@@ -263,21 +263,21 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
                 rel="noopener noreferrer"
                 className="block text-center py-2.5 rounded-xl bg-green-600/20 hover:bg-green-600/30 border border-green-600/30 text-green-400 text-sm font-medium transition-colors"
               >
-                ðŸ’¬ WhatsApp
+                💬 WhatsApp
               </a>
             </div>
           ) : (
             <div className="space-y-3">
               <div className="py-5 rounded-2xl bg-white/[0.04] border border-white/[0.06] text-center text-slate-600 text-sm">
-                Aucun numÃ©ro
+                Aucun numéro
               </div>
               <a
-                href={`https://www.google.com/search?q=${encodeURIComponent(`${current.nom} ${current.emplacement} tÃ©lÃ©phone`)}`}
+                href={`https://www.google.com/search?q=${encodeURIComponent(`${current.nom} ${current.emplacement} téléphone`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-slate-400 text-sm transition-colors"
               >
-                ðŸ” Chercher le numÃ©ro
+                🔍 Chercher le numéro
               </a>
             </div>
           )}
@@ -285,13 +285,13 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
           {current.site && (
             <a href={current.site} target="_blank" rel="noopener noreferrer"
               className="mt-3 text-xs text-cyan-500/70 hover:text-cyan-400 truncate transition-colors">
-              ðŸŒ {current.site}
+              🌐 {current.site}
             </a>
           )}
 
           {current.note && (
             <div className="mt-5 p-3 rounded-xl bg-amber-500/[0.06] border border-amber-500/15 text-xs text-amber-200/70 leading-relaxed">
-              ðŸ“ {current.note}
+              📝 {current.note}
             </div>
           )}
 
@@ -301,30 +301,30 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
             onClick={skip}
             className="mt-6 h-9 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-slate-500 hover:text-slate-300 text-xs transition-all"
           >
-            Passer ce lead (S) â†’
+            Passer ce lead (S) →
           </button>
         </div>
 
-        {/* Colonne droite â€” script */}
+        {/* Colonne droite — script */}
         <div className="p-5 md:p-8 md:overflow-y-auto">
           {script.current?.blocks?.length ? (
             <ScriptBlocks blocks={script.current.blocks} lead={current} />
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-slate-700 gap-3">
-              <span className="text-2xl">ðŸ“ž</span>
+              <span className="text-2xl">📞</span>
               <p className="text-sm text-center max-w-xs">
-                Aucun script Cold Call enregistrÃ©.<br/>
-                CrÃ©e-en un dans l&apos;onglet <span className="text-brand-400">Scripts</span> pour l&apos;afficher ici.
+                Aucun script Cold Call enregistré.<br/>
+                Crée-en un dans l&apos;onglet <span className="text-brand-400">Scripts</span> pour l&apos;afficher ici.
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Barre d'actions â€” rÃ©sultat de l'appel */}
+      {/* Barre d'actions — résultat de l'appel */}
       <div className="shrink-0 border-t border-white/[0.06] px-3 md:px-6 py-3 md:py-4 bg-white/[0.01]">
         <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-3 max-w-3xl mx-auto">
-          <span className="hidden md:block text-xs text-slate-600 mr-1 shrink-0">RÃ©sultat :</span>
+          <span className="hidden md:block text-xs text-slate-600 mr-1 shrink-0">Résultat :</span>
           {OUTCOMES.map(o => (
             <button
               key={o.tag}
@@ -338,7 +338,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
           ))}
         </div>
         <p className="hidden md:block text-center text-[10px] text-slate-700 mt-2">
-          Raccourcis : 1-4 pour le rÃ©sultat Â· S pour passer Â· Ã‰chap pour quitter
+          Raccourcis : 1-4 pour le résultat · S pour passer · Échap pour quitter
         </p>
       </div>
     </div>,

@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmModal";
 
-// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface ClerkInfo {
   email:          string;
@@ -33,31 +33,31 @@ interface UserRow {
   clerk:            ClerkInfo | null;
 }
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function planBadge(plan: string, trialExpires: string | null) {
   const live = trialExpires && new Date(trialExpires) > new Date();
-  if (live)              return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/25">â± Trial Pro</span>;
+  if (live)              return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/25">⏱ Trial Pro</span>;
   if (plan === "pro")    return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-500/15 text-brand-300 border border-brand-500/25">Pro</span>;
   if (plan === "agency") return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">Agence</span>;
   return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/[0.06] text-slate-500 border border-white/[0.08]">Free</span>;
 }
 
 function trialLabel(expiry: string | null): string {
-  if (!expiry) return "â€”";
+  if (!expiry) return "—";
   const diff = new Date(expiry).getTime() - Date.now();
-  if (diff <= 0) return "ExpirÃ©";
+  if (diff <= 0) return "Expiré";
   const days = Math.ceil(diff / 86400000);
   return `${days}j`;
 }
 
 function relativeDate(iso: string | null): string {
-  if (!iso) return "â€”";
+  if (!iso) return "—";
   const diff = Date.now() - new Date(iso).getTime();
   const mins  = Math.floor(diff / 60000);
   const hours = Math.floor(diff / 3600000);
   const days  = Math.floor(diff / 86400000);
-  if (mins  < 2)  return "Ã€ l'instant";
+  if (mins  < 2)  return "À l'instant";
   if (hours < 1)  return `Il y a ${mins} min`;
   if (hours < 24) return `Il y a ${hours}h`;
   if (days  < 7)  return `Il y a ${days}j`;
@@ -72,10 +72,10 @@ const TAG_COLORS: Record<string, string> = {
   pas_interesse: "bg-red-500/20 text-red-300",
 };
 const TAG_LABEL: Record<string, string> = {
-  non_appele: "Non app.", ne_repond_pas: "NRP", interesse: "IntÃ©ressÃ©", rdv_pris: "RDV", pas_interesse: "Non",
+  non_appele: "Non app.", ne_repond_pas: "NRP", interesse: "Intéressé", rdv_pris: "RDV", pas_interesse: "Non",
 };
 
-// â”€â”€ Composant â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Composant ─────────────────────────────────────────────────────────────────
 
 export default function AdminPage() {
   const { user: clerkUser }       = useUser();
@@ -87,13 +87,13 @@ export default function AdminPage() {
   const [busy,    setBusy]        = useState<string | null>(null);  // user_id en cours d'action
   const { success, error: toastError, info } = useToast();
   const confirm = useConfirm();
-  const [expanded, setExpanded]   = useState<string | null>(null);  // user_id dÃ©pliÃ©
+  const [expanded, setExpanded]   = useState<string | null>(null);  // user_id déplié
 
   const load = useCallback(() => {
     setLoading(true);
     fetch("/api/admin/users")
       .then(async r => {
-        if (r.status === 403) throw new Error("AccÃ¨s refusÃ© â€” votre user_id Clerk doit Ãªtre dans ADMIN_USER_IDS.");
+        if (r.status === 403) throw new Error("Accès refusé — votre user_id Clerk doit être dans ADMIN_USER_IDS.");
         if (!r.ok)            throw new Error("Erreur serveur");
         return r.json();
       })
@@ -104,7 +104,7 @@ export default function AdminPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Actions ──────────────────────────────────────────────────────────────
 
   async function setPlan(userId: string, plan: string, trialDays?: number) {
     setBusy(userId);
@@ -137,7 +137,7 @@ export default function AdminPage() {
       });
       const data = await res.json() as { success?: boolean; error?: string };
       if (!data.success) throw new Error(data.error || "Erreur");
-      success(`Email de connexion envoyÃ© Ã  ${user.clerk.email}`);
+      success(`Email de connexion envoyé à ${user.clerk.email}`);
     } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
   }
@@ -146,8 +146,8 @@ export default function AdminPage() {
     const name = user.clerk ? `${user.clerk.firstName} ${user.clerk.lastName}`.trim() || user.clerk.email : user.user_id;
     const ok = await confirm({
       title:        `Supprimer le compte de "${name}" ?`,
-      message:      `Cette action supprime :\nâ€¢ Son compte Clerk (accÃ¨s perdu)\nâ€¢ Tous ses leads (${user.leadCount})\nâ€¢ Son abonnement\n\nImpossible d'annuler.`,
-      confirmLabel: "Supprimer dÃ©finitivement",
+      message:      `Cette action supprime :\n• Son compte Clerk (accès perdu)\n• Tous ses leads (${user.leadCount})\n• Son abonnement\n\nImpossible d'annuler.`,
+      confirmLabel: "Supprimer définitivement",
       danger:       true,
     });
     if (!ok) return;
@@ -160,12 +160,12 @@ export default function AdminPage() {
       const data = await res.json() as { success?: boolean; error?: string };
       if (!data.success) throw new Error(data.error || "Erreur");
       setUsers(prev => prev.filter(u => u.user_id !== user.user_id));
-      info("Compte supprimÃ©");
+      info("Compte supprimé");
     } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
   }
 
-  // â”€â”€ Filtres â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Filtres ───────────────────────────────────────────────────────────────
 
   const filtered = users.filter(u => {
     const q = search.toLowerCase();
@@ -194,19 +194,19 @@ export default function AdminPage() {
     agency: users.filter(u => u.plan === "agency").length,
   };
 
-  // â”€â”€ Rendu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Rendu ─────────────────────────────────────────────────────────────────
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen text-slate-600 text-sm">Chargementâ€¦</div>
+    <div className="flex items-center justify-center h-screen text-slate-600 text-sm">Chargement…</div>
   );
 
   if (error) return (
     <div className="flex flex-col items-center justify-center h-screen gap-4 px-6">
-      <div className="text-4xl">ðŸ”’</div>
+      <div className="text-4xl">🔒</div>
       <p className="text-slate-400 text-sm font-medium">{error}</p>
       <div className="bg-[#13151e] border border-white/[0.08] rounded-xl p-5 max-w-md w-full space-y-3">
         <p className="text-xs text-slate-500 leading-relaxed">
-          Pour activer l&apos;accÃ¨s admin, copiez votre <strong className="text-slate-300">user_id Clerk</strong> ci-dessous
+          Pour activer l&apos;accès admin, copiez votre <strong className="text-slate-300">user_id Clerk</strong> ci-dessous
           et collez-le dans <code className="mono bg-white/[0.06] px-1 rounded text-brand-300">ADMIN_USER_IDS</code> dans le fichier <code className="mono bg-white/[0.06] px-1 rounded">.env</code>.
         </p>
         {clerkUser?.id && (
@@ -220,7 +220,7 @@ export default function AdminPage() {
             </button>
           </div>
         )}
-        <p className="text-[10px] text-slate-700">Puis redÃ©marrez le serveur et rechargez cette page.</p>
+        <p className="text-[10px] text-slate-700">Puis redémarrez le serveur et rechargez cette page.</p>
       </div>
     </div>
   );
@@ -233,7 +233,7 @@ export default function AdminPage() {
       <header className="shrink-0 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] bg-[#080b12]/70 backdrop-blur-md">
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-semibold text-slate-100">Administration</h1>
-          <button onClick={load} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">â†» Actualiser</button>
+          <button onClick={load} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">↻ Actualiser</button>
 
           {/* Filtres plan */}
           <div className="flex gap-1 bg-white/[0.04] border border-white/[0.06] rounded-xl p-1 ml-2">
@@ -253,7 +253,7 @@ export default function AdminPage() {
           <div className="hidden xl:flex items-center gap-4 ml-2 pl-4 border-l border-white/[0.06]">
             {[
               { label: "Leads total", value: users.reduce((s, u) => s + u.leadCount, 0),     color: "text-slate-300" },
-              { label: "ActivitÃ©s",   value: users.reduce((s, u) => s + u.activityCount, 0), color: "text-brand-400" },
+              { label: "Activités",   value: users.reduce((s, u) => s + u.activityCount, 0), color: "text-brand-400" },
               { label: "Scrapes",     value: users.reduce((s, u) => s + u.scrape_count, 0),  color: "text-cyan-400" },
             ].map(s => (
               <div key={s.label} className="text-center">
@@ -266,7 +266,7 @@ export default function AdminPage() {
           {/* Recherche */}
           <div className="ml-auto relative">
             <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Nom, emailâ€¦"
+              placeholder="Nom, email…"
               className="h-7 pl-7 pr-3 w-44 rounded-lg bg-white/[0.05] border border-white/[0.08]
                          text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-brand-500/40"/>
             <svg className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-600" width="11" height="11"
@@ -287,9 +287,9 @@ export default function AdminPage() {
               <th className="py-2.5 px-3">Plan</th>
               <th className="py-2.5 px-3">Trial</th>
               <th className="py-2.5 px-3">Leads</th>
-              <th className="py-2.5 px-3">ActivitÃ©s</th>
+              <th className="py-2.5 px-3">Activités</th>
               <th className="py-2.5 px-3">Scrapes</th>
-              <th className="py-2.5 px-3">DerniÃ¨re connexion</th>
+              <th className="py-2.5 px-3">Dernière connexion</th>
               <th className="py-2.5 px-3">Inscrit</th>
               <th className="py-2.5 px-3 text-right">Actions</th>
             </tr>
@@ -320,7 +320,7 @@ export default function AdminPage() {
                           <div className="text-sm font-medium text-slate-200 truncate max-w-[160px]">{name}</div>
                           <div className="text-[10px] text-slate-600 truncate max-w-[160px]">{user.clerk?.email}</div>
                         </div>
-                        <span className="text-slate-700 text-xs ml-auto">{isExpanded ? "â–¾" : "â–¸"}</span>
+                        <span className="text-slate-700 text-xs ml-auto">{isExpanded ? "▾" : "▸"}</span>
                       </div>
                     </td>
 
@@ -353,7 +353,7 @@ export default function AdminPage() {
                       <span className="text-xs mono text-slate-700">
                         {user.clerk?.clerkCreatedAt
                           ? new Date(user.clerk.clerkCreatedAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" })
-                          : "â€”"}
+                          : "—"}
                       </span>
                     </td>
 
@@ -364,7 +364,7 @@ export default function AdminPage() {
                           disabled={isBusy}
                           title="Trial Pro 7 jours"
                           className="h-6 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-medium hover:bg-amber-500/20 transition-all disabled:opacity-30">
-                          {busy === user.user_id ? "â€¦" : "+7j"}
+                          {busy === user.user_id ? "…" : "+7j"}
                         </button>
                         <button onClick={() => setPlan(user.user_id, user.plan === "pro" ? "free" : "pro")}
                           disabled={isBusy}
@@ -374,13 +374,13 @@ export default function AdminPage() {
                               ? "bg-white/[0.05] border border-white/[0.08] text-slate-500 hover:bg-white/[0.09]"
                               : "bg-brand-500/10 border border-brand-500/20 text-brand-400 hover:bg-brand-500/20"
                           }`}>
-                          {user.plan === "pro" ? "â†’ Free" : "â†’ Pro"}
+                          {user.plan === "pro" ? "→ Free" : "→ Pro"}
                         </button>
                       </div>
                     </td>
                   </tr>
 
-                  {/* Ligne dÃ©pliÃ©e */}
+                  {/* Ligne dépliée */}
                   {isExpanded && (
                     <tr key={user.user_id + "_expanded"} className="border-b border-white/[0.04] bg-white/[0.015]">
                       <td colSpan={9} className="px-4 py-4">
@@ -388,7 +388,7 @@ export default function AdminPage() {
 
                           {/* Distribution des tags */}
                           <div className="min-w-[180px]">
-                            <p className="text-[10px] font-bold tracking-widest text-slate-600 uppercase mb-2">RÃ©partition leads</p>
+                            <p className="text-[10px] font-bold tracking-widest text-slate-600 uppercase mb-2">Répartition leads</p>
                             <div className="space-y-1">
                               {Object.entries(user.tags).sort((a,b) => b[1]-a[1]).map(([tag, count]) => (
                                 <div key={tag} className="flex items-center gap-2">
@@ -416,9 +416,9 @@ export default function AdminPage() {
                             <p className="text-[10px] font-bold tracking-widest text-slate-600 uppercase mb-2">Compte</p>
                             {[
                               { label: "User ID",        value: user.user_id, mono: true },
-                              { label: "Code trial",     value: user.trial_code_used || "â€”", mono: true },
-                              { label: "Exp. trial",     value: user.trial_expires_at ? new Date(user.trial_expires_at).toLocaleDateString("fr-FR") : "â€”" },
-                              { label: "2FA",            value: user.clerk?.twoFactor ? "âœ… ActivÃ©" : "Non" },
+                              { label: "Code trial",     value: user.trial_code_used || "—", mono: true },
+                              { label: "Exp. trial",     value: user.trial_expires_at ? new Date(user.trial_expires_at).toLocaleDateString("fr-FR") : "—" },
+                              { label: "2FA",            value: user.clerk?.twoFactor ? "✅ Activé" : "Non" },
                               { label: "Dernier lead",   value: relativeDate(user.lastLeadAt) },
                             ].map(row => (
                               <div key={row.label} className="flex items-center gap-2">
@@ -430,12 +430,12 @@ export default function AdminPage() {
                             ))}
                           </div>
 
-                          {/* Actions avancÃ©es */}
+                          {/* Actions avancées */}
                           <div className="min-w-[220px]">
                             <p className="text-[10px] font-bold tracking-widest text-slate-600 uppercase mb-2">Actions</p>
                             <div className="space-y-2">
 
-                              {/* Trial personnalisÃ© */}
+                              {/* Trial personnalisé */}
                               <div className="flex items-center gap-2">
                                 <span className="text-[10px] text-slate-600 w-20 shrink-0">Trial custom</span>
                                 {[3, 7, 14, 30].map(d => (
@@ -458,26 +458,26 @@ export default function AdminPage() {
                                       p === "agency" ? "bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20" :
                                                        "bg-white/[0.05] border border-white/[0.08] text-slate-500 hover:bg-white/[0.09]"
                                     } ${user.plan === p ? "opacity-30 cursor-default" : ""}`}>
-                                    {p === "pro" ? "Pro âˆž" : p === "agency" ? "Agence" : "Free"}
+                                    {p === "pro" ? "Pro ∞" : p === "agency" ? "Agence" : "Free"}
                                   </button>
                                 ))}
                               </div>
 
-                              {/* Reset accÃ¨s + Supprimer */}
+                              {/* Reset accès + Supprimer */}
                               <div className="flex items-center gap-2 pt-1">
                                 <button onClick={() => sendResetEmail(user)}
                                   disabled={busy === user.user_id + "_reset"}
                                   title="Envoyer un lien de connexion par email"
                                   className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-blue-500/10 border border-blue-500/20
                                              text-blue-400 text-[11px] font-medium hover:bg-blue-500/20 transition-all disabled:opacity-30">
-                                  {busy === user.user_id + "_reset" ? "Envoiâ€¦" : "âœ‰ Envoyer lien de connexion"}
+                                  {busy === user.user_id + "_reset" ? "Envoi…" : "✉ Envoyer lien de connexion"}
                                 </button>
                                 <button onClick={() => deleteUser(user)}
                                   disabled={busy === user.user_id + "_delete"}
-                                  title="Supprimer le compte dÃ©finitivement"
+                                  title="Supprimer le compte définitivement"
                                   className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-red-500/10 border border-red-500/20
                                              text-red-400 text-[11px] font-medium hover:bg-red-500/20 transition-all disabled:opacity-30">
-                                  {busy === user.user_id + "_delete" ? "Suppressionâ€¦" : "ðŸ—‘ Supprimer"}
+                                  {busy === user.user_id + "_delete" ? "Suppression…" : "🗑 Supprimer"}
                                 </button>
                               </div>
                             </div>
@@ -495,7 +495,7 @@ export default function AdminPage() {
 
         {filtered.length === 0 && (
           <div className="flex items-center justify-center py-16 text-slate-600 text-sm">
-            {search || filter !== "all" ? "Aucun rÃ©sultat pour ce filtre" : "Aucun utilisateur inscrit"}
+            {search || filter !== "all" ? "Aucun résultat pour ce filtre" : "Aucun utilisateur inscrit"}
           </div>
         )}
       </div>
@@ -503,7 +503,7 @@ export default function AdminPage() {
       {/* Footer */}
       <div className="px-5 py-2 border-t border-white/[0.04] shrink-0 flex items-center justify-between">
         <p className="text-[10px] text-slate-700">
-          {filtered.length} utilisateur{filtered.length > 1 ? "s" : ""} affichÃ©s
+          {filtered.length} utilisateur{filtered.length > 1 ? "s" : ""} affichés
         </p>
         <p className="text-[10px] text-slate-700">
           Code actif : <code className="mono text-brand-600">{process.env.NEXT_PUBLIC_APP_URL ? "" : "FORMATION2025"}</code>

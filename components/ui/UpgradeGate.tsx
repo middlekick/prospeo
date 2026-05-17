@@ -3,7 +3,7 @@
 /**
  * components/ui/UpgradeGate.tsx
  * Masque un contenu si le plan ne l'autorise pas.
- * Affiche un overlay "ðŸ"’ FonctionnalitÃ© Pro" avec CTA vers /#pricing.
+ * Affiche un overlay "ð" Fonctionnalité Pro" avec CTA vers /#pricing.
  */
 
 import Link from "next/link";
@@ -16,7 +16,7 @@ const FEATURE_LABELS: Record<GatedFeature, string> = {
   inpi:      "Recherche INPI",
   csv:       "Import / Export CSV",
   dashboard: "Dashboard analytics",
-  scripts:   "Scripts tÃ©lÃ©prompter",
+  scripts:   "Scripts téléprompter",
   ads:       "Suivi Google Ads",
 };
 
@@ -25,23 +25,23 @@ interface UpgradeGateProps {
   plan:     PlanTier;
   loading?: boolean;
   children: React.ReactNode;
-  /** Si true, affiche les children quand mÃªme (juste dÃ©sactivÃ©s) â€" sinon masquÃ©s */
+  /** Si true, affiche les children quand même (juste désactivés) â" sinon masqués */
   blur?:    boolean;
 }
 
 export default function UpgradeGate({ feature, plan, loading = false, children, blur = true }: UpgradeGateProps) {
-  // Plan pro ou agence â†’ accÃ¨s libre
+  // Plan pro ou agence → accès libre
   if (!loading && (plan === "pro" || plan === "agency")) {
     return <>{children}</>;
   }
 
-  // Chargement â†’ afficher les children normalement pour Ã©viter le flash
+  // Chargement → afficher les children normalement pour éviter le flash
   if (loading) {
     return <>{children}</>;
   }
 
-  // Plan free â†’ overlay d'upgrade
-  const label = FEATURE_LABELS[feature] ?? "FonctionnalitÃ©";
+  // Plan free → overlay d'upgrade
+  const label = FEATURE_LABELS[feature] ?? "Fonctionnalité";
 
   return (
     <div className="relative">
@@ -65,13 +65,13 @@ export default function UpgradeGate({ feature, plan, loading = false, children, 
         </div>
         <div>
           <p className="text-slate-200 font-semibold text-sm">{label}</p>
-          <p className="text-slate-500 text-xs mt-0.5">Disponible Ã  partir du plan Pro</p>
+          <p className="text-slate-500 text-xs mt-0.5">Disponible à partir du plan Pro</p>
         </div>
         <Link
           href="/#pricing"
           className="mt-1 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition-colors"
         >
-          Passer Pro â†’
+          Passer Pro →
         </Link>
       </div>
     </div>

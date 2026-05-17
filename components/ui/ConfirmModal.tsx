@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 
-// â”€â”€ Options d'une confirmation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Options d'une confirmation ────────────────────────────────────────────────
 
 interface ConfirmOptions {
   title:         string;
@@ -19,11 +19,11 @@ const ConfirmContext = createContext<ConfirmFn | null>(null);
 
 export function useConfirm(): ConfirmFn {
   const ctx = useContext(ConfirmContext);
-  if (!ctx) throw new Error("useConfirm doit Ãªtre utilisÃ© dans <ConfirmProvider>");
+  if (!ctx) throw new Error("useConfirm doit être utilisé dans <ConfirmProvider>");
   return ctx;
 }
 
-// â”€â”€ Provider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Provider ──────────────────────────────────────────────────────────────────
 
 export function ConfirmProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<{ open: boolean; opts: ConfirmOptions }>({
@@ -33,7 +33,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
   const resolver = useRef<((v: boolean) => void) | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // monter le portal cÃ´tÃ© client
+  // monter le portal côté client
   if (typeof window !== "undefined" && !mounted) setMounted(true);
 
   const confirm = useCallback<ConfirmFn>((opts) => {
@@ -65,7 +65,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
                   "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-lg",
                   state.opts.danger ? "bg-red-500/15" : "bg-brand-500/15",
                 ].join(" ")}>
-                  {state.opts.danger ? "âš ï¸" : "â“"}
+                  {state.opts.danger ? "⚠️" : "❓"}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-semibold text-slate-100">{state.opts.title}</h3>

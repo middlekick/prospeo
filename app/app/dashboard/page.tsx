@@ -6,7 +6,7 @@ import { Lead, TAG_COLORS }              from "@/components/leads/types";
 import { usePlan }                        from "@/hooks/usePlan";
 import RdvCalendar                        from "@/components/dashboard/RdvCalendar";
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function isoToday(): string {
   return new Date().toISOString().slice(0, 10);
@@ -37,7 +37,7 @@ function isWeekend(iso: string): boolean {
   return d === 0 || d === 6;
 }
 
-// â”€â”€ Graphique 30 jours (SVG pur) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Graphique 30 jours (SVG pur) ──────────────────────────────────────────────
 
 interface ChartPoint { date: string; contacted: number; added: number; }
 
@@ -69,7 +69,7 @@ function ActivityChart({ data }: { data: ChartPoint[] }) {
               {weekend && (
                 <rect x={x} y={0} width={BAR_W + 2} height={H} fill="rgba(255,255,255,0.015)" rx={1} />
               )}
-              {/* Barre ajoutÃ©s (cyan, derriÃ¨re) */}
+              {/* Barre ajoutés (cyan, derrière) */}
               {hAdded > 0 && (
                 <rect
                   x={x + 1} y={H - hAdded} width={BAR_W} height={hAdded} rx={2}
@@ -77,7 +77,7 @@ function ActivityChart({ data }: { data: ChartPoint[] }) {
                   className="transition-colors duration-100"
                 />
               )}
-              {/* Barre contactÃ©s (violet, devant) */}
+              {/* Barre contactés (violet, devant) */}
               {hCont > 0 && (
                 <rect
                   x={x + 1} y={H - hCont} width={BAR_W} height={hCont} rx={2}
@@ -109,31 +109,31 @@ function ActivityChart({ data }: { data: ChartPoint[] }) {
           <div className="font-medium text-slate-200 mb-1.5">{formatDayLabel(hovered.date)}</div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-brand-400 inline-block" />
-            <span className="text-slate-400">{hovered.contacted} contactÃ©{hovered.contacted > 1 ? "s" : ""}</span>
+            <span className="text-slate-400">{hovered.contacted} contacté{hovered.contacted > 1 ? "s" : ""}</span>
           </div>
           <div className="flex items-center gap-2 mt-0.5">
             <span className="w-2 h-2 rounded-full bg-cyan-400 inline-block" />
-            <span className="text-slate-400">{hovered.added} ajoutÃ©{hovered.added > 1 ? "s" : ""}</span>
+            <span className="text-slate-400">{hovered.added} ajouté{hovered.added > 1 ? "s" : ""}</span>
           </div>
         </div>
       )}
 
-      {/* LÃ©gende */}
+      {/* Légende */}
       <div className="flex items-center gap-4 mt-2">
         <div className="flex items-center gap-1.5 text-xs text-slate-600">
           <span className="w-2.5 h-2.5 rounded-sm bg-brand-500/60 inline-block" />
-          ContactÃ©s
+          Contactés
         </div>
         <div className="flex items-center gap-1.5 text-xs text-slate-600">
           <span className="w-2.5 h-2.5 rounded-sm bg-cyan-500/30 inline-block" />
-          AjoutÃ©s
+          Ajoutés
         </div>
       </div>
     </div>
   );
 }
 
-// â”€â”€ Entonnoir de conversion â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Entonnoir de conversion ───────────────────────────────────────────────────
 
 function FunnelBar({
   label, count, total, color, bg, sub,
@@ -162,7 +162,7 @@ function FunnelBar({
   );
 }
 
-// â”€â”€ Carte stat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Carte stat ────────────────────────────────────────────────────────────────
 
 function StatCard({
   label, value, sub, color, borderColor, iconBg, iconSvg, active,
@@ -205,7 +205,7 @@ function StatCard({
   );
 }
 
-// â”€â”€ Page principale â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Page principale ───────────────────────────────────────────────────────────
 
 type Period = "day" | "week" | "month";
 
@@ -216,11 +216,11 @@ const PERIOD_LABELS: Record<Period, string> = {
 };
 
 const TAG_LABEL: Record<string, string> = {
-  non_appele:    "Non appelÃ©",
-  ne_repond_pas: "Ne rÃ©pond pas",
-  interesse:     "IntÃ©ressÃ©",
+  non_appele:    "Non appelé",
+  ne_repond_pas: "Ne répond pas",
+  interesse:     "Intéressé",
   rdv_pris:      "RDV pris",
-  pas_interesse: "Pas intÃ©ressÃ©",
+  pas_interesse: "Pas intéressé",
 };
 
 export default function DashboardPage() {
@@ -239,18 +239,18 @@ export default function DashboardPage() {
   const days30  = useMemo(() => last30Days(), []);
 
   const stats = useMemo(() => {
-    // Borne de la pÃ©riode sÃ©lectionnÃ©e
+    // Borne de la période sélectionnée
     const cutoff = period === "day"   ? today
                  : period === "week"  ? isoNDaysAgo(6)
                  :                     isoNDaysAgo(29);
 
-    // â”€â”€ MÃ©triques de la pÃ©riode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Métriques de la période ──────────────────────────────────────────
     const contactedPeriod = leads.filter(l => l.contacted_at && l.contacted_at >= cutoff && l.contacted_at <= today).length;
     const addedPeriod     = leads.filter(l => l.created_at   && l.created_at   >= cutoff && l.created_at   <= today).length;
     const rdvPeriod       = leads.filter(l => l.rdv_date     && l.rdv_date     >= today).length;
     const rappelsDus      = leads.filter(l => l.rappel       && l.rappel       <= today).length;
 
-    // â”€â”€ Entonnoir (toujours sur l'ensemble des leads) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Entonnoir (toujours sur l'ensemble des leads) ────────────────────
     const total         = leads.length;
     const nonContactes  = leads.filter(l => l.tag === "non_appele").length;
     const contactes     = total - nonContactes;
@@ -259,34 +259,34 @@ export default function DashboardPage() {
     const rdvPris       = leads.filter(l => l.tag === "rdv_pris").length;
     const pasInteresse  = leads.filter(l => l.tag === "pas_interesse").length;
 
-    // "Vrais conversations" = ceux qui ont dÃ©crochÃ© et rÃ©pondu (intÃ©ressÃ© + RDV pris + pas intÃ©ressÃ©)
-    // Ne rÃ©pond pas n'est PAS comptÃ© dans le closing â€” ils n'ont pas eu de vraie conversation
+    // "Vrais conversations" = ceux qui ont décroché et répondu (intéressé + RDV pris + pas intéressé)
+    // Ne répond pas n'est PAS compté dans le closing — ils n'ont pas eu de vraie conversation
     const vraisConversations = interesses + rdvPris + pasInteresse;
 
-    // Taux de dÃ©crochage = ceux qui ont vraiment parlÃ© / ceux qu'on a appelÃ©s
-    // (contactes = tous les leads sortis de "non_appelÃ©" = appelÃ©s au moins une fois)
+    // Taux de décrochage = ceux qui ont vraiment parlé / ceux qu'on a appelés
+    // (contactes = tous les leads sortis de "non_appelé" = appelés au moins une fois)
     const tauxDecrochage = contactes          > 0 ? Math.round((vraisConversations / contactes)          * 100) : 0;
     const tauxInteret    = vraisConversations > 0 ? Math.round(((interesses + rdvPris) / vraisConversations) * 100) : 0;
     const tauxRdv        = vraisConversations > 0 ? Math.round((rdvPris             / vraisConversations) * 100) : 0;
 
-    // â”€â”€ Graphique 30 jours â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Graphique 30 jours ───────────────────────────────────────────────
     const chart: ChartPoint[] = days30.map(d => ({
       date:       d,
       contacted:  leads.filter(l => l.contacted_at === d).length,
       added:      leads.filter(l => l.created_at   === d).length,
     }));
 
-    // Total activitÃ© sur 30 jours
+    // Total activité sur 30 jours
     const totalContacted30 = chart.reduce((s, d) => s + d.contacted, 0);
     const bestDay = [...chart].sort((a, b) => b.contacted - a.contacted)[0];
 
-    // â”€â”€ Prochains RDV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Prochains RDV ────────────────────────────────────────────────────
     const upcomingRdv = leads
       .filter(l => l.rdv_date && l.rdv_date >= today)
       .sort((a, b) => a.rdv_date.localeCompare(b.rdv_date))
       .slice(0, 6);
 
-    // â”€â”€ Derniers leads contactÃ©s â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Derniers leads contactés ─────────────────────────────────────────
     const recentlyContacted = leads
       .filter(l => l.contacted_at)
       .sort((a, b) => b.contacted_at.localeCompare(a.contacted_at))
@@ -305,17 +305,17 @@ export default function DashboardPage() {
   // Export CSV du bilan
   function exportDashboardCSV() {
     const rows = [
-      ["MÃ©trique", "Valeur"],
+      ["Métrique", "Valeur"],
       ["Total leads", stats.total],
-      ["Non contactÃ©s", stats.nonContactes],
-      ["ContactÃ©s", stats.contactes],
-      ["Ne rÃ©pond pas", stats.neRepond],
-      ["IntÃ©ressÃ©s", stats.interesses],
+      ["Non contactés", stats.nonContactes],
+      ["Contactés", stats.contactes],
+      ["Ne répond pas", stats.neRepond],
+      ["Intéressés", stats.interesses],
       ["RDV pris", stats.rdvPris],
-      ["Pas intÃ©ressÃ©s", stats.pasInteresse],
-      ["Vrais Ã©changes (dÃ©crochÃ©s)", stats.vraisConversations],
-      ["Taux de dÃ©crochage", `${stats.tauxDecrochage}%`],
-      ["Taux d'intÃ©rÃªt", `${stats.tauxInteret}%`],
+      ["Pas intéressés", stats.pasInteresse],
+      ["Vrais échanges (décrochés)", stats.vraisConversations],
+      ["Taux de décrochage", `${stats.tauxDecrochage}%`],
+      ["Taux d'intérêt", `${stats.tauxInteret}%`],
       ["Taux closing RDV", `${stats.tauxRdv}%`],
     ];
     const csv  = rows.map(r => r.join(";")).join("\n");
@@ -346,28 +346,28 @@ export default function DashboardPage() {
     );
   }
 
-  // â”€â”€ Plan free : page de verrouillage â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Plan free : page de verrouillage ───────────────────────────────────────
   if (plan === "free") {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-5 px-6">
         <div className="relative flex items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-3xl z-10 relative">ðŸ“Š</div>
+          <div className="w-16 h-16 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-3xl z-10 relative">📊</div>
           <div className="absolute inset-0 rounded-2xl bg-brand-500/10 blur-xl" />
         </div>
         <div className="text-center max-w-sm">
           <h2 className="text-xl font-bold text-slate-100 mb-2">Dashboard analytics</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
-            Les mÃ©triques de prospection, graphiques 30 jours et funnel de conversion
-            sont rÃ©servÃ©s au plan <span className="text-brand-300 font-medium">Pro</span>.
+            Les métriques de prospection, graphiques 30 jours et funnel de conversion
+            sont réservés au plan <span className="text-brand-300 font-medium">Pro</span>.
           </p>
         </div>
         <Link
           href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.3)]"
         >
-          Passer Pro â€” 19 â‚¬/mois â†’
+          Passer Pro — 19 €/mois →
         </Link>
-        <p className="text-xs text-slate-700">14 jours gratuits Â· annulable Ã  tout moment</p>
+        <p className="text-xs text-slate-700">14 jours gratuits · annulable à tout moment</p>
       </div>
     );
   }
@@ -376,7 +376,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col h-screen overflow-auto">
-      {/* Trait de lumiÃ¨re haut */}
+      {/* Trait de lumière haut */}
       <div className="h-px bg-gradient-to-r from-transparent via-brand-500/25 to-transparent shrink-0" />
 
       {/* Header */}
@@ -384,10 +384,10 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-[13px] font-semibold text-slate-200 tracking-tight">Tableau de bord</h1>
           <p className="text-xs text-slate-600 mt-0.5">
-            {stats.totalContacted30} leads contactÃ©s sur 30 jours
+            {stats.totalContacted30} leads contactés sur 30 jours
             {stats.bestDay?.contacted > 0 && (
               <span className="ml-2 text-brand-400">
-                Â· record : {stats.bestDay.contacted} le {formatDayLabel(stats.bestDay.date)}
+                · record : {stats.bestDay.contacted} le {formatDayLabel(stats.bestDay.date)}
               </span>
             )}
           </p>
@@ -404,7 +404,7 @@ export default function DashboardPage() {
             </svg>
             Export
           </button>
-          {/* SÃ©lecteur de pÃ©riode */}
+          {/* Sélecteur de période */}
           <div className="flex gap-[3px] bg-white/[0.04] border border-white/[0.07] rounded-xl p-[3px]">
             {(["day", "week", "month"] as Period[]).map(p => (
               <button
@@ -426,12 +426,12 @@ export default function DashboardPage() {
 
       <div className="flex-1 px-6 py-6 space-y-6 max-w-[1200px] w-full mx-auto">
 
-        {/* â”€â”€ Cartes stat â”€â”€ */}
+        {/* ── Cartes stat ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            label={`ContactÃ©s â€” ${periodLabel}`}
+            label={`Contactés — ${periodLabel}`}
             value={stats.contactedPeriod}
-            sub={stats.contactedPeriod === 0 ? "Aucun appel enregistrÃ©" : "leads dÃ©marchÃ©s"}
+            sub={stats.contactedPeriod === 0 ? "Aucun appel enregistré" : "leads démarchés"}
             color="text-brand-300"
             borderColor="border-brand-500/[0.22]"
             iconBg="bg-brand-500/15"
@@ -443,7 +443,7 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label={`AjoutÃ©s â€” ${periodLabel}`}
+            label={`Ajoutés — ${periodLabel}`}
             value={stats.addedPeriod}
             sub="nouveaux leads dans le CRM"
             color="text-cyan-300"
@@ -460,9 +460,9 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label="RDV Ã  venir"
+            label="RDV à venir"
             value={stats.rdvPeriod}
-            sub={stats.rdvPeriod === 0 ? "Aucun RDV programmÃ©" : "Ã  partir d'aujourd'hui"}
+            sub={stats.rdvPeriod === 0 ? "Aucun RDV programmé" : "à partir d'aujourd'hui"}
             color="text-emerald-300"
             borderColor="border-emerald-500/[0.20]"
             iconBg="bg-emerald-500/12"
@@ -480,7 +480,7 @@ export default function DashboardPage() {
           <StatCard
             label="Rappels en retard"
             value={stats.rappelsDus}
-            sub={stats.rappelsDus === 0 ? "Tout est Ã  jour âœ“" : "Ã  traiter maintenant"}
+            sub={stats.rappelsDus === 0 ? "Tout est à jour ✓" : "à traiter maintenant"}
             color="text-amber-300"
             borderColor="border-amber-500/[0.22]"
             iconBg="bg-amber-500/12"
@@ -494,10 +494,10 @@ export default function DashboardPage() {
           />
         </div>
 
-        {/* â”€â”€ Graphique + Entonnoir â”€â”€ */}
+        {/* ── Graphique + Entonnoir ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
 
-          {/* Graphique activitÃ© 30 jours */}
+          {/* Graphique activité 30 jours */}
           <div className="rounded-2xl border border-brand-500/[0.10] bg-gradient-to-br from-brand-500/[0.04] to-transparent p-5 relative overflow-hidden">
             {/* Glow coin haut-droit */}
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl bg-brand-500/10 pointer-events-none" />
@@ -505,10 +505,10 @@ export default function DashboardPage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-brand-400" />
-                  <span className="text-[10px] font-mono tracking-widest text-brand-400/70 uppercase">ActivitÃ©</span>
+                  <span className="text-[10px] font-mono tracking-widest text-brand-400/70 uppercase">Activité</span>
                 </div>
                 <h2 className="text-[13px] font-semibold text-slate-100">30 derniers jours</h2>
-                <p className="text-[11px] text-slate-600 mt-0.5">Leads rÃ©ellement dÃ©marchÃ©s</p>
+                <p className="text-[11px] text-slate-600 mt-0.5">Leads réellement démarchés</p>
               </div>
               <div className="flex items-center gap-3 text-[11px]">
                 <div className="text-right">
@@ -521,8 +521,8 @@ export default function DashboardPage() {
             </div>
             {stats.totalContacted30 === 0 ? (
               <div className="flex flex-col items-center justify-center h-28 text-slate-700 gap-2">
-                <span className="text-2xl">ðŸ“Š</span>
-                <p className="text-xs">Les donnÃ©es apparaÃ®tront au fil de tes appels</p>
+                <span className="text-2xl">📊</span>
+                <p className="text-xs">Les données apparaîtront au fil de tes appels</p>
               </div>
             ) : (
               <ActivityChart data={stats.chart} />
@@ -540,54 +540,54 @@ export default function DashboardPage() {
             <p className="text-[11px] text-slate-600 mb-4 relative">Sur {stats.total} leads au total</p>
 
             <div className="space-y-3">
-              {/* Niveau 1 â€” Tous les leads */}
-              <FunnelBar label="Non contactÃ©s" count={stats.nonContactes}
+              {/* Niveau 1 — Tous les leads */}
+              <FunnelBar label="Non contactés" count={stats.nonContactes}
                 total={stats.total} color="text-slate-500" bg="bg-slate-600/40" />
-              <FunnelBar label="ContactÃ©s (appelÃ©s)" count={stats.contactes}
+              <FunnelBar label="Contactés (appelés)" count={stats.contactes}
                 total={stats.total} color="text-slate-300" bg="bg-slate-500/50" />
 
-              {/* Niveau 2 â€” Parmi les contactÃ©s */}
+              {/* Niveau 2 — Parmi les contactés */}
               <div className="border-t border-white/5 pt-3 space-y-2 pl-3">
                 <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
-                  Parmi les contactÃ©s
+                  Parmi les contactés
                 </p>
-                <FunnelBar label="Ne rÃ©pond pas" count={stats.neRepond}
+                <FunnelBar label="Ne répond pas" count={stats.neRepond}
                   total={stats.contactes || 1} color="text-orange-400" bg="bg-orange-500/40"
-                  sub="des appelÃ©s" />
+                  sub="des appelés" />
 
-                {/* SÃ©paration : vrais conversations */}
+                {/* Séparation : vrais conversations */}
                 <div className="border-t border-white/[0.04] pt-2">
                   <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
-                    Vrais Ã©changes ({stats.vraisConversations})
-                    <span className="ml-1 normal-case font-normal text-slate-700">â€” excl. sans rÃ©ponse</span>
+                    Vrais échanges ({stats.vraisConversations})
+                    <span className="ml-1 normal-case font-normal text-slate-700">— excl. sans réponse</span>
                   </p>
-                  <FunnelBar label="IntÃ©ressÃ©s (Ã  rappeler)" count={stats.interesses}
+                  <FunnelBar label="Intéressés (à rappeler)" count={stats.interesses}
                     total={stats.vraisConversations || 1} color="text-cyan-400" bg="bg-cyan-500/50"
-                    sub="des Ã©changes rÃ©els" />
+                    sub="des échanges réels" />
                   <div className="mt-2">
-                    <FunnelBar label="RDV pris âœ“" count={stats.rdvPris}
+                    <FunnelBar label="RDV pris ✓" count={stats.rdvPris}
                       total={stats.vraisConversations || 1} color="text-green-400" bg="bg-green-500/60"
-                      sub="des Ã©changes rÃ©els" />
+                      sub="des échanges réels" />
                   </div>
                   <div className="mt-2">
-                    <FunnelBar label="Pas intÃ©ressÃ©" count={stats.pasInteresse}
+                    <FunnelBar label="Pas intéressé" count={stats.pasInteresse}
                       total={stats.vraisConversations || 1} color="text-red-400" bg="bg-red-500/30"
-                      sub="des Ã©changes rÃ©els" />
+                      sub="des échanges réels" />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Taux clÃ©s â€” recalculÃ©s sur les vrais Ã©changes */}
+            {/* Taux clés — recalculés sur les vrais échanges */}
             {stats.vraisConversations > 0 && (
               <div className="mt-5 pt-4 border-t border-white/[0.06] grid grid-cols-3 gap-2 relative">
                 <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="text-[22px] font-bold font-mono text-slate-300">{stats.tauxDecrochage}%</div>
-                  <div className="text-[10px] text-slate-600 leading-tight text-center">ont dÃ©crochÃ©</div>
+                  <div className="text-[10px] text-slate-600 leading-tight text-center">ont décroché</div>
                 </div>
                 <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-cyan-500/[0.06] border border-cyan-500/[0.15]">
                   <div className="text-[22px] font-bold font-mono text-cyan-300">{stats.tauxInteret}%</div>
-                  <div className="text-[10px] text-cyan-600 leading-tight text-center">intÃ©ressÃ©s</div>
+                  <div className="text-[10px] text-cyan-600 leading-tight text-center">intéressés</div>
                 </div>
                 <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/[0.15] relative">
                   <div className="text-[22px] font-bold font-mono text-emerald-300">{stats.tauxRdv}%</div>
@@ -601,10 +601,10 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* â”€â”€ Calendrier des RDV â”€â”€ */}
+        {/* ── Calendrier des RDV ── */}
         <RdvCalendar leads={leads} />
 
-        {/* â”€â”€ Prochains RDV + Derniers contactÃ©s â”€â”€ */}
+        {/* ── Prochains RDV + Derniers contactés ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           {/* Prochains RDV */}
@@ -616,8 +616,8 @@ export default function DashboardPage() {
             <h2 className="text-[13px] font-semibold text-slate-100 mb-4">Prochains RDV</h2>
             {stats.upcomingRdv.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-slate-700 gap-2">
-                <span className="text-xl">ðŸ“…</span>
-                <p className="text-xs">Aucun RDV programmÃ©</p>
+                <span className="text-xl">📅</span>
+                <p className="text-xs">Aucun RDV programmé</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -643,7 +643,7 @@ export default function DashboardPage() {
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-slate-200 truncate">{lead.nom}</div>
                         <div className="text-xs text-slate-600 truncate">
-                          {lead.metier}{lead.emplacement ? ` Â· ${lead.emplacement}` : ""}
+                          {lead.metier}{lead.emplacement ? ` · ${lead.emplacement}` : ""}
                         </div>
                       </div>
                       {lead.rdv_heure && (
@@ -659,17 +659,17 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Derniers leads contactÃ©s */}
+          {/* Derniers leads contactés */}
           <div className="rounded-2xl border border-brand-500/[0.10] bg-gradient-to-br from-brand-500/[0.03] to-transparent p-5">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-1.5 rounded-full bg-brand-400" />
-              <span className="text-[10px] font-mono tracking-widest text-brand-400/70 uppercase">RÃ©cents</span>
+              <span className="text-[10px] font-mono tracking-widest text-brand-400/70 uppercase">Récents</span>
             </div>
-            <h2 className="text-[13px] font-semibold text-slate-100 mb-4">Derniers leads contactÃ©s</h2>
+            <h2 className="text-[13px] font-semibold text-slate-100 mb-4">Derniers leads contactés</h2>
             {stats.recentlyContacted.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-slate-700 gap-2">
-                <span className="text-xl">ðŸ“ž</span>
-                <p className="text-xs">Aucun appel enregistrÃ© pour l&apos;instant</p>
+                <span className="text-xl">📞</span>
+                <p className="text-xs">Aucun appel enregistré pour l&apos;instant</p>
                 <p className="text-xs">Change le statut d&apos;un lead pour commencer</p>
               </div>
             ) : (
@@ -698,7 +698,7 @@ export default function DashboardPage() {
                           {isToday ? "aujourd'hui" : lead.contacted_at}
                         </div>
                       </div>
-                      <span className="text-slate-700 group-hover:text-slate-500 transition-colors text-xs">â†’</span>
+                      <span className="text-slate-700 group-hover:text-slate-500 transition-colors text-xs">→</span>
                     </Link>
                   );
                 })}
@@ -707,15 +707,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* â”€â”€ Bilan global â”€â”€ */}
+        {/* ── Bilan global ── */}
         <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
           <h2 className="text-sm font-semibold text-slate-100 mb-4">Bilan global</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {[
               { label: "Total leads",    value: stats.total,          color: "text-slate-200",  bg: "border-white/[0.09] bg-white/[0.05]"      },
-              { label: "Non contactÃ©s",  value: stats.nonContactes,   color: "text-slate-500",  bg: "border-white/[0.06] bg-white/[0.02]"      },
-              { label: "Ne rÃ©pond pas",  value: stats.neRepond,        color: "text-orange-300", bg: "border-orange-500/15 bg-orange-500/[0.06]" },
-              { label: "IntÃ©ressÃ©s",     value: stats.interesses,     color: "text-cyan-300",   bg: "border-cyan-500/15 bg-cyan-500/[0.06]"    },
+              { label: "Non contactés",  value: stats.nonContactes,   color: "text-slate-500",  bg: "border-white/[0.06] bg-white/[0.02]"      },
+              { label: "Ne répond pas",  value: stats.neRepond,        color: "text-orange-300", bg: "border-orange-500/15 bg-orange-500/[0.06]" },
+              { label: "Intéressés",     value: stats.interesses,     color: "text-cyan-300",   bg: "border-cyan-500/15 bg-cyan-500/[0.06]"    },
               { label: "RDV pris",       value: stats.rdvPris,         color: "text-emerald-300", bg: "border-emerald-500/15 bg-emerald-500/[0.06]" },
             ].map(s => (
               <div key={s.label} className={`rounded-xl border ${s.bg} px-4 py-3`}>

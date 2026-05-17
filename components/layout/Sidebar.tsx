@@ -7,7 +7,7 @@ import { UserButton }  from "@clerk/nextjs";
 import { usePlan }     from "@/hooks/usePlan";
 import TrialCodeModal  from "@/components/ui/TrialCodeModal";
 
-// â”€â”€ IcÃ´nes SVG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Icônes SVG ────────────────────────────────────────────────────────────────
 
 const IconLeads = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -49,17 +49,17 @@ const IconScrape = () => (
   </svg>
 );
 
-// â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Navigation ────────────────────────────────────────────────────────────────
 
 const NAV = [
-  { href: "/app",             label: "Leads",        Icon: IconLeads,     hint: "âŒ˜1" },
-  { href: "/app/dashboard",   label: "Dashboard",    Icon: IconDashboard, hint: "âŒ˜2" },
-  { href: "/app/inpi",        label: "INPI / RNE",   Icon: IconINPI,      hint: "âŒ˜3" },
-  { href: "/app/scripts",     label: "Scripts",      Icon: IconScripts,   hint: "âŒ˜4" },
-  { href: "/app/auto-scrape", label: "Auto-scraping", Icon: IconScrape,   hint: "âŒ˜5" },
+  { href: "/app",             label: "Leads",        Icon: IconLeads,     hint: "⌘1" },
+  { href: "/app/dashboard",   label: "Dashboard",    Icon: IconDashboard, hint: "⌘2" },
+  { href: "/app/inpi",        label: "INPI / RNE",   Icon: IconINPI,      hint: "⌘3" },
+  { href: "/app/scripts",     label: "Scripts",      Icon: IconScripts,   hint: "⌘4" },
+  { href: "/app/auto-scrape", label: "Auto-scraping", Icon: IconScrape,   hint: "⌘5" },
 ];
 
-// â”€â”€ Composant â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Composant ─────────────────────────────────────────────────────────────────
 
 export default function Sidebar() {
   const pathname                  = usePathname();
@@ -110,12 +110,12 @@ export default function Sidebar() {
         mobileOpen ? "translate-x-0" : "-translate-x-full",
       ].join(" ")}>
 
-        {/* Trait de lumiÃ¨re haut */}
+        {/* Trait de lumière haut */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent" />
 
-        {/* â”€â”€ Logo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Logo ──────────────────────────────────────────────────────────── */}
         <div className="flex items-center gap-3 px-4 py-[18px] shrink-0">
-          {/* IcÃ´ne P */}
+          {/* Icône P */}
           <div className="relative w-8 h-8 rounded-[10px] shrink-0 flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-indigo-700" />
             <div className="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]" />
@@ -124,7 +124,7 @@ export default function Sidebar() {
 
           <div className="flex flex-col leading-none">
             <span className="text-[13px] font-bold text-white tracking-tight">Prospeo</span>
-            <span className="text-[10px] text-slate-600 mt-[3px] tracking-wide font-mono">CRM Â· prospection</span>
+            <span className="text-[10px] text-slate-600 mt-[3px] tracking-wide font-mono">CRM · prospection</span>
           </div>
 
           {/* Fermer (mobile) */}
@@ -133,14 +133,14 @@ export default function Sidebar() {
             aria-label="Fermer"
             className="md:hidden ml-auto w-6 h-6 rounded-lg bg-white/[0.04] flex items-center justify-center text-slate-600 hover:text-slate-300 transition-colors text-xs"
           >
-            âœ•
+            ✕
           </button>
         </div>
 
-        {/* SÃ©parateur */}
+        {/* Séparateur */}
         <div className="mx-4 mb-2 h-px bg-white/[0.04]" />
 
-        {/* â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Navigation ────────────────────────────────────────────────────── */}
         <nav className="flex-1 px-2 space-y-px overflow-y-auto py-1">
           <p className="px-2 pb-2 pt-1 text-[9px] font-semibold tracking-[0.15em] text-slate-700 uppercase">
             Navigation
@@ -164,7 +164,7 @@ export default function Sidebar() {
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b from-brand-400 to-brand-600 shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
                 )}
 
-                {/* IcÃ´ne */}
+                {/* Icône */}
                 <span className={[
                   "shrink-0 transition-colors duration-150",
                   active ? "text-brand-400" : "text-slate-600 group-hover:text-slate-400",
@@ -187,7 +187,7 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* â”€â”€ Bas : Cmd+K hint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Bas : Cmd+K hint ─────────────────────────────────────────────── */}
         <div className="px-2 pt-2 pb-1">
           <button
             onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true }))}
@@ -200,16 +200,16 @@ export default function Sidebar() {
             </svg>
             <span className="flex-1 text-left">Recherche rapide</span>
             <span className="flex items-center gap-0.5">
-              <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">âŒ˜</kbd>
+              <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">⌘</kbd>
               <kbd className="px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] text-[9px] font-mono leading-none">K</kbd>
             </span>
           </button>
         </div>
 
-        {/* SÃ©parateur */}
+        {/* Séparateur */}
         <div className="mx-4 h-px bg-white/[0.04]" />
 
-        {/* â”€â”€ Badge plan + compte â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Badge plan + compte ───────────────────────────────────────────── */}
         <div className="px-2 pb-4 pt-2 shrink-0 space-y-1">
 
           {/* Badge plan */}
@@ -226,13 +226,13 @@ export default function Sidebar() {
                          hover:bg-brand-500/[0.07] hover:border-brand-500/[0.18]
                          transition-all text-left group"
             >
-              <span className="text-[13px]">ðŸŽŸï¸</span>
+              <span className="text-[13px]">🎟️</span>
               <div className="flex-1 min-w-0">
                 <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider leading-none group-hover:text-brand-400 transition-colors">
                   Plan Free
                 </div>
                 <div className="text-[10px] text-slate-700 mt-0.5 group-hover:text-slate-500 transition-colors">
-                  Activer un code â†’
+                  Activer un code →
                 </div>
               </div>
             </button>

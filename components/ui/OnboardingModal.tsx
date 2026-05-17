@@ -2,35 +2,35 @@
 
 /**
  * components/ui/OnboardingModal.tsx
- * Modal d'onboarding au 1er login â€” 4 Ã©tapes illustrÃ©es.
- * DÃ©clenchÃ© depuis app/page.tsx si "onboarding_done" absent du localStorage.
+ * Modal d'onboarding au 1er login — 4 étapes illustrées.
+ * Déclenché depuis app/page.tsx si "onboarding_done" absent du localStorage.
  */
 
 import { useState } from "react";
 
 const STEPS = [
   {
-    emoji: "ðŸ—ºï¸",
+    emoji: "🗺️",
     title: "Scrapez vos premiers leads",
-    desc:  "Entrez un mÃ©tier et une ville dans le formulaire en haut de page. Prospeo va chercher automatiquement les entreprises sur Google Maps et remplir votre liste en quelques secondes.",
-    tip:   "Essayez : Â« plombier Â» + Â« Lyon Â»",
+    desc:  "Entrez un métier et une ville dans le formulaire en haut de page. Prospeo va chercher automatiquement les entreprises sur Google Maps et remplir votre liste en quelques secondes.",
+    tip:   "Essayez : « plombier » + « Lyon »",
   },
   {
-    emoji: "ðŸ“ž",
+    emoji: "📞",
     title: "Appelez avec le script",
-    desc:  "Ouvrez la page Scripts pour avoir votre tÃ©lÃ©prompter en plein Ã©cran. Chaque Ã©tape du cold call est guidÃ©e â€” de l'accroche aux objections.",
-    tip:   "Le script s'adapte Ã  chaque rÃ©ponse du prospect.",
+    desc:  "Ouvrez la page Scripts pour avoir votre téléprompter en plein écran. Chaque étape du cold call est guidée — de l'accroche aux objections.",
+    tip:   "Le script s'adapte à chaque réponse du prospect.",
   },
   {
-    emoji: "ðŸ·ï¸",
+    emoji: "🏷️",
     title: "Taguez et planifiez",
-    desc:  "AprÃ¨s chaque appel, changez le statut du lead directement dans la table (clic sur le badge). Planifiez un rappel si le prospect n'Ã©tait pas disponible.",
+    desc:  "Après chaque appel, changez le statut du lead directement dans la table (clic sur le badge). Planifiez un rappel si le prospect n'était pas disponible.",
     tip:   "Les rappels en retard s'affichent en surbrillance.",
   },
   {
-    emoji: "ðŸ“§",
+    emoji: "📧",
     title: "Envoyez une offre par email",
-    desc:  "Ouvrez le drawer d'un lead intÃ©ressÃ© â†’ cliquez Â« Email Â» â†’ choisissez le template Â« Offre semaine gratuite Â». L'envoi et la date sont loguÃ©s automatiquement dans le journal.",
+    desc:  "Ouvrez le drawer d'un lead intéressé → cliquez « Email » → choisissez le template « Offre semaine gratuite ». L'envoi et la date sont logués automatiquement dans le journal.",
     tip:   "Disponible sur le plan Pro.",
   },
 ];
@@ -82,9 +82,9 @@ export default function OnboardingModal({ onClose }: Props) {
               {current.emoji}
             </div>
 
-            {/* Compteur Ã©tape */}
+            {/* Compteur étape */}
             <p className="text-xs text-brand-400/70 font-medium mb-2 mono">
-              Ã‰tape {step + 1} sur {STEPS.length}
+              Étape {step + 1} sur {STEPS.length}
             </p>
 
             {/* Titre */}
@@ -99,19 +99,19 @@ export default function OnboardingModal({ onClose }: Props) {
 
             {/* Tip */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/8 text-xs text-slate-500">
-              ðŸ’¡ {current.tip}
+              💡 {current.tip}
             </div>
           </div>
 
           {/* Footer navigation */}
           <div className="flex items-center justify-between px-6 pb-6 gap-3">
-            {/* Bouton prÃ©cÃ©dent */}
+            {/* Bouton précédent */}
             <button
               onClick={() => setStep(s => Math.max(0, s - 1))}
               disabled={step === 0}
               className="px-4 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-300 disabled:opacity-0 transition-colors"
             >
-              â† PrÃ©cÃ©dent
+              ← Précédent
             </button>
 
             {/* Dots */}
@@ -134,14 +134,14 @@ export default function OnboardingModal({ onClose }: Props) {
                 onClick={finish}
                 className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors"
               >
-                Commencer â†’
+                Commencer →
               </button>
             ) : (
               <button
                 onClick={() => setStep(s => s + 1)}
                 className="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors"
               >
-                Suivant â†’
+                Suivant →
               </button>
             )}
           </div>
