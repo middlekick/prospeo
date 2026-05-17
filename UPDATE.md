@@ -152,7 +152,7 @@
 | 19 | 🟢 P3 | App | `/app/leads/[id]` route dédiée (vs drawer actuel) | ⏳ À faire | — |
 | 20 | 🟢 P3 | App | `/app/campagnes` — séquences de prospection | ⏳ À faire | — |
 | 21 | 🟢 P3 | App | `/app/parametres` — profil, billing, intégrations | ⏳ À faire | — |
-| 22 | 🟢 P3 | Perf | Audit Lighthouse (objectif > 90) + dynamic imports | ⏳ À faire | — |
+| 22 | 🟡 P2 | Perf | Optimisations perf landing : next/font self-hosted, dynamic imports, RAF off-screen | ✅ Fait | 2026-05-18 |
 | 23 | 🟢 P3 | Mobile | PWA installable — manifest.json + service worker | ⏳ À faire | — |
 | 24 | 🟢 P3 | UX | Notifications rappels in-app (badge + son) | ⏳ À faire | — |
 | 25 | 🟢 P3 | Import | Import LinkedIn CSV (format Sales Navigator) | ⏳ À faire | — |
@@ -203,6 +203,9 @@
 | 2026-05-17 | Data | Déduplication fuzzy import CSV — `normalizePhoneKey` (tous formats → 10 chiffres) + `normalizeNameKey` (accents/formes juridiques/tokens triés). Dédup par tel canonique prioritaire, repli nom+ville. Retour `skipped` affiché dans ImportCSV | `lib/phone.ts`, `api/leads/import/route.ts`, `ImportCSV.tsx` |
 | 2026-05-17 | Cleanup | Suppression du marketing Google Ads / stat paysagiste (12k€/150k€) — email "offre" génériqué (sans la stat), landing "closing Google Ads"→"scripts de closing", CLAUDE.md (section "Activité personnelle de Téo" retirée), README, ContactModal | `lib/email.ts`, `app/page.tsx`, `CLAUDE.md`, `README.md`, `ContactModal.tsx` |
 | 2026-05-17 | CRM | LeadDrawer — onglet « Suivi Google Ads » renommé « Formulaire client » (feature et colonnes `ads_*` conservées, non destructif) | `components/leads/LeadDrawer.tsx` |
+| 2026-05-18 | Perf | Fonts migrées `@fontsource @import` (render-blocking) → `next/font/local` self-hosted (preload, swap, anti-CLS) | `app/fonts/fonts.ts`, `app/layout.tsx`, `app/globals.css` |
+| 2026-05-18 | Perf | `ScrollDemoSection` + `ConstatSection` (lourdes, sous la ligne de flottaison, → `AnimatedDemo`) en `next/dynamic` — sorties du chunk initial de `/` | `app/page.tsx` |
+| 2026-05-18 | Perf | `NodeNetwork` — boucle RAF gelée hors-vue (IntersectionObserver) + onglet caché (visibilitychange) : fin du drain CPU continu | `app/page.tsx` |
 
 ---
 

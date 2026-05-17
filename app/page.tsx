@@ -8,11 +8,15 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import Link            from "next/link";
+import dynamic         from "next/dynamic";
 import { useUser }     from "@clerk/nextjs";
 import ContactModal    from "@/components/ui/ContactModal";
-import ScrollDemoSection from "@/components/landing/ScrollDemoSection";
-import ConstatSection    from "@/components/landing/ConstatSection";
 import { useToast }      from "@/components/ui/Toast";
+
+// Sections lourdes sous la ligne de flottaison (Framer Motion scroll +
+// AnimatedDemo) → chunk séparé, SSR conservé (pas de CLS, ancres OK).
+const ScrollDemoSection = dynamic(() => import("@/components/landing/ScrollDemoSection"));
+const ConstatSection    = dynamic(() => import("@/components/landing/ConstatSection"));
 import MagneticButton    from "@/components/ui/MagneticButton";
 import Marquee           from "@/components/ui/Marquee";
 import GradientBorder    from "@/components/ui/GradientBorder";
@@ -135,7 +139,31 @@ function NodeNetwork() {
     }));
 
     let raf: number;
+    let visible = true;   // canvas dans le viewport
+    let active  = true;   // onglet au premier plan
+
+    // Stoppe la boucle quand le hero est scrollé hors écran (gros gain :
+    // l'utilisateur passe la majorité du temps plus bas dans la page).
+    const io = new IntersectionObserver(
+      ([e]) => {
+        const wasRunning = visible && active;
+        visible = e.isIntersecting;
+        if (visible && active && !wasRunning) { raf = requestAnimationFrame(draw); }
+      },
+      { threshold: 0 },
+    );
+    io.observe(canvas);
+
+    // Stoppe la boucle quand l'onglet est en arrière-plan.
+    const onVis = () => {
+      const wasRunning = visible && active;
+      active = document.visibilityState === "visible";
+      if (visible && active && !wasRunning) { raf = requestAnimationFrame(draw); }
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     function draw() {
+      if (!visible || !active) return;   // gèle la boucle hors-vue
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
       const W = canvas!.width, H = canvas!.height;
 
@@ -190,6 +218,8 @@ function NodeNetwork() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", setSize);
+      document.removeEventListener("visibilitychange", onVis);
+      io.disconnect();
     };
   }, []);
 

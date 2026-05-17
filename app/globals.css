@@ -1,7 +1,5 @@
-@import "@fontsource/syne/400.css";
-@import "@fontsource/syne/600.css";
-@import "@fontsource/syne/700.css";
-@import "@fontsource/dm-mono/400.css";
+/* Polices : self-hosted via next/font/local (cf. app/fonts/fonts.ts) —
+   plus de @import @fontsource render-blocking. */
 
 @import "tailwindcss";
 
@@ -62,7 +60,7 @@
 body {
   background: #0b0d12;
   color: #e2e8f0;
-  font-family: "Syne", system-ui, sans-serif;
+  font-family: var(--font-syne), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -73,7 +71,7 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
 
 /* ── Utilitaires ─────────────────────────────────────────────────────────── */
-.mono { font-family: "DM Mono", monospace; }
+.mono { font-family: var(--font-dm-mono), ui-monospace, monospace; }
 
 /* Glow brand réutilisable */
 .glow-brand {

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { syne, dmMono }            from "./fonts/fonts";
 import "./globals.css";
 import { ClerkProvider }        from "@clerk/nextjs";
 import { frFR }                 from "@clerk/localizations";
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       signInFallbackRedirectUrl="/app"
       signUpFallbackRedirectUrl="/app"
     >
-      <html lang="fr">
+      <html lang="fr" className={`${syne.variable} ${dmMono.variable}`}>
         <body className="bg-[#0A0A0B]">
           {/* Curseur custom global — désactivé automatiquement sur mobile */}
           <GlowCursor />
