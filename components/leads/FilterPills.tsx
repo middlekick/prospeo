@@ -3,14 +3,27 @@
 import { TAGS, TagValue } from "./types";
 
 interface Props {
-  active: TagValue;
-  counts: Record<string, number>;
+  active:   TagValue;
+  counts:   Record<string, number>;
   onChange: (tag: TagValue) => void;
 }
 
+// Couleur par statut (cohérente avec le reste de l'app)
+const TAG_ACCENT: Record<string, { active: string; badge: string }> = {
+  tous:          { active: "bg-violet-500/[0.14] border-violet-500/[0.30] text-violet-200",  badge: "text-violet-400" },
+  non_appele:    { active: "bg-slate-500/[0.14] border-slate-500/[0.25] text-slate-200",     badge: "text-slate-400" },
+  ne_repond_pas: { active: "bg-orange-500/[0.12] border-orange-500/[0.25] text-orange-200",  badge: "text-orange-400" },
+  interesse:     { active: "bg-cyan-500/[0.12] border-cyan-500/[0.25] text-cyan-200",        badge: "text-cyan-400" },
+  rdv_pris:      { active: "bg-emerald-500/[0.12] border-emerald-500/[0.25] text-emerald-200", badge: "text-emerald-400" },
+  pas_interesse: { active: "bg-red-500/[0.10] border-red-500/[0.22] text-red-200",           badge: "text-red-400" },
+  rappels:       { active: "bg-amber-500/[0.12] border-amber-500/[0.28] text-amber-200",     badge: "text-amber-400" },
+};
+
+const DEFAULT_INACTIVE = "bg-white/[0.03] border-white/[0.07] text-slate-500 hover:text-slate-300 hover:bg-white/[0.06] hover:border-white/[0.12]";
+
 export default function FilterPills({ active, counts, onChange }: Props) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {TAGS.map(({ value, label }) => {
         const isRappel = value === "rappels";
         const isTous   = value === "tous";
@@ -18,32 +31,35 @@ export default function FilterPills({ active, counts, onChange }: Props) {
           ? Object.entries(counts).filter(([k]) => k !== "rappels").reduce((a, [, b]) => a + b, 0)
           : (counts[value] ?? 0);
         const isActive = active === value;
+        const styles   = TAG_ACCENT[value] ?? TAG_ACCENT.tous;
 
-        // Badge rouge pulsé si rappels en retard
-        const hasBadge = isRappel && count > 0 && !isActive;
+        // Badge pulsé pour rappels non-sélectionnés
+        const hasPulse = isRappel && count > 0 && !isActive;
 
         return (
           <button
             key={value}
             onClick={() => onChange(value)}
             className={[
-              "relative px-3 py-1 rounded-full text-xs font-medium transition-colors border",
-              isActive
-                ? isRappel
-                  ? "bg-yellow-500/20 border-yellow-500/50 text-yellow-300"
-                  : "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                : "bg-white/5 border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/10",
+              "relative px-3 py-[5px] rounded-full text-[12px] font-medium transition-all border",
+              isActive ? styles.active : DEFAULT_INACTIVE,
             ].join(" ")}
           >
-            {hasBadge && (
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+            {/* Point pulsé */}
+            {hasPulse && (
+              <span className="absolute -top-[3px] -right-[3px] w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.7)] animate-pulse" />
             )}
+
             {label}
+
+            {/* Compteur */}
             <span className={[
-              "ml-1.5 mono",
+              "ml-1.5 text-[10px] font-mono font-medium",
               isActive
-                ? isRappel ? "text-yellow-400" : "text-violet-400"
-                : count > 0 && isRappel ? "text-yellow-500" : "text-slate-500",
+                ? styles.badge
+                : count > 0 && isRappel
+                  ? "text-amber-500"
+                  : "text-slate-700",
             ].join(" ")}>
               {count}
             </span>

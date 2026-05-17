@@ -227,10 +227,10 @@ export default function AdminPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="shrink-0 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="shrink-0 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] bg-[#080b12]/70 backdrop-blur-md">
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-semibold text-slate-100">Administration</h1>
           <button onClick={load} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">↻ Actualiser</button>
@@ -282,7 +282,7 @@ export default function AdminPage() {
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="text-left text-[10px] font-semibold text-slate-600 uppercase tracking-wider
-                           border-b border-white/[0.06] sticky top-0 bg-[#0b0d12]/95 backdrop-blur-sm">
+                           border-b border-white/[0.06] sticky top-0 bg-[#0b0d12]/95 backdrop-blur-md">
               <th className="py-2.5 px-4 w-[240px]">Utilisateur</th>
               <th className="py-2.5 px-3">Plan</th>
               <th className="py-2.5 px-3">Trial</th>

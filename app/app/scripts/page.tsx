@@ -570,10 +570,10 @@ function ScriptEditor({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Header éditeur */}
-      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <button onClick={onCancel} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-200 transition-colors">
           ← Retour
         </button>
@@ -796,10 +796,10 @@ function ScriptList({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Scripts d&apos;appel</h1>
         <span className="text-xs text-slate-700 mono">{scripts.length} script{scripts.length > 1 ? "s" : ""}</span>
 
@@ -988,10 +988,10 @@ function ScriptReader({
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <button onClick={onBack} className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-200 transition-colors">
           ← Scripts
         </button>

@@ -124,10 +124,13 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
   }
 
   return (
-    <div className="border-b border-white/8 bg-cyan-500/5 p-4 space-y-3">
+    <div className="border-b border-white/[0.06] bg-cyan-500/[0.04] p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-cyan-300">Envoyer un email</span>
-        <button onClick={onClose} className="text-slate-500 hover:text-slate-300 text-sm">✕</button>
+        <span className="text-[12px] font-semibold text-cyan-300 flex items-center gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          Envoyer un email
+        </span>
+        <button onClick={onClose} className="text-slate-600 hover:text-slate-300 text-sm transition-colors">✕</button>
       </div>
 
       {/* Sélecteur de template */}
@@ -245,18 +248,17 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
       ) : (
         <div className="relative">
           {/* Ligne verticale */}
-          <div className="absolute left-[7px] top-2 bottom-0 w-px bg-white/8" />
+          <div className="absolute left-[7px] top-2 bottom-0 w-px bg-white/[0.06]" />
 
           <div className="space-y-3 pl-5">
             {activities.map((a) => (
               <div key={a.id} className="relative">
                 {/* Dot */}
-                <div className={`absolute -left-5 top-1 w-3.5 h-3.5 rounded-full bg-[#0f1117] border-2 flex items-center justify-center text-[8px] ${
-                  a.type === "statut" ? "border-violet-500" :
-                  a.type === "email"  ? "border-cyan-500"   :
-                  a.type === "appel"  ? "border-green-500"  : "border-slate-600"
-                }`}>
-                </div>
+                <div className={`absolute -left-5 top-1.5 w-3 h-3 rounded-full bg-[#090c14] border-2 ${
+                  a.type === "statut" ? "border-violet-500/70" :
+                  a.type === "email"  ? "border-cyan-500/70"   :
+                  a.type === "appel"  ? "border-green-500/70"  : "border-slate-600/70"
+                }`} />
                 <div>
                   <div className="flex items-baseline gap-2 flex-wrap">
                     <span className={`text-xs font-medium ${ACTIVITY_COLORS[a.type] || "text-slate-400"}`}>
@@ -383,16 +385,19 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-40" onClick={onClose} />
 
       {/* Drawer */}
-      <aside className="fixed right-0 top-0 h-screen w-full sm:w-[480px] bg-[#0f1117] border-l border-white/8 z-50 flex flex-col">
+      <aside className="fixed right-0 top-0 h-screen w-full sm:w-[480px] bg-[#090c14] border-l border-white/[0.07] z-50 flex flex-col">
+
+        {/* Trait de lumière haut */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
 
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-white/8">
+        <div className="flex items-start justify-between px-5 py-4 border-b border-white/[0.06]">
           <div>
-            <h2 className="text-base font-semibold text-slate-100">{form.nom}</h2>
-            <p className="text-xs text-slate-500 mt-0.5">{form.metier} · {form.emplacement}</p>
+            <h2 className="text-[15px] font-semibold text-slate-100 leading-tight">{form.nom}</h2>
+            <p className="text-[12px] text-slate-500 mt-0.5 tracking-wide">{form.metier}{form.emplacement ? ` · ${form.emplacement}` : ""}</p>
           </div>
           <div className="flex items-center gap-2">
             {/* Bouton email — masqué si plan free */}
@@ -435,7 +440,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 Appeler
               </a>
             )}
-            <button onClick={onClose} className="w-8 h-8 rounded-md bg-white/5 hover:bg-white/10 text-slate-400 transition-colors flex items-center justify-center">
+            <button onClick={onClose} className="w-8 h-8 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] text-slate-500 hover:text-slate-300 transition-colors flex items-center justify-center text-[13px]">
               ✕
             </button>
           </div>
@@ -451,30 +456,37 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
         )}
 
         {/* Infos rapides */}
-        <div className="flex items-center gap-3 px-5 py-2.5 border-b border-white/5 text-xs text-slate-500 mono flex-wrap">
-          {form.telephone && <span>{form.telephone}</span>}
+        <div className="flex items-center gap-4 px-5 py-2.5 border-b border-white/[0.05] bg-white/[0.015] text-[12px] text-slate-600 font-mono flex-wrap">
+          {form.telephone && (
+            <a href={`tel:${form.telephone.replace(/\s/g, "")}`} className="hover:text-slate-400 transition-colors">
+              {form.telephone}
+            </a>
+          )}
           {form.site && (
             <a href={form.site} target="_blank" rel="noopener noreferrer"
-               className="text-violet-400 hover:underline truncate max-w-[200px]">
+               className="text-violet-500/70 hover:text-violet-400 transition-colors truncate max-w-[200px]">
               {form.site.replace(/^https?:\/\//, "")}
             </a>
           )}
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-white/8">
+        <div className="flex border-b border-white/[0.06] bg-white/[0.01]">
           {(["suivi", "ads", "rdv"] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={[
-                "flex-1 py-2.5 text-xs font-medium capitalize transition-colors",
+                "flex-1 py-2.5 text-[12px] font-medium transition-colors relative",
                 tab === t
-                  ? "text-violet-400 border-b-2 border-violet-500"
-                  : "text-slate-500 hover:text-slate-300",
+                  ? "text-violet-300"
+                  : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
               {t === "suivi" ? "Suivi" : t === "ads" ? "Google Ads" : "RDV"}
+              {tab === t && (
+                <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] rounded-t-full bg-gradient-to-r from-violet-500 to-violet-400" />
+              )}
             </button>
           ))}
         </div>
@@ -658,19 +670,32 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-white/8">
-          <button onClick={deleteLead}
-            className="px-3 py-1.5 rounded-md text-xs text-red-400 hover:bg-red-900/20 transition-colors">
+        <div className="flex items-center justify-between px-5 py-3.5 border-t border-white/[0.06] bg-[#080b12]/60">
+          <button
+            onClick={deleteLead}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] text-red-400/70 hover:text-red-400 hover:bg-red-500/[0.08] transition-colors"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
             Supprimer
           </button>
           <div className="flex gap-2">
-            <button onClick={onClose}
-              className="px-3 py-1.5 rounded-md text-xs text-slate-400 hover:bg-white/5 transition-colors">
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 rounded-lg text-[12px] text-slate-500 hover:text-slate-300 hover:bg-white/[0.05] transition-colors"
+            >
               Annuler
             </button>
-            <button onClick={save} disabled={saving}
-              className="px-4 py-1.5 rounded-md bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-xs font-medium text-white transition-colors">
-              {saving ? "Sauvegarde…" : "Sauvegarder"}
+            <button
+              onClick={save}
+              disabled={saving}
+              className="px-5 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-[12px] font-semibold text-white transition-all shadow-[0_0_16px_rgba(124,58,237,0.25)] hover:shadow-[0_0_20px_rgba(124,58,237,0.35)]"
+            >
+              {saving ? (
+                <span className="flex items-center gap-1.5">
+                  <svg className="animate-spin" width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity=".3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
+                  Sauvegarde…
+                </span>
+              ) : "Sauvegarder"}
             </button>
           </div>
         </div>
@@ -680,18 +705,21 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
         .input-base {
           height: 32px;
           padding: 0 10px;
-          border-radius: 6px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 8px;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
           font-size: 13px;
           color: #e2e8f0;
           outline: none;
-          transition: border-color 0.15s;
+          transition: border-color 0.15s, background 0.15s;
           font-family: inherit;
         }
-        .input-base:focus { border-color: rgba(139,92,246,0.5); }
+        .input-base:focus {
+          border-color: rgba(139,92,246,0.45);
+          background: rgba(255,255,255,0.06);
+        }
         textarea.input-base { height: auto; padding: 8px 10px; }
-        select.input-base option { background: #1a1d27; }
+        select.input-base option { background: #0d1020; }
       `}</style>
     </>
   );

@@ -88,7 +88,7 @@ export default function INPIPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Ligne gradient haut */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Bandeau d'enrichissement automatique */}
       {(enriching || enrichMsg) && (

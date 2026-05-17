@@ -22,16 +22,18 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
   return (
     <>
-      {/* Orbe violet ambiant en haut de page */}
+      {/* Fond de base unifié */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 bg-[#080b12]" />
+
+      {/* Orbe violet ambiant */}
       <div
         aria-hidden
-        className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 z-0
-                   w-[900px] h-[300px] rounded-full blur-[180px] opacity-[0.05]"
-        style={{ background: "radial-gradient(ellipse, #7c3aed 0%, transparent 70%)" }}
+        className="pointer-events-none fixed -top-[10%] left-[30%] z-0 w-[800px] h-[500px] rounded-full blur-[200px]"
+        style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.07) 0%, transparent 70%)" }}
       />
 
       <Sidebar />
-      <main className="relative z-10 md:ml-[220px] min-h-screen">{children}</main>
+      <main className="relative z-10 md:ml-[220px] min-h-screen bg-[#0b0d14]">{children}</main>
       <CommandPalette />
     </>
   );

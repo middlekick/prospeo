@@ -334,59 +334,71 @@ export default function LeadsPage() {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Ligne gradient */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      {/* Trait de lumière haut */}
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
-        <div className="flex items-center gap-3 shrink-0">
-          <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Leads</h1>
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2
+                         pl-14 md:pl-5 pr-3 md:pr-5 py-3
+                         border-b border-white/[0.05] shrink-0
+                         bg-[#080b12]/70 backdrop-blur-md">
+        {/* Titre + badges */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <h1 className="text-[13px] font-semibold text-slate-200 tracking-tight">Leads</h1>
 
           {isFreeUser && leadsLeft !== null && (
-            <a href="/#pricing"
+            <a
+              href="/#pricing"
+              title={leadsLeft === 0 ? "Limite atteinte — passez Pro" : "Plan Free — 100 leads max"}
               className={[
-                "flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium border transition-colors",
+                "flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium border transition-colors",
                 leadsLeft === 0
                   ? "bg-red-500/10 border-red-500/25 text-red-400 hover:bg-red-500/20"
                   : leadsLeft <= 20
                   ? "bg-amber-500/10 border-amber-500/25 text-amber-400 hover:bg-amber-500/20"
-                  : "bg-white/[0.04] border-white/[0.08] text-slate-600 hover:text-slate-400",
+                  : "bg-white/[0.03] border-white/[0.07] text-slate-600 hover:text-slate-400",
               ].join(" ")}
-              title={leadsLeft === 0 ? "Limite atteinte — passez Pro" : "Plan Free — 100 leads max"}
             >
-              {leads.length}/100 leads
+              <span className="font-mono">{leads.length}</span>/100
             </a>
           )}
 
           {rappelsDus > 0 && (
-            <button onClick={() => setFilter("rappels")}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-medium hover:bg-amber-500/20 transition-colors">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <button
+              onClick={() => setFilter("rappels")}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-full
+                         bg-amber-500/[0.08] border border-amber-500/25 text-amber-400
+                         text-[11px] font-medium hover:bg-amber-500/[0.15] transition-colors"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
               {rappelsDus} rappel{rappelsDus > 1 ? "s" : ""}
             </button>
           )}
         </div>
 
+        {/* Actions */}
         <div className="flex items-center gap-1.5 shrink-0 overflow-x-auto pb-0.5 md:pb-0">
-          {/* Bouton Session d'appels */}
+          {/* Session d'appels */}
           <button
             onClick={startCallSession}
             title="Lancer une session d'appels enchaînés"
-            className="h-7 px-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 mr-1 shadow-[0_0_16px_rgba(124,58,237,0.25)]"
+            className="h-7 px-3 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[12px] font-semibold
+                       transition-all flex items-center gap-1.5 mr-1
+                       shadow-[0_0_20px_rgba(124,58,237,0.22)] hover:shadow-[0_0_24px_rgba(124,58,237,0.35)]"
           >
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             Session d&apos;appels
           </button>
 
-          {/* Toggle vue table / kanban */}
-          <div className="flex items-center bg-white/[0.04] border border-white/[0.08] rounded-lg p-0.5 mr-1">
+          {/* Toggle table / kanban */}
+          <div className="flex items-center bg-white/[0.04] border border-white/[0.07] rounded-lg p-[3px] mr-1">
             <button
               onClick={() => setViewMode("table")}
               title="Vue table (K)"
               className={[
-                "h-6 px-2 rounded-md text-xs transition-all flex items-center gap-1",
+                "h-[22px] px-2 rounded-md text-xs transition-all flex items-center",
                 viewMode === "table"
-                  ? "bg-violet-500/20 text-violet-300"
+                  ? "bg-violet-500/[0.18] text-violet-300"
                   : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
@@ -398,9 +410,9 @@ export default function LeadsPage() {
               onClick={() => setViewMode("kanban")}
               title="Vue kanban (K)"
               className={[
-                "h-6 px-2 rounded-md text-xs transition-all flex items-center gap-1",
+                "h-[22px] px-2 rounded-md text-xs transition-all flex items-center",
                 viewMode === "kanban"
-                  ? "bg-violet-500/20 text-violet-300"
+                  ? "bg-violet-500/[0.18] text-violet-300"
                   : "text-slate-600 hover:text-slate-400",
               ].join(" ")}
             >
@@ -413,26 +425,38 @@ export default function LeadsPage() {
           <EnrichButton leads={leads} onEnriched={loadLeads} plan={plan} />
 
           {planLoading || plan === "pro" || plan === "agency" ? (
-            <button onClick={() => setShowImport(true)}
-              className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
-              ↑ Import
+            <button
+              onClick={() => setShowImport(true)}
+              className="h-7 px-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] text-[12px] text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5"
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Import
             </button>
           ) : (
-            <a href="/#pricing" title="Import CSV — réservé Pro"
-              className="h-7 px-3 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs text-slate-700 flex items-center gap-1 cursor-pointer hover:text-slate-500 transition-colors">
-              🔒 Import
+            <a
+              href="/#pricing"
+              title="Import CSV — réservé Pro"
+              className="h-7 px-3 rounded-lg bg-white/[0.02] border border-white/[0.05] text-[12px] text-slate-700 flex items-center gap-1.5 cursor-pointer hover:text-slate-500 transition-colors"
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Import
             </a>
           )}
 
           {planLoading || plan === "pro" || plan === "agency" ? (
             <button onClick={exportCSV}
-              className="h-7 px-3 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.08] text-xs text-slate-400 hover:text-slate-200 transition-all">
-              ↓ Export
+              className="h-7 px-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] text-[12px] text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
             </button>
           ) : (
-            <a href="/#pricing" title="Export CSV — réservé Pro"
-              className="h-7 px-3 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs text-slate-700 flex items-center gap-1 cursor-pointer hover:text-slate-500 transition-colors">
-              🔒 Export
+            <a
+              href="/#pricing"
+              title="Export CSV — réservé Pro"
+              className="h-7 px-3 rounded-lg bg-white/[0.02] border border-white/[0.05] text-[12px] text-slate-700 flex items-center gap-1.5 cursor-pointer hover:text-slate-500 transition-colors"
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Export
             </a>
           )}
         </div>
@@ -441,33 +465,46 @@ export default function LeadsPage() {
       {/* Stats */}
       {!loading && <StatsBar leads={leads} />}
 
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-3 px-5 py-2.5 border-b border-white/[0.06] shrink-0">
-        <div className="relative w-full sm:w-52">
-          <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+      {/* ── Toolbar recherche + filtres ───────────────────────────────────────── */}
+      <div className="flex flex-wrap items-center gap-2.5 px-5 py-2.5 border-b border-white/[0.05] shrink-0 bg-[#080b12]/30">
+        {/* Barre de recherche */}
+        <div className="relative w-full sm:w-56">
+          <svg
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none"
+            width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          >
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Rechercher…"
+            placeholder="Rechercher un lead…"
             id="search-input"
-            className="h-9 sm:h-8 pl-8 pr-3 rounded-lg bg-white/[0.05] border border-white/[0.09] text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.07] transition-all w-full"
+            className="h-8 pl-8 pr-3 rounded-xl bg-white/[0.04] border border-white/[0.07]
+                       text-[13px] text-slate-200 placeholder:text-slate-600
+                       focus:outline-none focus:border-violet-500/35 focus:bg-white/[0.06]
+                       transition-all w-full"
           />
         </div>
+
+        {/* Filtres */}
         <div className="w-full sm:w-auto overflow-x-auto">
           <FilterPills active={filter} counts={counts} onChange={setFilter} />
         </div>
 
-        {/* Hint raccourcis */}
-        <div className="ml-auto hidden lg:flex items-center gap-3 text-[10px] text-slate-700">
-          <span><kbd className="bg-white/[0.06] border border-white/[0.1] rounded px-1">K</kbd> kanban</span>
-          <span><kbd className="bg-white/[0.06] border border-white/[0.1] rounded px-1">Esc</kbd> fermer</span>
+        {/* Hints raccourcis */}
+        <div className="ml-auto hidden lg:flex items-center gap-2 text-[10px] text-slate-700">
+          <kbd className="px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] font-mono">/</kbd>
+          <span className="mr-2">recherche</span>
+          <kbd className="px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] font-mono">K</kbd>
+          <span className="mr-2">kanban</span>
+          <kbd className="px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.07] font-mono text-[9px]">Esc</kbd>
+          <span>fermer</span>
         </div>
       </div>
 
-      {/* Zone scraping */}
-      <div className="px-5 py-3 border-b border-white/[0.06] shrink-0 bg-white/[0.015]">
+      {/* ── Zone scraping ─────────────────────────────────────────────────────── */}
+      <div className="px-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/20">
         <ScrapeForm onDone={loadLeads} />
       </div>
 

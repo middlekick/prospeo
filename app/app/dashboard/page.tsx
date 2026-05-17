@@ -355,13 +355,13 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col h-screen overflow-auto">
-      {/* Ligne gradient haut */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent shrink-0" />
+      {/* Trait de lumière haut */}
+      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/25 to-transparent shrink-0" />
 
       {/* Header */}
-      <header className="flex items-center justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.06] shrink-0 bg-[#0c0e15]/60 backdrop-blur-sm">
+      <header className="flex items-center justify-between gap-2 pl-14 md:pl-5 pr-3 md:pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <div>
-          <h1 className="text-sm font-semibold text-slate-100 tracking-tight">Tableau de bord</h1>
+          <h1 className="text-[13px] font-semibold text-slate-200 tracking-tight">Tableau de bord</h1>
           <p className="text-xs text-slate-600 mt-0.5">
             {stats.totalContacted30} leads contactés sur 30 jours
             {stats.bestDay?.contacted > 0 && (
@@ -384,16 +384,16 @@ export default function DashboardPage() {
             Export
           </button>
           {/* Sélecteur de période */}
-          <div className="flex gap-1 bg-white/[0.05] border border-white/[0.08] rounded-xl p-1">
+          <div className="flex gap-[3px] bg-white/[0.04] border border-white/[0.07] rounded-xl p-[3px]">
             {(["day", "week", "month"] as Period[]).map(p => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={[
-                  "px-3 py-1 rounded-lg text-xs font-medium transition-all",
+                  "px-3 py-1 rounded-lg text-[12px] font-medium transition-all",
                   period === p
-                    ? "bg-violet-500/25 text-violet-200 shadow-[0_0_12px_rgba(124,58,237,0.15)]"
-                    : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.06]",
+                    ? "bg-violet-500/[0.22] text-violet-200"
+                    : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.05]",
                 ].join(" ")}
               >
                 {p === "day" ? "Auj." : p === "week" ? "7 jours" : "30 jours"}
@@ -448,7 +448,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
 
           {/* Graphique activité 30 jours */}
-          <div className="rounded-2xl border border-white/[0.10] bg-white/[0.06] p-5">
+          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h2 className="text-sm font-semibold text-slate-100">Activité — 30 derniers jours</h2>
