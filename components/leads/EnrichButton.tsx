@@ -84,7 +84,7 @@ export default function EnrichButton({ leads, onEnriched, plan = "free" }: Props
   return (
     <button
       onClick={run}
-      title={`${toEnrich.length} lead(s) sans téléphone — enrichir via Google Maps`}
+      title={`${toEnrich.length} lead(s) sans téléphone  enrichir via Google Maps`}
       className="flex items-center gap-1.5 h-7 px-3 rounded-md bg-cyan-600/20 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-600/30 text-xs font-medium transition-colors"
     >
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

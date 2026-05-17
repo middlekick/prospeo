@@ -5,16 +5,41 @@
  * §04 — Démo produit scroll-pinned.
  *
  * Desktop (lg+) :
- *   Container 500vh · inner sticky top-0 · useScroll → activeScene
+ *   Container 500vh · inner sticky top-0 · getBoundingClientRect RAF → activeScene
  *   Gauche  : 5 étapes cliquables + barre de progression
  *   Droite  : <AnimatedDemo forceScene={activeScene} />
  *
  * Mobile : AnimatedDemo en autoplay classique
+ *
+ * Fix scroll : getBoundingClientRect() en RAF — fonctionne avec Lenis
+ * (qui anime via CSS transforms, pas window.scrollY).
  */
 
-import { useRef, useState }                              from "react";
-import { motion, useScroll, useMotionValueEvent }        from "framer-motion";
+import { useRef, useState, useEffect }                   from "react";
+import { motion, useMotionValue, useMotionValueEvent }   from "framer-motion";
 import AnimatedDemo                                      from "./AnimatedDemo";
+
+// ─── Scroll progress via rAF + getBoundingClientRect ─────────────────────────
+function useElementScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
+  const progress = useMotionValue(0);
+
+  useEffect(() => {
+    let raf: number;
+    const tick = () => {
+      if (ref.current) {
+        const rect       = ref.current.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        const scrolled   = -rect.top;
+        progress.set(Math.max(0, Math.min(1, scrolled / scrollable)));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [ref, progress]);
+
+  return progress;
+}
 
 // ─── Métadonnées des scènes ────────────────────────────────────────────────────
 type Scene = "scraping" | "kanban" | "inpi" | "session" | "scripts";
@@ -31,13 +56,10 @@ const SCENE_META: { scene: Scene; num: string; title: string; desc: string }[] =
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function ScrollDemoSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef   = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target:  containerRef,
-    offset:  ["start start", "end end"],
-  });
+  const scrollYProgress = useElementScrollProgress(containerRef);
 
   // Mise à jour de l'étape active au scroll
   useMotionValueEvent(scrollYProgress, "change", (v) => {

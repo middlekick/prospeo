@@ -66,7 +66,7 @@ function genId(): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Composants lecture — téléprompter
+// Composants lecture  téléprompter
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ObjectionList({ objections }: { objections: Objection[] }) {
@@ -86,7 +86,7 @@ function ObjectionList({ objections }: { objections: Objection[] }) {
         <div className="mt-3 space-y-3 pl-4 border-l border-white/[0.08]">
           {filtered.map((obj, i) => (
             <div key={i} className="space-y-1">
-              <div className="text-xs text-slate-500 italic">— {obj.q}</div>
+              <div className="text-xs text-slate-500 italic"> {obj.q}</div>
               <div className="text-sm text-slate-300 leading-relaxed pl-2">{obj.a}</div>
             </div>
           ))}
@@ -328,9 +328,9 @@ function BlockEditor({
           value={block.text || ""}
           onChange={e => onChange({ ...block, text: e.target.value })}
           placeholder={
-            block.type === "say"     ? "Ce que vous dites — utilisez de longues phrases naturelles…" :
+            block.type === "say"     ? "Ce que vous dites  utilisez de longues phrases naturelles" :
             block.type === "pause"   ? "Instructions entre les répliques\n→ Si oui : passer à l'étape suivante\n→ Si non : gérer l'objection" :
-                                       "État d'esprit à adopter pendant cette phase…"
+                                       "État d'esprit à adopter pendant cette phase"
           }
           rows={3}
           className="w-full bg-[#13151e] border border-white/8 rounded-lg px-3 py-2.5 text-sm text-slate-200
@@ -346,14 +346,14 @@ function BlockEditor({
               <input
                 value={obj.q}
                 onChange={e => updateObjection(i, "q", e.target.value)}
-                placeholder="Objection du prospect…"
+                placeholder="Objection du prospect"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-yellow-500/30"
               />
               <input
                 value={obj.a}
                 onChange={e => updateObjection(i, "a", e.target.value)}
-                placeholder="Votre réponse…"
+                placeholder="Votre réponse"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-cyan-500/30"
               />
@@ -408,7 +408,7 @@ function StepEditor({
         <input
           value={step.name}
           onChange={e => onChange({ ...step, name: e.target.value })}
-          placeholder="Nom de l'étape…"
+          placeholder="Nom de l'étape"
           className="flex-1 h-7 px-2 rounded-md bg-transparent border border-white/8 text-sm text-slate-200
                      placeholder-slate-600 focus:outline-none focus:border-brand-500/40 font-medium"
         />
@@ -432,7 +432,7 @@ function StepEditor({
         <input
           value={step.mindset || ""}
           onChange={e => onChange({ ...step, mindset: e.target.value })}
-          placeholder="État d'esprit à adopter…"
+          placeholder="État d'esprit à adopter"
           className="w-full h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                      placeholder-slate-700 focus:outline-none focus:border-brand-500/30"
         />
@@ -444,12 +444,12 @@ function StepEditor({
         <textarea
           value={(step.say || []).join("\n")}
           onChange={e => onChange({ ...step, say: e.target.value.split("\n") })}
-          placeholder={"Première réplique…\nDeuxième réplique (une par ligne)…"}
+          placeholder={"Première réplique\nDeuxième réplique (une par ligne)"}
           rows={3}
           className="w-full bg-[#13151e] border border-white/8 rounded-lg px-3 py-2 text-sm text-slate-200
                      placeholder-slate-700 focus:outline-none focus:border-cyan-500/30 resize-y leading-relaxed"
         />
-        <p className="text-[10px] text-slate-700 mt-1">Une réplique par ligne — chaque ligne devient un paragraphe téléprompter</p>
+        <p className="text-[10px] text-slate-700 mt-1">Une réplique par ligne  chaque ligne devient un paragraphe téléprompter</p>
       </div>
 
       {/* Pause / instructions */}
@@ -474,14 +474,14 @@ function StepEditor({
               <input
                 value={obj.q}
                 onChange={e => updateObjection(i, "q", e.target.value)}
-                placeholder="Objection…"
+                placeholder="Objection"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-yellow-500/30"
               />
               <input
                 value={obj.a}
                 onChange={e => updateObjection(i, "a", e.target.value)}
-                placeholder="Réponse…"
+                placeholder="Réponse"
                 className="flex-1 h-7 px-2 rounded-md bg-[#13151e] border border-white/8 text-xs text-slate-300
                            placeholder-slate-700 focus:outline-none focus:border-cyan-500/30"
               />
@@ -581,7 +581,7 @@ function ScriptEditor({
         <input
           value={title}
           onChange={e => setTitle(e.target.value)}
-          placeholder="Titre du script…"
+          placeholder="Titre du script"
           className="flex-1 bg-transparent text-sm font-semibold text-slate-100 placeholder-slate-600
                      focus:outline-none border-b border-transparent focus:border-brand-500/40 pb-0.5 transition-colors"
         />
@@ -611,11 +611,11 @@ function ScriptEditor({
       {/* Corps éditeur */}
       <div className="flex-1 overflow-auto">
 
-        {/* Cold Call — blocs linéaires */}
+        {/* Cold Call  blocs linéaires */}
         {type === "cold_call" && (
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-slate-600">Script linéaire — les blocs s&apos;affichent dans l&apos;ordre lors de la lecture</p>
+              <p className="text-xs text-slate-600">Script linéaire  les blocs s&apos;affichent dans l&apos;ordre lors de la lecture</p>
               <span className="text-xs mono text-slate-700">{blocks.length} bloc{blocks.length > 1 ? "s" : ""}</span>
             </div>
             {blocks.map((block, i) => (
@@ -647,11 +647,11 @@ function ScriptEditor({
           </div>
         )}
 
-        {/* Closing — étapes */}
+        {/* Closing  étapes */}
         {type === "closing" && (
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-slate-600">Script en étapes — navigables via la sidebar lors de la lecture</p>
+              <p className="text-xs text-slate-600">Script en étapes  navigables via la sidebar lors de la lecture</p>
               <span className="text-xs mono text-slate-700">{steps.length} étape{steps.length > 1 ? "s" : ""}</span>
             </div>
             {steps.map((step, i) => (
@@ -837,14 +837,14 @@ function ScriptList({
             ↑ Importer JSON
           </button>
 
-          {/* Exemples — toujours visibles */}
+          {/* Exemples  toujours visibles */}
           <button
             onClick={() => loadExamples("setting")}
             disabled={loadingExamples !== null}
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                        text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all disabled:opacity-40"
           >
-            {loadingExamples === "setting" ? "…" : "📞 Setting"}
+            {loadingExamples === "setting" ? "" : "📞 Setting"}
           </button>
           <button
             onClick={() => loadExamples("closing")}
@@ -852,7 +852,7 @@ function ScriptList({
             className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-white/[0.06] border border-white/[0.08]
                        text-xs text-slate-400 hover:text-slate-200 hover:bg-white/[0.09] transition-all disabled:opacity-40"
           >
-            {loadingExamples === "closing" ? "…" : "🤝 Closing"}
+            {loadingExamples === "closing" ? "" : "🤝 Closing"}
           </button>
 
           {/* Séparateur */}
@@ -919,11 +919,11 @@ function ScriptList({
               </button>
               <button onClick={() => loadExamples("setting")} disabled={loadingExamples !== null}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300 text-sm font-medium transition-all disabled:opacity-50">
-                {loadingExamples === "setting" ? "Chargement…" : "📞 Exemples Setting"}
+                {loadingExamples === "setting" ? "Chargement" : "📞 Exemples Setting"}
               </button>
               <button onClick={() => loadExamples("closing")} disabled={loadingExamples !== null}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300 text-sm font-medium transition-all disabled:opacity-50">
-                {loadingExamples === "closing" ? "Chargement…" : "🤝 Exemples Closing"}
+                {loadingExamples === "closing" ? "Chargement" : "🤝 Exemples Closing"}
               </button>
             </div>
           </div>
@@ -950,7 +950,7 @@ function ScriptList({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1">
-                    Script Google Ads — Setting & Closing
+                    Script Google Ads  Setting & Closing
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full font-mono uppercase tracking-wide bg-orange-500/[0.12] text-orange-400 border border-orange-500/20">
@@ -1067,7 +1067,7 @@ function ScriptReader({
           <TeleprompterSteps steps={script.steps} showMindset={showMindset} />
         ) : (
           <div className="flex items-center justify-center py-24 text-slate-600 text-sm">
-            Ce script est vide — modifiez-le pour ajouter du contenu
+            Ce script est vide  modifiez-le pour ajouter du contenu
           </div>
         )}
       </div>
@@ -1192,7 +1192,7 @@ export default function ScriptsPage() {
   if (!mounted) {
     return (
       <div className="flex items-center justify-center h-screen text-slate-700 text-sm">
-        Chargement…
+        Chargement
       </div>
     );
   }
@@ -1217,7 +1217,7 @@ export default function ScriptsPage() {
           href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.3)]"
         >
-          Passer Pro — 19 €/mois →
+          Passer Pro  19 /mois →
         </Link>
         <p className="text-xs text-slate-700">14 jours gratuits · annulable à tout moment</p>
       </div>

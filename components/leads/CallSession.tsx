@@ -236,13 +236,13 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
       {/* Contenu : lead + script */}
       <div className="flex-1 overflow-y-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-[380px_1fr]">
 
-        {/* Colonne gauche — fiche lead + numéro */}
+        {/* Colonne gauche  fiche lead + numéro */}
         <div className="border-b md:border-b-0 md:border-r border-white/[0.06] p-5 md:p-8 flex flex-col md:overflow-y-auto bg-white/[0.01]">
           <div className="text-[10px] font-bold tracking-widest text-slate-700 uppercase mb-2">
-            {current.metier || "Lead"} · {current.emplacement || "—"}
+            {current.metier || "Lead"} · {current.emplacement || ""}
           </div>
           <h1 className="text-2xl font-bold text-slate-100 leading-tight mb-6">
-            {current.nom || "—"}
+            {current.nom || ""}
           </h1>
 
           {/* Numéro géant cliquable */}
@@ -305,7 +305,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
           </button>
         </div>
 
-        {/* Colonne droite — script */}
+        {/* Colonne droite  script */}
         <div className="p-5 md:p-8 md:overflow-y-auto">
           {script.current?.blocks?.length ? (
             <ScriptBlocks blocks={script.current.blocks} lead={current} />
@@ -321,7 +321,7 @@ export default function CallSession({ leads, onClose, onLeadUpdated }: Props) {
         </div>
       </div>
 
-      {/* Barre d'actions — résultat de l'appel */}
+      {/* Barre d'actions  résultat de l'appel */}
       <div className="shrink-0 border-t border-white/[0.06] px-3 md:px-6 py-3 md:py-4 bg-white/[0.01]">
         <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-3 max-w-3xl mx-auto">
           <span className="hidden md:block text-xs text-slate-600 mr-1 shrink-0">Résultat :</span>

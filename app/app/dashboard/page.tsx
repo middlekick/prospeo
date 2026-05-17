@@ -260,7 +260,7 @@ export default function DashboardPage() {
     const pasInteresse  = leads.filter(l => l.tag === "pas_interesse").length;
 
     // "Vrais conversations" = ceux qui ont décroché et répondu (intéressé + RDV pris + pas intéressé)
-    // Ne répond pas n'est PAS compté dans le closing — ils n'ont pas eu de vraie conversation
+    // Ne répond pas n'est PAS compté dans le closing  ils n'ont pas eu de vraie conversation
     const vraisConversations = interesses + rdvPris + pasInteresse;
 
     // Taux de décrochage = ceux qui ont vraiment parlé / ceux qu'on a appelés
@@ -365,7 +365,7 @@ export default function DashboardPage() {
           href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.3)]"
         >
-          Passer Pro — 19 €/mois →
+          Passer Pro  19 /mois →
         </Link>
         <p className="text-xs text-slate-700">14 jours gratuits · annulable à tout moment</p>
       </div>
@@ -429,7 +429,7 @@ export default function DashboardPage() {
         {/* ── Cartes stat ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            label={`Contactés — ${periodLabel}`}
+            label={`Contactés  ${periodLabel}`}
             value={stats.contactedPeriod}
             sub={stats.contactedPeriod === 0 ? "Aucun appel enregistré" : "leads démarchés"}
             color="text-brand-300"
@@ -443,7 +443,7 @@ export default function DashboardPage() {
             }
           />
           <StatCard
-            label={`Ajoutés — ${periodLabel}`}
+            label={`Ajoutés  ${periodLabel}`}
             value={stats.addedPeriod}
             sub="nouveaux leads dans le CRM"
             color="text-cyan-300"
@@ -540,13 +540,13 @@ export default function DashboardPage() {
             <p className="text-[11px] text-slate-600 mb-4 relative">Sur {stats.total} leads au total</p>
 
             <div className="space-y-3">
-              {/* Niveau 1 — Tous les leads */}
+              {/* Niveau 1  Tous les leads */}
               <FunnelBar label="Non contactés" count={stats.nonContactes}
                 total={stats.total} color="text-slate-500" bg="bg-slate-600/40" />
               <FunnelBar label="Contactés (appelés)" count={stats.contactes}
                 total={stats.total} color="text-slate-300" bg="bg-slate-500/50" />
 
-              {/* Niveau 2 — Parmi les contactés */}
+              {/* Niveau 2  Parmi les contactés */}
               <div className="border-t border-white/5 pt-3 space-y-2 pl-3">
                 <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
                   Parmi les contactés
@@ -559,7 +559,7 @@ export default function DashboardPage() {
                 <div className="border-t border-white/[0.04] pt-2">
                   <p className="text-[10px] text-slate-700 uppercase tracking-wider font-semibold mb-2">
                     Vrais échanges ({stats.vraisConversations})
-                    <span className="ml-1 normal-case font-normal text-slate-700">— excl. sans réponse</span>
+                    <span className="ml-1 normal-case font-normal text-slate-700"> excl. sans réponse</span>
                   </p>
                   <FunnelBar label="Intéressés (à rappeler)" count={stats.interesses}
                     total={stats.vraisConversations || 1} color="text-cyan-400" bg="bg-cyan-500/50"
@@ -578,7 +578,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Taux clés — recalculés sur les vrais échanges */}
+            {/* Taux clés  recalculés sur les vrais échanges */}
             {stats.vraisConversations > 0 && (
               <div className="mt-5 pt-4 border-t border-white/[0.06] grid grid-cols-3 gap-2 relative">
                 <div className="flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">

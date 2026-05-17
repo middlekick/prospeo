@@ -114,7 +114,7 @@ export default function AutoScrapePage() {
   }
 
   // ── Lancer maintenant ───────────────────────────────────────────────────────
-  // Utilise /api/auto-scrape/run (protégé par Clerk) — pas de secret exposé
+  // Utilise /api/auto-scrape/run (protégé par Clerk)  pas de secret exposé
   async function handleRunNow() {
     setRunning(true);
     setLastResults(null);
@@ -159,7 +159,7 @@ export default function AutoScrapePage() {
                        text-white text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {running ? (
-              <><span className="animate-spin">⟳</span> Scraping…</>
+              <><span className="animate-spin">⟳</span> Scraping</>
             ) : (
               "▶ Lancer maintenant"
             )}
@@ -205,7 +205,7 @@ export default function AutoScrapePage() {
               <div className="flex items-center gap-2 px-4 py-3 border-b border-emerald-500/15">
                 <span className="text-emerald-400 text-sm">✓</span>
                 <span className="text-xs font-semibold text-emerald-300">
-                  Scraping terminé — {lastResults.reduce((s, r) => s + r.added, 0)} leads ajoutés
+                  Scraping terminé  {lastResults.reduce((s, r) => s + r.added, 0)} leads ajoutés
                 </span>
               </div>
               <div className="divide-y divide-white/[0.04]">
@@ -291,7 +291,7 @@ export default function AutoScrapePage() {
                   className="h-8 px-5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold
                              transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {adding ? "Ajout…" : "Ajouter"}
+                  {adding ? "Ajout" : "Ajouter"}
                 </button>
               </div>
             </form>
@@ -300,7 +300,7 @@ export default function AutoScrapePage() {
           {/* Liste des configs */}
           {loading ? (
             <div className="flex items-center justify-center py-16 text-slate-700 text-sm">
-              Chargement…
+              Chargement
             </div>
           ) : configs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">

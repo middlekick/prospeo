@@ -1,7 +1,7 @@
 ﻿"use client";
 
 /**
- * TrialCodeModal — Modal de saisie du code d'invitation.
+ * TrialCodeModal  Modal de saisie du code d'invitation.
  * S'affiche automatiquement sur le plan free si l'utilisateur
  * n'a pas encore activé de trial.
  * Peut aussi être ouvert manuellement via le bouton dans la sidebar.
@@ -45,7 +45,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
         onClose();
       }, 1800);
     } catch {
-      setError("Erreur réseau — réessayez");
+      setError("Erreur réseau  réessayez");
     } finally {
       setLoading(false);
     }
@@ -105,7 +105,7 @@ export default function TrialCodeModal({ onSuccess, onClose }: Props) {
                            transition-colors disabled:opacity-40 disabled:cursor-not-allowed
                            shadow-[0_0_20px_rgba(0,229,255,0.25)]"
               >
-                {loading ? "Vérification…" : "Activer l'accès"}
+                {loading ? "Vérification" : "Activer l'accès"}
               </button>
 
               <button
