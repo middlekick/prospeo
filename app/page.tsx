@@ -590,98 +590,75 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §03 — PRODUCT (démo animée)
-          ══════════════════════════════════════════════════════════════════ */}
-          <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
-            <div className="max-w-5xl mx-auto">
-              <div data-reveal className="text-center mb-14">
-                <Eyebrow cyan>§03 — Produit</Eyebrow>
-                <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Tout le pipeline.<br /><G>Un seul écran.</G>
-                </h2>
-              </div>
-              <div data-reveal data-rd="1" className="relative">
-                <div className="absolute -inset-x-8 -top-8 bottom-0 -z-10 blur-3xl opacity-50"
-                     style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.30), transparent 60%)" }} />
-                <div className="floaty rounded-2xl border border-white/[0.08] bg-[#0a0b10]/80 backdrop-blur-sm overflow-hidden
-                                shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
-                  <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.02]">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
-                    <span className="ml-3 text-[11px] text-slate-600 font-mono">prospeo.app/app</span>
-                  </div>
-                  <AnimatedDemo />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════════════════════════════════
-              §04 — FEATURES (bento)
+              §04 — FEATURES + démo intégrée
           ══════════════════════════════════════════════════════════════════ */}
           <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-6xl mx-auto">
               <div data-reveal className="text-center mb-14">
                 <Eyebrow>§04 — Fonctionnalités</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
-                  Six outils.<br /><G>Une interface.</G>
+                  Tout le pipeline.<br /><G>Un seul écran.</G>
                 </h2>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-4">
-                {/* Grande carte sourcing */}
-                <div data-reveal className="md:col-span-2 group relative p-8 rounded-3xl border border-white/[0.08]
-                                bg-gradient-to-br from-violet-500/[0.08] to-transparent overflow-hidden
-                                hover:border-violet-400/30 transition-all">
-                  <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full blur-3xl opacity-35 group-hover:opacity-60 transition-opacity"
-                       style={{ background: "radial-gradient(circle,rgba(124,58,237,0.45),transparent 70%)" }} />
-                  <div className="relative">
-                    <div className="text-3xl mb-5">🗺️</div>
-                    <h3 className="text-xl font-semibold text-slate-50 mb-2">Sourcing automatique</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-                      Métier + ville → tableau de leads qualifiés en quelques secondes via Google Maps.
-                      Plus l&apos;accès à l&apos;INPI/RNE pour cibler les entreprises récemment créées,
-                      avec enrichissement automatique des numéros.
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {["Google Maps", "INPI / RNE", "Enrichissement auto", "Cron 8h"].map(t => (
-                        <span key={t} className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.04]
-                                                  border border-white/[0.07] text-slate-400">{t}</span>
-                      ))}
+              <div className="flex flex-col gap-4">
+
+                {/* ── Démo animée — pleine largeur ── */}
+                <div data-reveal className="relative rounded-3xl border border-white/[0.08] bg-[#0a0b10]/80
+                                            overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.7)]">
+                  <div className="absolute -inset-x-0 -top-12 h-40 -z-0 blur-3xl opacity-40 pointer-events-none"
+                       style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.35), transparent 65%)" }} />
+                  <div className="h-9 flex items-center gap-2 px-4 border-b border-white/[0.06] bg-white/[0.025] relative z-10">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
+                    <div className="ml-3 flex items-center gap-1.5 h-5 w-[170px] rounded-md bg-white/[0.04] px-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/70" />
+                      <span className="text-[10px] text-slate-600 font-mono">prospeo.app/app</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Carte INPI cyan */}
-                <div data-reveal data-rd="1" className="group relative p-7 rounded-3xl border border-cyan-400/15
-                                bg-cyan-500/[0.04] overflow-hidden hover:border-cyan-400/30 transition-all">
-                  <div className="absolute -right-8 -top-8 w-48 h-48 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity"
-                       style={{ background: "radial-gradient(circle,rgba(6,182,212,0.40),transparent 70%)" }} />
-                  <div className="relative">
-                    <div className="text-2xl mb-4">🏛️</div>
-                    <h3 className="text-[15px] font-semibold text-slate-100 mb-1.5">Recherche INPI</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed">
-                      Cible les entreprises créées il y a moins de 3 mois.
-                      Les leads les plus chauds du marché, triés par date de création.
-                    </p>
+                  <div className="relative z-10">
+                    <AnimatedDemo />
                   </div>
                 </div>
 
-                {[
-                  { i: "📞", t: "Mode session d'appels",   d: "Plein écran, numéro géant, script live, résultat en 1 touche." },
-                  { i: "📋", t: "Scripts téléprompter",    d: "Cold call + closing. Objections et étapes visibles pendant l'appel." },
-                  { i: "📊", t: "Dashboard de conversion", d: "Funnel basé sur les vrais échanges. Taux de décrochage réel." },
-                  { i: "✉️", t: "Emails & relances auto",  d: "3 templates, Gmail, relances multi-paliers J+3 → J+7 → J+15." },
-                ].map((f, i) => (
-                  <div key={i} data-reveal data-rd={String((i % 3) + 1)}
-                    className="group p-7 rounded-3xl border border-white/[0.06] bg-white/[0.02]
-                               hover:bg-white/[0.04] hover:border-white/[0.12] transition-all">
-                    <div className="text-2xl mb-4 transition-transform group-hover:scale-110">{f.i}</div>
-                    <h3 className="text-[15px] font-semibold text-slate-100 mb-1.5">{f.t}</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed">{f.d}</p>
-                  </div>
-                ))}
+                {/* ── Grille 3×2 — aucune carte isolée ── */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  {[
+                    { i: "🗺️", t: "Sourcing automatique",   d: "Métier + ville → leads Maps en secondes. INPI pour cibler les entreprises récentes. Enrichissement auto des numéros.", col: "violet", tags: ["Google Maps","INPI / RNE","Auto-scraping 8h"] },
+                    { i: "📞", t: "Mode session d'appels",   d: "Plein écran, numéro géant cliquable, script live, résultat en 1 touche. Stats en temps réel.",                         col: "neutral" },
+                    { i: "🏛️", t: "Recherche INPI",          d: "Entreprises créées < 3 mois — les prospects les plus chauds du marché, triés par date de création.",                   col: "cyan"    },
+                    { i: "📋", t: "Scripts téléprompter",    d: "Cold call + closing Google Ads. Objections pliables, étapes visibles pendant l'appel.",                                col: "neutral" },
+                    { i: "📊", t: "Dashboard de conversion", d: "Funnel basé sur les vrais échanges. Taux de décrochage réel, RDV à venir, calendrier mensuel.",                        col: "neutral" },
+                    { i: "✉️", t: "Emails & relances auto",  d: "3 templates Gmail, envoi depuis ta propre adresse. Relances multi-paliers J+3 → J+7 → J+15.",                         col: "neutral" },
+                  ].map((f, i) => (
+                    <div key={i} data-reveal data-rd={String((i % 3) + 1)}
+                      className={`group relative p-7 rounded-3xl border overflow-hidden transition-all
+                        ${f.col === "violet" ? "border-violet-400/20 bg-violet-500/[0.06] hover:border-violet-400/35"
+                        : f.col === "cyan"   ? "border-cyan-400/18  bg-cyan-500/[0.04]   hover:border-cyan-400/32"
+                        :                      "border-white/[0.06]  bg-white/[0.02]      hover:bg-white/[0.04] hover:border-white/[0.12]"}`}>
+                      {f.col !== "neutral" && (
+                        <div className="absolute -right-10 -top-10 w-44 h-44 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity pointer-events-none"
+                             style={{ background: f.col === "violet"
+                               ? "radial-gradient(circle,rgba(124,58,237,0.5),transparent 70%)"
+                               : "radial-gradient(circle,rgba(6,182,212,0.45),transparent 70%)" }} />
+                      )}
+                      <div className="relative">
+                        <div className="text-2xl mb-4 transition-transform group-hover:scale-110">{f.i}</div>
+                        <h3 className="text-[15px] font-semibold text-slate-100 mb-1.5">{f.t}</h3>
+                        <p className={`text-sm leading-relaxed ${f.col === "neutral" ? "text-slate-500" : "text-slate-400"}`}>{f.d}</p>
+                        {f.tags && (
+                          <div className="mt-4 flex flex-wrap gap-1.5">
+                            {f.tags.map(tag => (
+                              <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.07] text-slate-500">{tag}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </div>
           </section>
@@ -722,42 +699,14 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §06 — SOCIAL (témoignage spotlight)
-          ══════════════════════════════════════════════════════════════════ */}
-          <section className="px-5 sm:px-6 py-24 sm:py-36 relative overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[800px] h-[500px] rounded-full blur-[160px] opacity-40"
-                   style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.22) 0%, rgba(6,182,212,0.10) 50%, transparent 70%)" }} />
-            </div>
-            <div data-reveal className="relative max-w-3xl mx-auto text-center">
-              <div className="flex justify-center gap-1 mb-8">
-                {Array(5).fill(0).map((_, i) => <span key={i} className="text-amber-400 text-lg">★</span>)}
-              </div>
-              <blockquote className="text-2xl sm:text-[2.2rem] font-medium text-slate-100 leading-[1.3] tracking-[-0.01em]">
-                « Sur la semaine de test, le client a généré{" "}
-                <G>12 000 €</G> de CA. Sur les 3 mois suivants,{" "}
-                <G>150 000 €</G> — pour 3 000 € de budget Google. »
-              </blockquote>
-              <div className="mt-10 flex items-center justify-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-500 to-indigo-700
-                                flex items-center justify-center text-white font-bold">T</div>
-                <div className="text-left">
-                  <div className="text-sm font-semibold text-slate-100">Téo Mikulic</div>
-                  <div className="text-xs text-slate-500">Acquisition · Google Ads pour artisans</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════════════════════════════════
-              Comparatif
+              §06 — COMPARATIF
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-4xl mx-auto">
               <div data-reveal className="text-center mb-14">
                 <Eyebrow>§06 — Comparatif</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
-                  Pourquoi pas Excel ou HubSpot&nbsp;?
+                  Pourquoi pas Notion ou HubSpot&nbsp;?
                 </h2>
               </div>
               <div data-reveal className="rounded-2xl border border-white/[0.08] overflow-x-auto backdrop-blur-sm bg-white/[0.012]">
@@ -765,7 +714,7 @@ export default function Landing() {
                   <thead>
                     <tr className="border-b border-white/[0.07] bg-white/[0.025]">
                       <th className="p-4 text-left text-[11px] text-slate-600 uppercase tracking-widest font-semibold w-[40%]">Critère</th>
-                      {[["✦ Prospeo", true], ["Excel", false], ["HubSpot", false]].map(([n, h]) => (
+                      {[["✦ Prospeo", true], ["Notion CRM", false], ["HubSpot Free", false]].map(([n, h]) => (
                         <th key={n as string} className={`p-4 text-center text-sm font-semibold ${h ? "text-violet-300" : "text-slate-500"}`}>
                           {n as string}
                         </th>
@@ -774,13 +723,15 @@ export default function Landing() {
                   </thead>
                   <tbody>
                     {[
-                      ["Sourcing intégré (Maps + INPI)", true, false, false],
-                      ["Téléprompter d'appel", true, false, false],
-                      ["Relances multi-paliers auto", true, false, true],
-                      ["Journal d'activité auto", true, false, true],
-                      ["Dashboard de conversion", true, false, true],
-                      ["Prix mensuel", "19€", "0€", "0€ (limité)"],
-                      ["Prise en main", "< 1h", "Rapide", "Élevée"],
+                      ["Sourcing leads (Maps + INPI)",   true,      false,      false],
+                      ["Téléprompter d'appel en direct", true,      false,      false],
+                      ["Relances multi-paliers auto",    true,      false,      true ],
+                      ["Journal d'activité automatique", true,      false,      true ],
+                      ["Funnel & taux de décrochage",    true,      false,      true ],
+                      ["Vue Kanban + session d'appels",  true,      false,      false],
+                      ["Import/export CSV",              true,      true,       true ],
+                      ["Prix mensuel",                  "19€",     "0-16€",    "0€ (très limité)"],
+                      ["Prise en main",                 "< 1h",    "Moyenne",  "Élevée"],
                     ].map((r, i) => (
                       <tr key={i} className={`border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.01]" : ""}`}>
                         <td className="p-3.5 text-sm text-slate-400">{r[0] as string}</td>
@@ -788,7 +739,7 @@ export default function Landing() {
                           <td key={j} className={`p-3.5 text-center text-sm ${j === 0 ? "bg-violet-500/[0.05]" : ""}`}>
                             {typeof v === "boolean"
                               ? (v
-                                  ? <span className={j === 0 ? "text-violet-300 font-bold" : "text-emerald-500/60"}>✓</span>
+                                  ? <span className={j === 0 ? "text-violet-300 font-bold" : "text-emerald-500/50"}>✓</span>
                                   : <span className="text-slate-700">✕</span>)
                               : <span className={j === 0 ? "text-violet-200 font-medium" : "text-slate-500"}>{v as string}</span>}
                           </td>
@@ -802,37 +753,103 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              Artisans
+              §07 — ARTISANS (redesign visuel)
           ══════════════════════════════════════════════════════════════════ */}
-          <section className="px-5 sm:px-6 py-24">
-            <div data-reveal className="max-w-5xl mx-auto rounded-3xl border border-violet-400/[0.12] overflow-hidden
-                            bg-gradient-to-br from-violet-500/[0.06] to-transparent p-8 sm:p-14">
-              <div className="grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                  <Eyebrow>Pour les artisans</Eyebrow>
-                  <h2 className="mt-6 text-2xl sm:text-3xl font-bold text-slate-50 tracking-tight leading-tight">
-                    Artisan&nbsp;? On s&apos;occupe<br /><G>de vos clients.</G>
-                  </h2>
-                  <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-                    Campagne Google Ads locale, premiers devis dès la première semaine.
-                    Vous ne payez que le budget publicitaire, directement à Google —
-                    aucun frais d&apos;agence sur la semaine de test.
-                  </p>
-                  <button onClick={() => openContact("Intéressé par une campagne Google Ads")}
-                    className="mt-7 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#050508]
-                               text-sm font-semibold hover:bg-slate-200 transition-colors">
-                    Contacter Téo →
-                  </button>
+          <section className="relative overflow-hidden border-t border-white/[0.05]">
+            {/* Fond gradient immersif */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-950/50 via-[#050508] to-cyan-950/20" />
+              <div className="absolute inset-0"
+                   style={{
+                     backgroundImage: "linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px)",
+                     backgroundSize: "40px 40px",
+                   }} />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full blur-[140px] opacity-30"
+                   style={{ background: "radial-gradient(ellipse,rgba(124,58,237,0.5),rgba(6,182,212,0.1) 50%,transparent 70%)" }} />
+            </div>
+
+            <div className="relative max-w-6xl mx-auto px-5 sm:px-6 py-28 sm:py-36">
+
+              {/* Header */}
+              <div data-reveal className="text-center mb-16">
+                <Eyebrow>§07 — Pour les artisans</Eyebrow>
+                <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
+                  Plus de clients.<br /><G>Zéro frais d&apos;agence.</G>
+                </h2>
+                <p className="mt-5 text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
+                  Téo gère votre campagne Google Ads locale.
+                  La semaine de test est entièrement à sa charge.
+                  Vous ne payez que le budget publicitaire directement à Google.
+                </p>
+              </div>
+
+              {/* Stats visuelles */}
+              <div data-reveal className="grid md:grid-cols-3 gap-4 mb-12">
+                <div className="relative p-8 rounded-3xl border border-violet-400/20 bg-violet-500/[0.07] text-center overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-violet-500/10 to-transparent" />
+                  <div className="relative">
+                    <div className="text-[11px] font-mono text-violet-400 uppercase tracking-widest mb-3">Semaine de test</div>
+                    <div className="text-5xl sm:text-6xl font-bold text-slate-50 tracking-tight">12k€</div>
+                    <div className="mt-2 text-sm text-slate-400">de CA généré · J1 à J7</div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  {[["🔨","Plombiers"],["⚡","Électriciens"],["🌿","Paysagistes"],["🎨","Peintres"],["🧱","Maçons"],["🏠","Couvreurs"]].map(([ic, lb]) => (
-                    <div key={lb} className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                      <span className="text-lg">{ic}</span>
-                      <span className="text-sm text-slate-300">{lb}</span>
+
+                <div className="flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-px h-8 bg-gradient-to-b from-violet-400/30 to-cyan-400/30" />
+                    <div className="text-2xl text-slate-600">→</div>
+                    <div className="w-px h-8 bg-gradient-to-b from-cyan-400/30 to-transparent" />
+                    <div className="mt-2 text-[10px] font-mono text-slate-600 uppercase tracking-widest text-center">
+                      3 000€<br />budget Google
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                <div className="relative p-8 rounded-3xl border border-cyan-400/20 bg-cyan-500/[0.05] text-center overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/8 to-transparent" />
+                  <div className="relative">
+                    <div className="text-[11px] font-mono text-cyan-400 uppercase tracking-widest mb-3">3 mois de campagne</div>
+                    <div className="text-5xl sm:text-6xl font-bold text-slate-50 tracking-tight">150k€</div>
+                    <div className="mt-2 text-sm text-slate-400">de CA · un paysagiste</div>
+                  </div>
                 </div>
               </div>
+
+              {/* Artisan types — plus grands, plus visuels */}
+              <div data-reveal className="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-12">
+                {[
+                  { ic: "🔨", lb: "Plombiers",      col: "violet" },
+                  { ic: "⚡", lb: "Électriciens",   col: "cyan"   },
+                  { ic: "🌿", lb: "Paysagistes",    col: "violet" },
+                  { ic: "🎨", lb: "Peintres",       col: "cyan"   },
+                  { ic: "🧱", lb: "Maçons",         col: "violet" },
+                  { ic: "🏠", lb: "Couvreurs",      col: "cyan"   },
+                ].map(({ ic, lb, col }) => (
+                  <div key={lb}
+                       className={`flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all hover:scale-105
+                         ${col === "violet" ? "border-violet-400/15 bg-violet-500/[0.06] hover:bg-violet-500/[0.12]"
+                                            : "border-cyan-400/12  bg-cyan-500/[0.04]   hover:bg-cyan-500/[0.10]"}`}>
+                    <span className="text-2xl">{ic}</span>
+                    <span className="text-[11px] text-slate-400 font-medium">{lb}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA centré */}
+              <div data-reveal className="text-center">
+                <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-6">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                  <span className="text-sm text-slate-400">0€ de frais d&apos;agence sur la semaine de test</span>
+                </div>
+                <br />
+                <button onClick={() => openContact("Intéressé par une campagne Google Ads")}
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#050508]
+                             text-sm font-semibold hover:bg-slate-200 transition-all hover:scale-[1.02]
+                             shadow-[0_0_40px_rgba(124,58,237,0.25)]">
+                  Contacter Téo →
+                </button>
+              </div>
+
             </div>
           </section>
 
