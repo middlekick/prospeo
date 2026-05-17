@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * Page 404 custom — dark theme cohérent avec le CRM.
+ * Page 404 custom  dark theme cohérent avec le CRM.
  * Pas de sidebar ici, affichée en pleine page.
  */
 export default function NotFound() {
