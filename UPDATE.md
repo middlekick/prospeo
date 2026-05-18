@@ -212,6 +212,7 @@
 | 2026-05-18 | Perf | `GlowCursor` (curseur custom global : listener mousemove + RAF + élément fixe sur toutes les pages) supprimé du layout + fichier retiré — moins de JS/runtime client | `app/layout.tsx`, `components/ui/GlowCursor.tsx` (supprimé) |
 | 2026-05-18 | Perf | Landing découplée de Clerk (étape 1) — `useUser` retiré, auth vérifiée serveur (`/api/checkout` → 401 `auth_required`, redirection sign-up), nav publique unique | `app/page.tsx`, `app/api/checkout/route.ts` |
 | 2026-05-18 | Perf | **Route groups (étape 2)** — `(public)` (landing, layout sans Clerk) vs `(app)` (CRM + sign-in/up, layout avec ClerkProvider + LayoutShell). `clerk-js` totalement hors du bundle de `/`. URLs inchangées, proxy.ts non impacté. Build prod validé | `app/(public)/`, `app/(app)/`, `app/layout.tsx` |
+| 2026-05-18 | Design | Landing : carte "Le plus populaire" premium (badge cyan dégradé + étoile + glow, surface brand renforcée, fix double `md:-mt-3`) ; toggle mensuel/annuel recentré (pastille `top-px/left-px`) ; démo §04 (AnimatedDemo) 28 occurrences violet/indigo → cyan brand ; logo landing en cyan | `app/(public)/page.tsx`, `components/landing/AnimatedDemo.tsx` |
 
 ---
 
