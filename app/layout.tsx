@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { syne, dmMono }            from "./fonts/fonts";
 import "./globals.css";
-import { ClerkProvider }        from "@clerk/nextjs";
-import { frFR }                 from "@clerk/localizations";
-import LayoutShell              from "@/components/layout/LayoutShell";
 import { ToastProvider }        from "@/components/ui/Toast";
 import { ConfirmProvider }      from "@/components/ui/ConfirmModal";
 import ServiceWorker            from "@/components/layout/ServiceWorker";
 import SmoothScrollProvider     from "@/components/ui/SmoothScrollProvider";
+
+// ClerkProvider + chrome CRM sont scopés au groupe (app) — la landing
+// publique (groupe (public)) ne charge donc PAS clerk-js.
 
 export const metadata: Metadata = {
   title:       "Prospeo — CRM de prospection",
@@ -40,25 +40,17 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider
-      localization={frFR}
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      signInFallbackRedirectUrl="/app"
-      signUpFallbackRedirectUrl="/app"
-    >
-      <html lang="fr" className={`${syne.variable} ${dmMono.variable}`}>
-        <body className="bg-[#0A0A0B]">
-          <SmoothScrollProvider>
-            <ToastProvider>
-              <ConfirmProvider>
-                <LayoutShell>{children}</LayoutShell>
-              </ConfirmProvider>
-            </ToastProvider>
-          </SmoothScrollProvider>
-          <ServiceWorker />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="fr" className={`${syne.variable} ${dmMono.variable}`}>
+      <body className="bg-[#0A0A0B]">
+        <SmoothScrollProvider>
+          <ToastProvider>
+            <ConfirmProvider>
+              {children}
+            </ConfirmProvider>
+          </ToastProvider>
+        </SmoothScrollProvider>
+        <ServiceWorker />
+      </body>
+    </html>
   );
 }

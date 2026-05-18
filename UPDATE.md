@@ -210,6 +210,8 @@
 | 2026-05-18 | Perf | **LCP 7,9 s → ≈FCP** (PageSpeed mobile 62). Le H1 hero (élément LCP) était `opacity:0` via Framer Motion `initial` → invisible jusqu'à l'hydratation. Remplacé par reveal CSS pur transform-only (`.hero-word`, démarre au 1er paint, respecte reduced-motion) | `app/page.tsx`, `app/globals.css` |
 | 2026-05-18 | A11y | Accessibilité 80 → corrections déterministes : `maximumScale` retiré du viewport (zoom débloqué), `<main>` landmark sur landing/auth, 5 noms accessibles (`aria-label` : toggle annuel role=switch, LinkedIn, contact email, CTA sticky, fermeture bannière), SVG `aria-hidden` | `app/layout.tsx`, `components/layout/LayoutShell.tsx`, `app/page.tsx` |
 | 2026-05-18 | Perf | `GlowCursor` (curseur custom global : listener mousemove + RAF + élément fixe sur toutes les pages) supprimé du layout + fichier retiré — moins de JS/runtime client | `app/layout.tsx`, `components/ui/GlowCursor.tsx` (supprimé) |
+| 2026-05-18 | Perf | Landing découplée de Clerk (étape 1) — `useUser` retiré, auth vérifiée serveur (`/api/checkout` → 401 `auth_required`, redirection sign-up), nav publique unique | `app/page.tsx`, `app/api/checkout/route.ts` |
+| 2026-05-18 | Perf | **Route groups (étape 2)** — `(public)` (landing, layout sans Clerk) vs `(app)` (CRM + sign-in/up, layout avec ClerkProvider + LayoutShell). `clerk-js` totalement hors du bundle de `/`. URLs inchangées, proxy.ts non impacté. Build prod validé | `app/(public)/`, `app/(app)/`, `app/layout.tsx` |
 
 ---
 
