@@ -4,10 +4,10 @@ import "./globals.css";
 import { ToastProvider }        from "@/components/ui/Toast";
 import { ConfirmProvider }      from "@/components/ui/ConfirmModal";
 import ServiceWorker            from "@/components/layout/ServiceWorker";
-import SmoothScrollProvider     from "@/components/ui/SmoothScrollProvider";
 
-// ClerkProvider + chrome CRM sont scopés au groupe (app) — la landing
-// publique (groupe (public)) ne charge donc PAS clerk-js.
+// ClerkProvider + chrome CRM scopés au groupe (app), Lenis (smooth scroll)
+// scopé au groupe (public) — le CRM garde le scroll natif (sinon Lenis
+// casse les conteneurs overflow-auto comme le tableau de leads).
 
 export const metadata: Metadata = {
   title:       "Prospeo — CRM de prospection",
@@ -42,13 +42,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${syne.variable} ${dmMono.variable}`}>
       <body className="bg-[#0A0A0B]">
-        <SmoothScrollProvider>
-          <ToastProvider>
-            <ConfirmProvider>
-              {children}
-            </ConfirmProvider>
-          </ToastProvider>
-        </SmoothScrollProvider>
+        <ToastProvider>
+          <ConfirmProvider>
+            {children}
+          </ConfirmProvider>
+        </ToastProvider>
         <ServiceWorker />
       </body>
     </html>
