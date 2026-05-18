@@ -18,7 +18,6 @@ const ScrollDemoSection = dynamic(() => import("@/components/landing/ScrollDemoS
 const ConstatSection    = dynamic(() => import("@/components/landing/ConstatSection"));
 import MagneticButton    from "@/components/ui/MagneticButton";
 import Marquee           from "@/components/ui/Marquee";
-import GradientBorder    from "@/components/ui/GradientBorder";
 import SectionLabel      from "@/components/ui/SectionLabel";
 
 // ─── Stripe ───────────────────────────────────────────────────────────────────
@@ -90,7 +89,7 @@ function Counter({ end, suffix = "", duration = 1800 }: {
 }
 
 // ─── Gradient text ────────────────────────────────────────────────────────────
-// Gradient text  cyan électrique (brand)
+// Gradient text — cyan électrique (brand)
 function G({ children }: { children: React.ReactNode }) {
   return (
     <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-dim">
@@ -112,7 +111,7 @@ function Eyebrow({ children, cyan }: { children: React.ReactNode; cyan?: boolean
   );
 }
 
-// ─── Réseau de nuds animé ───────────────────────────────────────────────────
+// ─── Réseau de nœuds animé ───────────────────────────────────────────────────
 function NodeNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -189,7 +188,7 @@ function NodeNetwork() {
         }
       }
 
-      // Nuds
+      // Nœuds
       nodes.forEach(n => {
         n.phase += 0.018;
         const glow = 0.65 + Math.sin(n.phase) * 0.35;
@@ -321,7 +320,7 @@ function HeroCard3D() {
 
       </motion.div>
 
-      {/* ── Badges orbitaux (CSS pur  cross-browser garanti) ── */}
+      {/* ── Badges orbitaux (CSS pur — cross-browser garanti) ── */}
       <div className="absolute -top-5 -right-4 floaty-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full
                    bg-[#0c0e16]/95 border border-brand-400/25 z-10
                    shadow-[0_0_22px_rgba(0,229,255,0.22)] text-[11px] whitespace-nowrap">
@@ -492,11 +491,11 @@ export default function Landing() {
           </nav>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §00  HERO
+              §00 — HERO
           ══════════════════════════════════════════════════════════════════ */}
           <section className="relative px-5 sm:px-6 pt-32 sm:pt-40 pb-16 overflow-hidden">
 
-            {/* Réseau de nuds  fond du hero */}
+            {/* Réseau de nœuds — fond du hero */}
             <div className="absolute inset-0 pointer-events-none">
               <NodeNetwork />
             </div>
@@ -509,7 +508,7 @@ export default function Landing() {
                   <div data-reveal>
                     <Eyebrow>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                      §00  CRM de prospection · 14 jours offerts
+                      §00 — CRM de prospection · 14 jours offerts
                     </Eyebrow>
                   </div>
 
@@ -541,13 +540,13 @@ export default function Landing() {
                   <div data-reveal data-rd="2" className="mt-7">
                     <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
                       Le CRM qui réunit le sourcing Maps + INPI, le téléprompter d&apos;appel,
-                      les relances automatiques et le suivi RDV 
+                      les relances automatiques et le suivi RDV —
                       dans un seul flux pensé pour le terrain.
                     </p>
                   </div>
 
                   <div data-reveal data-rd="3" className="mt-8 flex flex-col sm:flex-row gap-3">
-<MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>{loading ? "Redirection" : <>«Commencer gratuitement<span className="ml-1">→</span></>}</MagneticButton>
+<MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>{loading ? "Redirection…" : <>«Commencer gratuitement<span className="ml-1">→</span></>}</MagneticButton>
                     <MagneticButton variant="ghost" href="#produit">Voir le produit</MagneticButton>
                   </div>
                   <p data-reveal data-rd="4" className="mt-3 text-xs text-slate-700">
@@ -567,7 +566,7 @@ export default function Landing() {
                   { v: <Counter end={50}  suffix="+" />, l: "leads en 1 clic",       c: "text-slate-100" },
                   { v: <Counter end={100} suffix="%" />, l: "relances tracées",       c: "text-brand-300" },
                   { v: <Counter end={14}  suffix="j" />, l: "d'essai offert",         c: "text-brand-400"   },
-                  { v: "0",                             l: "pour démarrer",          c: "text-slate-100"  },
+                  { v: "0€",                             l: "pour démarrer",          c: "text-slate-100"  },
                 ].map((s, i) => (
                   <div key={i}>
                     <div className={`text-2xl sm:text-3xl font-bold tracking-tight ${s.c}`}>{s.v}</div>
@@ -578,7 +577,7 @@ export default function Landing() {
             </div>
           </section>
 
-          {/* §01  MARQUEE */}
+          {/* §01 — MARQUEE */}
           <div className="border-y border-white/[0.05] py-5 overflow-hidden">
             <Marquee speed={38} gap={56} className="opacity-35 hover:opacity-60 transition-opacity duration-700">
               {["Google Maps API", "API RNE / INPI", "Relances auto",
@@ -596,7 +595,7 @@ export default function Landing() {
           <ConstatSection />
 
 
-          {/* §03  SOCIAL PROOF */}
+          {/* §03 — SOCIAL PROOF */}
           <section className="px-5 sm:px-6 py-20 sm:py-28 border-t border-white/[0.05] overflow-hidden">
             <div className="max-w-5xl mx-auto">
 
@@ -606,7 +605,7 @@ export default function Landing() {
                   { v: "50+",    l: "Leads sourcés",          sub: "en moins de 5 min",  accent: "text-brand" },
                   { v: "8 RDV",  l: "Première semaine",       sub: "mode session d'appels", accent: "text-text" },
                   { v: "3 →",    l: "Paliers de relance auto", sub: "J+3, J+7, J+15",    accent: "text-text" },
-                  { v: "0",     l: "Pour démarrer",          sub: "14j Pro offerts",    accent: "text-brand" },
+                  { v: "0€",     l: "Pour démarrer",          sub: "14j Pro offerts",    accent: "text-brand" },
                 ].map((s, i) => (
                   <div key={i} data-reveal data-rd={String(i+1)}
                     className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] flex flex-col gap-1">
@@ -632,7 +631,7 @@ export default function Landing() {
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand/30 to-brand-deep/30 border border-brand/20 flex items-center justify-center text-brand font-bold text-sm">T</div>
                   <div>
                     <div className="text-sm font-semibold text-text">Commercial indépendant</div>
-                    <div className="text-[11px] font-mono text-text-mute">Prospection artisans  Paris</div>
+                    <div className="text-[11px] font-mono text-text-mute">Prospection artisans — Paris</div>
                   </div>
                 </div>
               </div>
@@ -640,12 +639,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §04  FEATURES + démo intégrée
+              §04 — FEATURES + démo intégrée
           ══════════════════════════════════════════════════════════════════ */}
           <section id="features" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-6xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§04  Fonctionnalités</Eyebrow>
+                <Eyebrow>§04 — Fonctionnalités</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Tout le pipeline.<br /><G>Un seul écran.</G>
                 </h2>
@@ -656,7 +655,7 @@ export default function Landing() {
                 {/* ── Démo scroll-pinned (desktop) / autoplay (mobile) ── */}
                 <ScrollDemoSection />
 
-                {/* ── Grille 3×2  aucune carte isolée ── */}
+                {/* ── Grille 3×2 — aucune carte isolée ── */}
                 <div className="grid md:grid-cols-3 gap-4">
                   {[
                     {
@@ -674,7 +673,7 @@ export default function Landing() {
                     {
                       icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
                       t: "Recherche INPI",
-                      d: "Entreprises créées < 3 mois  les prospects les plus chauds du marché, triés par date de création.",
+                      d: "Entreprises créées < 3 mois — les prospects les plus chauds du marché, triés par date de création.",
                       col: "cyan"
                     },
                     {
@@ -729,12 +728,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §05  HOW
+              §05 — HOW
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-16">
-                <Eyebrow cyan>§05  En pratique</Eyebrow>
+                <Eyebrow cyan>§05 — En pratique</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em] leading-tight">
                   Zéro à ton premier RDV<br /><G>en moins d&apos;une heure.</G>
                 </h2>
@@ -764,12 +763,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §06  COMPARATIF
+              §06 — COMPARATIF
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-4xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§06  Comparatif</Eyebrow>
+                <Eyebrow>§06 — Comparatif</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Pourquoi pas Notion ou HubSpot&nbsp;?
                 </h2>
@@ -795,7 +794,7 @@ export default function Landing() {
                       ["Funnel & taux de décrochage",    true,      false,      true ],
                       ["Vue Kanban + session d'appels",  true,      false,      false],
                       ["Import/export CSV",              true,      true,       true ],
-                      ["Prix mensuel",                  "19",     "0-16",    "0 (très limité)"],
+                      ["Prix mensuel",                  "19€",     "0-16€",    "0€ (très limité)"],
                       ["Prise en main",                 "< 1h",    "Moyenne",  "Élevée"],
                     ].map((r, i) => (
                       <tr key={i} className={`border-b border-white/[0.05] last:border-0 ${i % 2 ? "bg-white/[0.01]" : ""}`}>
@@ -819,12 +818,12 @@ export default function Landing() {
 
 
           {/* ══════════════════════════════════════════════════════════════════
-              §07  PRICING
+              §07 — PRICING
           ══════════════════════════════════════════════════════════════════ */}
           <section id="pricing" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-5xl mx-auto">
               <div data-reveal className="text-center mb-12">
-                <Eyebrow>§07  Tarifs</Eyebrow>
+                <Eyebrow>§07 — Tarifs</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-5xl font-bold text-slate-50 tracking-[-0.02em]">
                   Simple. <G>Transparent.</G>
                 </h2>
@@ -886,17 +885,17 @@ export default function Landing() {
                   const card = (
                     <div key={p.name} data-reveal
                       className={`relative flex flex-col p-7 rounded-3xl transition-all ${p.hl
-                        ? "bg-gradient-to-b from-brand-500/[0.12] via-brand-500/[0.04] to-transparent ring-1 ring-brand-500/20 shadow-[0_0_70px_-18px_rgba(0,229,255,0.35)] md:pb-10"
-                        : "border border-white/[0.07] bg-white/[0.02]"}`}>
+                        ? "border border-brand-500/45 bg-[#0a1216] bg-gradient-to-b from-brand-500/[0.10] via-transparent to-transparent shadow-[0_0_55px_-14px_rgba(0,229,255,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] md:-mt-4 md:pb-10"
+                        : "border border-white/[0.07] bg-white/[0.02] hover:border-white/[0.12]"}`}>
                       {p.hl && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5
-                                         px-3.5 py-1 rounded-full text-[11px] font-semibold
-                                         bg-gradient-to-r from-brand-400 to-brand-500 text-[#06121a]
-                                         shadow-[0_0_20px_rgba(0,229,255,0.55)]">
+                        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5
+                                         px-4 py-1.5 rounded-full text-[11px] font-bold tracking-wide
+                                         bg-gradient-to-r from-brand-300 to-brand-500 text-[#06121a]
+                                         shadow-[0_0_24px_rgba(0,229,255,0.65)]">
                           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <path d="M12 2l2.6 6.3L21 9l-5 4.4L17.5 21 12 17.3 6.5 21 8 13.4 3 9l6.4-.7z"/>
                           </svg>
-                          Le plus populaire
+                          LE PLUS POPULAIRE
                         </span>
                       )}
                       <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500">{p.name}</div>
@@ -907,7 +906,7 @@ export default function Landing() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.2 }}
                           className="text-4xl font-bold text-slate-50">
-                          {displayPrice}
+                          {displayPrice}€
                         </motion.span>
                         {displayPrice !== "0" && (
                           <span className="text-slate-500 mb-1 text-sm">/mois
@@ -917,7 +916,7 @@ export default function Landing() {
                       </div>
                       {annual && p.monthlyPrice !== "0" && (
                         <p className="text-[11px] text-slate-600 mt-0.5 font-mono">
-                          soit {parseInt(p.annualPrice) * 12}/an  économie {(parseInt(p.monthlyPrice) - parseInt(p.annualPrice)) * 12}
+                          soit {parseInt(p.annualPrice) * 12}€/an — économie {(parseInt(p.monthlyPrice) - parseInt(p.annualPrice)) * 12}€
                         </p>
                       )}
                       <p className="mt-2 text-sm text-slate-500">{p.desc}</p>
@@ -930,17 +929,12 @@ export default function Landing() {
                         ))}
                       </ul>
                       <button onClick={p.onClick} disabled={loading && p.hl}
-                        className={`mt-7 w-full py-3 rounded-full text-sm font-semibold transition-all ${p.hl ? "bg-white text-[#0A0A0B] hover:bg-slate-200 disabled:opacity-50" : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
+                        className={`mt-7 w-full py-3 rounded-full text-sm font-semibold transition-all ${p.hl ? "bg-brand-400 text-[#06121a] hover:bg-brand-300 shadow-[0_0_22px_rgba(0,229,255,0.4)] disabled:opacity-50" : "border border-white/[0.12] text-slate-200 hover:bg-white/[0.05]"}`}>
                         {loading && p.hl ? "Redirection" : p.cta}
                       </button>
                     </div>
                   );
-                  return p.hl ? (
-                    <GradientBorder key={p.name} rounded="rounded-3xl" speed={6000}
-                      innerClass="bg-transparent" className="md:-mt-3">
-                      {card}
-                    </GradientBorder>
-                  ) : card;
+                  return card;
                 })}
               </div>
               <p data-reveal className="text-center text-xs text-slate-600 mt-10">
@@ -950,12 +944,12 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §08  FAQ
+              §08 — FAQ
           ══════════════════════════════════════════════════════════════════ */}
           <section id="faq" className="px-5 sm:px-6 py-24 sm:py-32 border-t border-white/[0.05]">
             <div className="max-w-2xl mx-auto">
               <div data-reveal className="text-center mb-14">
-                <Eyebrow>§08  FAQ</Eyebrow>
+                <Eyebrow>§08 — FAQ</Eyebrow>
                 <h2 className="mt-6 text-3xl sm:text-4xl font-bold text-slate-50 tracking-[-0.02em]">
                   Questions directes.
                 </h2>
@@ -963,7 +957,7 @@ export default function Landing() {
               <div data-reveal className="space-y-1">
                 {[
                   { q: "Faut-il une carte bancaire pour l'essai ?", a: "Non. L'essai de 14 jours ne demande aucune carte. Vous n'êtes débité qu'à la fin si vous continuez." },
-                  { q: "Mes données sont-elles sécurisées ?", a: "Oui. Chaque compte est totalement isolé  vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffré SSL." },
+                  { q: "Mes données sont-elles sécurisées ?", a: "Oui. Chaque compte est totalement isolé — vous ne voyez que vos leads. Stockage PostgreSQL (Neon) chiffré SSL." },
                   { q: "Puis-je importer mes leads existants ?", a: "Oui : CSV avec auto-détection des colonnes, import INPI, ou scraping Google Maps direct." },
                   { q: "Comment marche le scraping Google Maps ?", a: "Métier + ville → Prospeo interroge Maps et remplit le tableau (nom, tel, site, adresse). Doublons filtrés automatiquement." },
                   { q: "Puis-je annuler à tout moment ?", a: "Oui, sans frais. Annulation depuis l'espace client, accès conservé jusqu'à la fin de la période payée." },
@@ -974,7 +968,7 @@ export default function Landing() {
           </section>
 
           {/* ══════════════════════════════════════════════════════════════════
-              §09  CTA FINAL
+              §09 — CTA FINAL
           ══════════════════════════════════════════════════════════════════ */}
           <section className="px-5 sm:px-6 py-28 sm:py-44 relative overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -982,7 +976,7 @@ export default function Landing() {
                    style={{ background: "radial-gradient(ellipse, rgba(0,229,255,0.25) 0%, rgba(0,229,255,0.08) 50%, transparent 70%)" }} />
             </div>
             <div data-reveal className="relative max-w-2xl mx-auto text-center">
-              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09  Commence maintenant</p>
+              <p className="font-mono text-[10px] text-slate-600 uppercase tracking-[0.18em] mb-6">§09 — Commence maintenant</p>
               <h2 className="text-4xl sm:text-6xl font-bold text-slate-50 tracking-[-0.03em] leading-[1.04]">
                 Prospecte comme<br /><G>un closer.</G>
               </h2>
@@ -995,7 +989,7 @@ export default function Landing() {
                              text-center sm:text-left text-slate-200 placeholder-slate-600 text-sm
                              focus:outline-none focus:border-brand-500/50 transition-colors" />
                 <MagneticButton variant="primary" onClick={() => pay("pro")} disabled={loading}>
-                  {loading ? "" : "Commencer →"}
+                  {loading ? "…" : "Commencer →"}
                 </MagneticButton>
               </div>
             </div>
@@ -1075,7 +1069,7 @@ export default function Landing() {
               {/* Bottom bar */}
               <div className="mt-14 pt-8 border-t border-white/[0.04]
                               flex flex-col sm:flex-row justify-between gap-2 items-center">
-                <span className="text-[11px] font-mono text-text-mute">© 2026 Prospeo  Tous droits réservés</span>
+                <span className="text-[11px] font-mono text-text-mute">© 2026 Prospeo — Tous droits réservés</span>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                   <span className="text-[11px] font-mono text-text-mute">Système opérationnel</span>
@@ -1094,13 +1088,13 @@ export default function Landing() {
             <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#111114]/95 border border-brand-500/15 backdrop-blur-xl
                             shadow-[0_0_40px_rgba(0,229,255,0.18),0_8px_32px_rgba(0,0,0,0.6)]">
               <span className="text-sm text-slate-300 font-medium flex-1 min-w-0 truncate">
-                Essai 14 jours  gratuit
+                Essai 14 jours — gratuit
               </span>
               <button onClick={() => pay("pro")} disabled={loading}
                 aria-label="Commencer gratuitement"
                 className="px-4 py-2 rounded-full bg-white text-[#0A0A0B] text-xs font-semibold
                            hover:bg-slate-200 transition-all disabled:opacity-50 whitespace-nowrap">
-                {loading ? "" : "Commencer →"}
+                {loading ? "…" : "Commencer →"}
               </button>
               <button onClick={() => setShowSticky(false)}
                 aria-label="Fermer la bannière"
