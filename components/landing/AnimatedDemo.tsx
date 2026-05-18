@@ -21,7 +21,7 @@ const INPI_RESULTS = [
 const KANBAN_COLS = [
   { id: "non_appele", label: "Non appelé", color: "text-slate-500",  count: 3 },
   { id: "interesse",  label: "Intéressé",  color: "text-emerald-400", count: 1 },
-  { id: "rdv",        label: "RDV pris",   color: "text-violet-400",  count: 0 },
+  { id: "rdv",        label: "RDV pris",   color: "text-brand-400",  count: 0 },
 ];
 
 type Scene = "scraping" | "kanban" | "inpi" | "session" | "scripts";
@@ -31,7 +31,7 @@ function TagBadge({ tag }: { tag: string }) {
   const cls: Record<string, string> = {
     non_appele: "bg-slate-500/15  text-slate-400  border-slate-500/25",
     interesse:  "bg-emerald-500/15 text-emerald-400 border-emerald-500/25",
-    rdv:        "bg-violet-500/15  text-violet-400  border-violet-500/25",
+    rdv:        "bg-brand-500/15  text-brand-400  border-brand-500/25",
   };
   const labels: Record<string, string> = {
     non_appele: "Non appelé", interesse: "Intéressé", rdv: "RDV pris",
@@ -234,14 +234,14 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
       }}
     >
       {/* Ligne gradient haut */}
-      <div className="h-px bg-gradient-to-r from-transparent via-violet-500/50 to-cyan-500/30" />
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/50 to-cyan-500/30" />
 
       {/* ── Shell app interne ─────────────────────────────────────────────── */}
       <div className="flex" style={{ height: 360 }}>
 
         {/* Sidebar mini */}
         <div className="w-14 bg-[#080a0f] border-r border-white/[0.05] flex flex-col items-center py-3 gap-2 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-700 flex items-center justify-center mb-1 shadow-[0_0_12px_rgba(124,58,237,0.4)]">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600 to-brand-600 flex items-center justify-center mb-1 shadow-[0_0_12px_rgba(0,229,255,0.4)]">
             <span className="text-white text-xs font-bold">P</span>
           </div>
           {[
@@ -254,7 +254,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
             <div key={i} title={item.label}
               className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-all duration-500 ${
                 i === activeNav
-                  ? "bg-violet-500/20 text-violet-400 shadow-[0_0_10px_rgba(124,58,237,0.25)]"
+                  ? "bg-brand-500/20 text-brand-400 shadow-[0_0_10px_rgba(0,229,255,0.25)]"
                   : "text-slate-700 hover:text-slate-500"
               }`}>
               {item.ic}
@@ -275,36 +275,36 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
               {scrapePhase === "typing" || scrapePhase === "loading" ? (
                 <div className="h-full flex flex-col justify-center items-center gap-5 px-10">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-violet-400/80 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono text-brand-400/80 uppercase tracking-widest">
                       Scraping Google Maps
                     </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
                   </div>
                   <div className="w-full flex gap-3 max-w-sm">
                     <div className="flex-1">
                       <label className="block text-[9px] text-slate-600 mb-1 ml-1 uppercase tracking-wider">Métier</label>
                       <div className="px-3 py-2.5 bg-white/[0.04] border border-white/[0.10] rounded-lg text-xs text-slate-300 font-mono min-h-[34px] flex items-center">
                         {metierText}
-                        {metierText.length < 8 && metierText.length > 0 && <span className="ml-px w-px h-3 bg-violet-400 inline-block animate-pulse" />}
+                        {metierText.length < 8 && metierText.length > 0 && <span className="ml-px w-px h-3 bg-brand-400 inline-block animate-pulse" />}
                       </div>
                     </div>
                     <div className="flex-1">
                       <label className="block text-[9px] text-slate-600 mb-1 ml-1 uppercase tracking-wider">Ville</label>
                       <div className="px-3 py-2.5 bg-white/[0.04] border border-white/[0.10] rounded-lg text-xs text-slate-300 font-mono min-h-[34px] flex items-center">
                         {villeText}
-                        {villeText.length > 0 && villeText.length < 4 && <span className="ml-px w-px h-3 bg-violet-400 inline-block animate-pulse" />}
+                        {villeText.length > 0 && villeText.length < 4 && <span className="ml-px w-px h-3 bg-brand-400 inline-block animate-pulse" />}
                       </div>
                     </div>
                   </div>
                   {scrapePhase === "loading" ? (
                     <div className="flex flex-col items-center gap-2">
-                      <div className="w-7 h-7 rounded-full border-2 border-violet-500/25 border-t-violet-500 animate-spin" />
+                      <div className="w-7 h-7 rounded-full border-2 border-brand-500/25 border-t-brand-500 animate-spin" />
                       <span className="text-[10px] text-slate-600 font-mono">Recherche Maps en cours</span>
                     </div>
                   ) : (
                     <button className={`px-6 py-2 rounded-lg text-xs font-semibold transition-all ${
                       villeText.length > 0
-                        ? "bg-violet-600 text-white shadow-[0_0_14px_rgba(124,58,237,0.4)]"
+                        ? "bg-brand-600 text-white shadow-[0_0_14px_rgba(0,229,255,0.4)]"
                         : "bg-white/[0.05] text-slate-600 border border-white/[0.08]"
                     }`}>
                       {villeText.length > 0 ? "Lancer →" : "Rechercher"}
@@ -320,7 +320,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                       {[
                         { l: "Total",       v: String(visibleLeads), c: "text-slate-200"   },
                         { l: "Intéressés",  v: leadTag === "interesse" ? "1" : "0", c: "text-emerald-400" },
-                        { l: "RDV pris",    v: "1",                  c: "text-violet-400"  },
+                        { l: "RDV pris",    v: "1",                  c: "text-brand-400"  },
                         { l: "Rappels",     v: "0",                  c: "text-amber-400"   },
                       ].map(s => (
                         <div key={s.l} className="flex-1 bg-white/[0.04] rounded-lg px-2 py-1.5 border border-white/[0.06]">
@@ -343,12 +343,12 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                       {LEADS.slice(0, visibleLeads).map((lead, i) => (
                         <div key={i}
                           className={`grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center px-2 py-1.5 rounded-lg border transition-all duration-300 ${
-                            i === 0 && drawerOpen ? "bg-violet-500/10 border-violet-500/20" : "border-transparent"
+                            i === 0 && drawerOpen ? "bg-brand-500/10 border-brand-500/20" : "border-transparent"
                           }`}
                           style={{ animation: "demoSlideIn 0.22s ease both" }}
                         >
                           <div className={`w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
-                            i === 0 && drawerOpen ? "bg-violet-500/20 text-violet-400" : "bg-white/5 text-slate-600"
+                            i === 0 && drawerOpen ? "bg-brand-500/20 text-brand-400" : "bg-white/5 text-slate-600"
                           }`}>{lead.n[0]}</div>
                           <span className="text-xs text-slate-400 truncate">{lead.n}</span>
                           <span className="text-[9px] text-slate-600 font-mono">{lead.tel}</span>
@@ -363,7 +363,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                        style={{ transform: drawerOpen ? "translateX(0)" : "translateX(100%)" }}>
                     <div className="px-3 py-2.5 border-b border-white/[0.06]">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="w-5 h-5 rounded-md bg-violet-500/20 flex items-center justify-center text-[9px] font-bold text-violet-400">M</div>
+                        <div className="w-5 h-5 rounded-md bg-brand-500/20 flex items-center justify-center text-[9px] font-bold text-brand-400">M</div>
                         <span className="text-xs font-semibold text-slate-200 truncate">Martin Plomberie</span>
                       </div>
                       <div className="text-[9px] text-slate-600">Lyon 3e · 06 12 34 56 78</div>
@@ -410,7 +410,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.05] flex-shrink-0">
                 <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Vue Kanban</span>
                 <div className="flex gap-1.5">
-                  <button className="text-[9px] px-2.5 py-1 rounded-lg bg-violet-500/15 text-violet-400 border border-violet-500/25 font-medium">Kanban</button>
+                  <button className="text-[9px] px-2.5 py-1 rounded-lg bg-brand-500/15 text-brand-400 border border-brand-500/25 font-medium">Kanban</button>
                   <button className="text-[9px] px-2.5 py-1 rounded-lg bg-white/[0.04] text-slate-600 border border-white/[0.07]">Table</button>
                 </div>
               </div>
@@ -427,7 +427,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
 
                   return (
                     <div key={col.id} className={`flex-1 flex flex-col gap-1.5 min-w-0 transition-all duration-300 ${
-                      kanbanPhase === "drag" && colIdx === 1 ? "ring-1 ring-violet-500/30 rounded-xl bg-violet-500/[0.04]" : ""
+                      kanbanPhase === "drag" && colIdx === 1 ? "ring-1 ring-brand-500/30 rounded-xl bg-brand-500/[0.04]" : ""
                     }`}>
                       <div className="flex items-center justify-between px-1 mb-0.5">
                         <span className={`text-[9px] font-semibold uppercase tracking-wider ${col.color}`}>{col.label}</span>
@@ -454,14 +454,14 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
               </div>
               {/* Carte "en vol" */}
               {kanbanPhase === "drag" && (
-                <div className="absolute top-[90px] left-[120px] w-40 p-2.5 rounded-xl border border-violet-400/40 bg-[#131520] shadow-[0_8px_32px_rgba(124,58,237,0.25)] text-[10px]"
+                <div className="absolute top-[90px] left-[120px] w-40 p-2.5 rounded-xl border border-brand-400/40 bg-[#131520] shadow-[0_8px_32px_rgba(0,229,255,0.25)] text-[10px]"
                      style={{
                        animation: "none",
                        transform: movingCard ? "translate(100px, 0) rotate(2deg)" : "translate(0,0) rotate(3deg)",
                        transition: "transform 0.65s cubic-bezier(.22,1,.36,1)",
                        zIndex: 20,
                      }}>
-                  <div className="font-medium text-violet-300 truncate">SAS Plomb Pro</div>
+                  <div className="font-medium text-brand-300 truncate">SAS Plomb Pro</div>
                   <div className="text-slate-600 mt-0.5">Lyon 2e</div>
                 </div>
               )}
@@ -542,7 +542,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
             <div className="h-full flex">
               {/* Panel gauche  lead actuel */}
               <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 bg-gradient-to-b from-[#0a0c14] to-[#050508]">
-                <div className="text-[9px] font-mono text-violet-400/70 uppercase tracking-widest">
+                <div className="text-[9px] font-mono text-brand-400/70 uppercase tracking-widest">
                   Session d&apos;appels · {sessionCount} contacté{sessionCount > 1 ? "s" : ""}
                 </div>
                 {/* Numéro géant */}
@@ -574,7 +574,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                 <div className="text-[9px] text-slate-600 uppercase tracking-wider mb-1">Stats live</div>
                 {[
                   { l: "Appelés",      v: String(sessionCount), c: "text-slate-200" },
-                  { l: "Réponses",     v: "2",                  c: "text-violet-400" },
+                  { l: "Réponses",     v: "2",                  c: "text-brand-400" },
                   { l: "Intéressés",   v: "1",                  c: "text-emerald-400" },
                   { l: "Rythme",       v: "8/h",                c: "text-cyan-400"   },
                 ].map(s => (
@@ -586,7 +586,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                 <div className="mt-auto">
                   <div className="text-[8px] text-slate-700 mb-1 font-mono uppercase">Progression</div>
                   <div className="h-1 rounded-full bg-white/[0.05] overflow-hidden">
-                    <div className="h-full bg-violet-500/60 rounded-full transition-all duration-700"
+                    <div className="h-full bg-brand-500/60 rounded-full transition-all duration-700"
                          style={{ width: `${(sessionCount / 10) * 100}%` }} />
                   </div>
                   <div className="text-[8px] text-slate-700 mt-0.5 font-mono">{sessionCount}/10</div>
@@ -605,7 +605,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                 {["Intro","QR","Prix","Close"].map((step, i) => (
                   <div key={step} title={step}
                     className={`w-7 h-7 rounded-lg flex items-center justify-center text-[9px] font-mono transition-all ${
-                      i === 0 ? "bg-violet-500/20 text-violet-400" : "text-slate-700"
+                      i === 0 ? "bg-brand-500/20 text-brand-400" : "text-slate-700"
                     }`}>
                     {String(i + 1).padStart(2,"0")}
                   </div>
@@ -615,7 +615,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
               <div className="flex-1 flex flex-col overflow-hidden">
                 <div className="px-4 py-2.5 border-b border-white/[0.05] flex items-center justify-between flex-shrink-0">
                   <div>
-                    <div className="text-[9px] text-violet-400/70 font-mono uppercase tracking-widest">Téléprompter</div>
+                    <div className="text-[9px] text-brand-400/70 font-mono uppercase tracking-widest">Téléprompter</div>
                     <div className="text-xs text-slate-300 font-semibold mt-0.5">Cold Call  Artisan</div>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -632,9 +632,9 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                     <span className="text-slate-600 text-[9px] font-mono uppercase tracking-wider block mb-2">Intro</span>
                     <p className="mb-3">
                       Bonjour{" "}
-                      <span className="text-violet-300 bg-violet-500/10 px-1 rounded">[prénom]</span>,
+                      <span className="text-brand-300 bg-brand-500/10 px-1 rounded">[prénom]</span>,
                       {" "}je travaille avec des{" "}
-                      <span className="text-violet-300">plombiers</span>{" "}
+                      <span className="text-brand-300">plombiers</span>{" "}
                       pour les aider à avoir plus de chantiers via Google.
                     </p>
                     <p className="text-slate-400 text-[13px]">
@@ -678,10 +678,10 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
             <div key={s}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
                 scene === s
-                  ? "bg-violet-500/15 text-violet-300 border border-violet-500/25"
+                  ? "bg-brand-500/15 text-brand-300 border border-brand-500/25"
                   : "text-slate-700"
               }`}>
-              {scene === s && <span className="w-1 h-1 rounded-full bg-violet-400" />}
+              {scene === s && <span className="w-1 h-1 rounded-full bg-brand-400" />}
               {labels[s]}
             </div>
           );

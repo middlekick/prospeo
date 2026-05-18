@@ -466,7 +466,7 @@ export default function Landing() {
             <div className="max-w-6xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between">
 
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-indigo-700 flex items-center justify-center shadow-[0_0_18px_rgba(0,229,255,0.5)]">
+                <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-[0_0_18px_rgba(0,229,255,0.5)]">
                   <span className="text-white font-bold text-sm">P</span>
                 </div>
                 <span className="text-slate-100 font-semibold tracking-tight text-[15px]">Prospeo</span>
@@ -840,7 +840,7 @@ export default function Landing() {
                     className="relative w-12 h-6 rounded-full bg-white/[0.08] border border-white/[0.1] transition-colors"
                     style={{ background: annual ? "rgba(0,229,255,0.15)" : undefined }}>
                     <motion.span
-                      className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-brand-400 shadow-[0_0_10px_rgba(0,229,255,0.5)]"
+                      className="absolute top-px left-px w-5 h-5 rounded-full bg-brand-400 shadow-[0_0_10px_rgba(0,229,255,0.5)]"
                       animate={{ x: annual ? 24 : 0 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }} />
                   </button>
@@ -885,10 +885,17 @@ export default function Landing() {
                   const displayPrice = annual ? p.annualPrice : p.monthlyPrice;
                   const card = (
                     <div key={p.name} data-reveal
-                      className={`relative flex flex-col p-7 rounded-3xl transition-all ${p.hl ? "bg-gradient-to-b from-brand-500/[0.06] to-transparent md:-mt-3 md:pb-10" : "border border-white/[0.07] bg-white/[0.02]"}`}>
+                      className={`relative flex flex-col p-7 rounded-3xl transition-all ${p.hl
+                        ? "bg-gradient-to-b from-brand-500/[0.12] via-brand-500/[0.04] to-transparent ring-1 ring-brand-500/20 shadow-[0_0_70px_-18px_rgba(0,229,255,0.35)] md:pb-10"
+                        : "border border-white/[0.07] bg-white/[0.02]"}`}>
                       {p.hl && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full
-                                         text-[11px] font-semibold bg-white text-[#0A0A0B]">
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5
+                                         px-3.5 py-1 rounded-full text-[11px] font-semibold
+                                         bg-gradient-to-r from-brand-400 to-brand-500 text-[#06121a]
+                                         shadow-[0_0_20px_rgba(0,229,255,0.55)]">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M12 2l2.6 6.3L21 9l-5 4.4L17.5 21 12 17.3 6.5 21 8 13.4 3 9l6.4-.7z"/>
+                          </svg>
                           Le plus populaire
                         </span>
                       )}
