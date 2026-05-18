@@ -77,5 +77,26 @@ export async function GET() {
     lastLeadAt:    statsMap[sub.user_id]?.lastLeadAt    || null,
   }));
 
-  return NextResponse.json({ users });
+  // ── Stats globales ──────────────────────────────────────────────────────────
+  const now = new Date();
+  const isTrial = (s: typeof subs[number]) =>
+    s.trial_expires_at != null && s.trial_expires_at > now;
+  const isPaid = (s: typeof subs[number]) =>
+    !isTrial(s) && (s.plan === "pro" || s.plan === "agency") &&
+    (s.stripe_status === "active" || s.stripe_status === "trialing");
+
+  const proPaid    = subs.filter(s => isPaid(s) && s.plan === "pro").length;
+  const agencyPaid = subs.filter(s => isPaid(s) && s.plan === "agency").length;
+
+  const stats = {
+    total:        subs.length,
+    free:         subs.filter(s => !isTrial(s) && !isPaid(s)).length,
+    trial:        subs.filter(isTrial).length,
+    pro:          proPaid,
+    agency:       agencyPaid,
+    mrr:          proPaid * 19 + agencyPaid * 49,
+    totalLeads:   leadsData.length,
+  };
+
+  return NextResponse.json({ users, stats });
 }

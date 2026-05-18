@@ -4,6 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmModal";
+import CodesModal from "@/components/admin/CodesModal";
+
+interface GlobalStats {
+  total: number; free: number; trial: number;
+  pro: number; agency: number; mrr: number; totalLeads: number;
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -88,6 +94,8 @@ export default function AdminPage() {
   const { success, error: toastError, info } = useToast();
   const confirm = useConfirm();
   const [expanded, setExpanded]   = useState<string | null>(null);  // user_id déplié
+  const [codesOpen, setCodesOpen] = useState(false);
+  const [stats,   setStats]       = useState<GlobalStats | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -97,7 +105,7 @@ export default function AdminPage() {
         if (!r.ok)            throw new Error("Erreur serveur");
         return r.json();
       })
-      .then((d: { users: UserRow[] }) => setUsers(d.users))
+      .then((d: { users: UserRow[]; stats?: GlobalStats }) => { setUsers(d.users); if (d.stats) setStats(d.stats); })
       .catch(e => setError((e as Error).message))
       .finally(() => setLoading(false));
   }, []);
@@ -163,6 +171,22 @@ export default function AdminPage() {
       info("Compte supprimé");
     } catch (e) { toastError(`Erreur : ${(e as Error).message}`); }
     finally { setBusy(null); }
+  }
+
+  function exportCSV() {
+    const head = ["email","prenom","nom","plan","trial_expire","code_trial","leads","activites","scrapes","inscrit"];
+    const rows = users.map(u => [
+      u.clerk?.email || "", u.clerk?.firstName || "", u.clerk?.lastName || "",
+      u.plan, u.trial_expires_at ? new Date(u.trial_expires_at).toISOString().slice(0,10) : "",
+      u.trial_code_used || "", u.leadCount, u.activityCount, u.scrape_count,
+      new Date(u.db_created_at).toISOString().slice(0,10),
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(";"));
+    const blob = new Blob(["﻿" + [head.join(";"), ...rows].join("\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `prospeo-users-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   // ── Filtres ───────────────────────────────────────────────────────────────
@@ -234,6 +258,14 @@ export default function AdminPage() {
         <div className="flex items-center gap-4">
           <h1 className="text-sm font-semibold text-slate-100">Administration</h1>
           <button onClick={load} className="text-xs text-slate-600 hover:text-slate-300 transition-colors">↻ Actualiser</button>
+          <button onClick={() => setCodesOpen(true)}
+            className="h-7 px-3 rounded-lg bg-brand-500/15 border border-brand-500/25 text-brand-300 text-[11px] font-medium hover:bg-brand-500/25 transition-all">
+            Codes d&apos;invitation
+          </button>
+          <button onClick={exportCSV}
+            className="h-7 px-3 rounded-lg bg-white/[0.05] border border-white/[0.08] text-slate-400 text-[11px] font-medium hover:bg-white/[0.09] transition-all">
+            Export CSV
+          </button>
 
           {/* Filtres plan */}
           <div className="flex gap-1 bg-white/[0.04] border border-white/[0.06] rounded-xl p-1 ml-2">
@@ -252,9 +284,11 @@ export default function AdminPage() {
           {/* Stats rapides */}
           <div className="hidden xl:flex items-center gap-4 ml-2 pl-4 border-l border-white/[0.06]">
             {[
+              { label: "MRR estimé",  value: stats ? `${stats.mrr} €` : "—",                 color: "text-emerald-400" },
+              { label: "Payants",     value: stats ? stats.pro + stats.agency : "—",          color: "text-brand-300" },
+              { label: "Trials",      value: stats ? stats.trial : "—",                       color: "text-amber-400" },
               { label: "Leads total", value: users.reduce((s, u) => s + u.leadCount, 0),     color: "text-slate-300" },
               { label: "Activités",   value: users.reduce((s, u) => s + u.activityCount, 0), color: "text-brand-400" },
-              { label: "Scrapes",     value: users.reduce((s, u) => s + u.scrape_count, 0),  color: "text-cyan-400" },
             ].map(s => (
               <div key={s.label} className="text-center">
                 <div className={`text-sm font-bold mono ${s.color}`}>{s.value}</div>
@@ -365,6 +399,12 @@ export default function AdminPage() {
                           title="Trial Pro 7 jours"
                           className="h-6 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-medium hover:bg-amber-500/20 transition-all disabled:opacity-30">
                           {busy === user.user_id ? "…" : "+7j"}
+                        </button>
+                        <button onClick={() => setPlan(user.user_id, "pro", 14)}
+                          disabled={isBusy}
+                          title="Trial Pro 14 jours"
+                          className="h-6 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-medium hover:bg-amber-500/20 transition-all disabled:opacity-30">
+                          +14j
                         </button>
                         <button onClick={() => setPlan(user.user_id, user.plan === "pro" ? "free" : "pro")}
                           disabled={isBusy}
@@ -506,9 +546,11 @@ export default function AdminPage() {
           {filtered.length} utilisateur{filtered.length > 1 ? "s" : ""} affichés
         </p>
         <p className="text-[10px] text-slate-700">
-          Code actif : <code className="mono text-brand-600">{process.env.NEXT_PUBLIC_APP_URL ? "" : "FORMATION2025"}</code>
+          Gérez les codes via le bouton <span className="text-brand-600">Codes d&apos;invitation</span>
         </p>
       </div>
+
+      {codesOpen && <CodesModal onClose={() => setCodesOpen(false)} />}
     </div>
   );
 }

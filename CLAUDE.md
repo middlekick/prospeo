@@ -228,6 +228,14 @@ scrape_count, scrape_reset_at  // compteur mensuel reset auto
 trial_expires_at, trial_code_used  // trial par code d'invitation
 ```
 
+### `InviteCode`
+```typescript
+code (unique, MAJ), days (durée trial Pro), max_uses (null=illimité),
+used_count, active, expires_at, note
+// Géré depuis /app/admin (CodesModal) — validé par /api/trial
+// (DB prioritaire, fallback TRIAL_INVITE_CODES env)
+```
+
 ---
 
 ## ✅ Fonctionnalités implémentées

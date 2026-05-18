@@ -99,3 +99,18 @@ model Subscription {
   db_created_at DateTime @default(now())
   db_updated_at DateTime @updatedAt
 }
+
+// Codes d'invitation gérés depuis l'admin (trial Pro offert N jours)
+model InviteCode {
+  id          String    @id @default(cuid())
+  code        String    @unique               // ex: "LANCEMENT14" (stocké en MAJUSCULES)
+  days        Int       @default(14)           // durée du trial Pro offert
+  max_uses    Int?                             // null = illimité
+  used_count  Int       @default(0)            // compteur d'activations
+  active      Boolean   @default(true)         // désactivable sans suppression
+  expires_at  DateTime?                        // date limite de validité du code (optionnel)
+  note        String?                          // libellé interne (campagne, etc.)
+
+  db_created_at DateTime @default(now())
+  db_updated_at DateTime @updatedAt
+}

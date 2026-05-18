@@ -216,6 +216,8 @@
 | 2026-05-18 | Fix | `€` affiché en carré blanc = U+0080 (octet € cp1252 mal décodé, char de contrôle sans glyphe). Correction encodage complète de `page.tsx` (U+0080→€, …→…, —→—, œ→œ ; 39 chars, 0 restant). Carte Pro re-redesignée : GradientBorder animé retiré, carte premium nette (bordure brand, dégradé, glow, CTA cyan) | `app/(public)/page.tsx` |
 | 2026-05-18 | Fix | **Mojibake cp1252 repo-wide** — le bug du carré blanc touchait 22 fichiers (131 chars : ' — … € œ en chars de contrôle). Corrigé via table Windows-1252 sur tout app/components/lib. Favicon refait en cyan (`app/icon.svg`, `public/icon*.svg`), ancien `favicon.ico` Next supprimé | 26 fichiers |
 | 2026-05-18 | Fix | Migration brand incomplète : 67 classes violet/indigo réelles oubliées (sign-in/up 100% violet, INPISearch, GoogleAdsScriptViewer, not-found, Sidebar…) → cyan brand. App 100% cohérente | 10 fichiers |
+| 2026-05-18 | Fix | **Page admin cassée** = BOM (U+FEFF) avant `"use client"` dans 26 fichiers (directive ignorée → Server Component → crash hooks). BOM retiré partout | 26 fichiers |
+| 2026-05-18 | Feat | **Gestion des codes d'invitation** : modèle Prisma `InviteCode` (code, days, max_uses, used_count, active, expires_at, note) + migration Neon. `/api/admin/codes` CRUD. `/api/trial` valide DB d'abord (fallback env). Admin : panneau `CodesModal` (créer/lister/toggle/suppr), stats globales (MRR estimé, payants, trials) + export CSV users + octroi manuel +7j/+14j | `prisma/schema.prisma`, `api/trial`, `api/admin/codes`, `api/admin/users`, `admin/page.tsx`, `components/admin/CodesModal.tsx` |
 
 ---
 
