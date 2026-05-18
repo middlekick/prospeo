@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 /**
  * TrialCodeModal — Modal de saisie du code d'invitation.

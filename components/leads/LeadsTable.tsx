@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Lead, TAG_COLORS, TAG_OPTIONS, TAG_LABEL, RDV_STATUT_COLORS, isRappelDue } from "./types";

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { TAGS, TagValue } from "./types";
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import FilterPills      from "@/components/leads/FilterPills";
