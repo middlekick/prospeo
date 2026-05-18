@@ -122,7 +122,7 @@ export default function ImportCSV({ onClose, onImported }: Props) {
             {/* Prévisualisation */}
             {rows && rows.length > 0 && (
               <div>
-                <p className="text-xs text-slate-500 mb-2">{rows.length} ligne(s) détectée(s)  aperçu :</p>
+                <p className="text-xs text-slate-500 mb-2">{rows.length} ligne(s) détectée(s) — aperçu :</p>
                 <div className="overflow-x-auto rounded-lg border border-white/8">
                   <table className="w-full text-xs">
                     <thead>
@@ -143,7 +143,7 @@ export default function ImportCSV({ onClose, onImported }: Props) {
                     </tbody>
                   </table>
                   {rows.length > 3 && (
-                    <p className="px-3 py-2 text-xs text-slate-600"> et {rows.length - 3} autres lignes</p>
+                    <p className="px-3 py-2 text-xs text-slate-600">… et {rows.length - 3} autres lignes</p>
                   )}
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function ImportCSV({ onClose, onImported }: Props) {
               disabled={!rows?.length || loading}
               className="px-4 py-1.5 rounded-md bg-brand-600 hover:bg-brand-500 disabled:opacity-40 text-xs font-medium text-white transition-colors"
             >
-              {loading ? "Import" : `Importer ${rows?.length ?? 0} ligne(s)`}
+              {loading ? "Import…" : `Importer ${rows?.length ?? 0} ligne(s)`}
             </button>
           </div>
         </div>

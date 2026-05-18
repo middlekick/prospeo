@@ -134,7 +134,7 @@ export default function CommandPalette() {
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Rechercher une page ou un lead"
+            placeholder="Rechercher une page ou un lead…"
             className="flex-1 bg-transparent text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none"
           />
           <kbd className="text-[10px] text-slate-700 bg-white/[0.05] border border-white/[0.08] rounded px-1.5 py-0.5">Échap</kbd>

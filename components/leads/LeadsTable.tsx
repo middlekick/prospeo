@@ -155,7 +155,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
     }
   }
 
-  // Log appel rapide  change le tag (l'activité est loggée côté serveur)
+  // Log appel rapide — change le tag (l'activité est loggée côté serveur)
   async function handleQuickLog(e: React.MouseEvent, lead: Lead, tag: string) {
     e.stopPropagation();
     const key = `${lead.nom}|${lead.telephone}`;
@@ -246,10 +246,10 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full shrink-0 ${lead.site ? "bg-cyan-500" : "bg-white/10"}`} />
-                    <span className="text-sm font-semibold text-slate-100 truncate">{lead.nom || ""}</span>
+                    <span className="text-sm font-semibold text-slate-100 truncate">{lead.nom || "—"}</span>
                   </div>
                   <div className="text-xs text-slate-600 truncate mt-0.5 ml-4">
-                    {lead.metier || ""}{lead.emplacement ? ` · ${lead.emplacement}` : ""}
+                    {lead.metier || "—"}{lead.emplacement ? ` · ${lead.emplacement}` : ""}
                   </div>
                   <div className="flex items-center gap-3 mt-2 ml-4">
                     {lead.telephone ? (
@@ -318,13 +318,13 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
                   <span className="w-2 h-2 rounded-full bg-white/10 shrink-0" />
                 )}
                 <span className="text-sm font-semibold text-slate-200 group-hover:text-white truncate transition-colors">
-                  {lead.nom || ""}
+                  {lead.nom || "—"}
                 </span>
               </div>
 
               {/* ── Métier ───────────────────────────────────────── */}
               <span className="text-xs text-slate-500 w-[140px] shrink-0 truncate">
-                {lead.metier || ""}
+                {lead.metier || "—"}
               </span>
 
               {/* ── Téléphone ────────────────────────────────────── */}
@@ -356,7 +356,7 @@ export default function LeadsTable({ leads, onOpen, onTagChange, selected, onTog
 
               {/* ── Emplacement ──────────────────────────────────── */}
               <span className="text-xs text-slate-600 flex-1 min-w-0 truncate hidden xl:block">
-                {lead.emplacement || ""}
+                {lead.emplacement || "—"}
               </span>
 
               {/* ── Statut (tag) ─────────────────────────────────── */}

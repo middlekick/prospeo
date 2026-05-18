@@ -44,7 +44,7 @@ function planBadge(plan: string, trialExpires: string | null) {
 }
 
 function trialLabel(expiry: string | null): string {
-  if (!expiry) return "";
+  if (!expiry) return "—";
   const diff = new Date(expiry).getTime() - Date.now();
   if (diff <= 0) return "Expiré";
   const days = Math.ceil(diff / 86400000);
@@ -52,7 +52,7 @@ function trialLabel(expiry: string | null): string {
 }
 
 function relativeDate(iso: string | null): string {
-  if (!iso) return "";
+  if (!iso) return "—";
   const diff = Date.now() - new Date(iso).getTime();
   const mins  = Math.floor(diff / 60000);
   const hours = Math.floor(diff / 3600000);
@@ -93,7 +93,7 @@ export default function AdminPage() {
     setLoading(true);
     fetch("/api/admin/users")
       .then(async r => {
-        if (r.status === 403) throw new Error("Accès refusé  votre user_id Clerk doit être dans ADMIN_USER_IDS.");
+        if (r.status === 403) throw new Error("Accès refusé — votre user_id Clerk doit être dans ADMIN_USER_IDS.");
         if (!r.ok)            throw new Error("Erreur serveur");
         return r.json();
       })
@@ -146,7 +146,7 @@ export default function AdminPage() {
     const name = user.clerk ? `${user.clerk.firstName} ${user.clerk.lastName}`.trim() || user.clerk.email : user.user_id;
     const ok = await confirm({
       title:        `Supprimer le compte de "${name}" ?`,
-      message:      `Cette action supprime :\n Son compte Clerk (accès perdu)\n Tous ses leads (${user.leadCount})\n Son abonnement\n\nImpossible d'annuler.`,
+      message:      `Cette action supprime :\n• Son compte Clerk (accès perdu)\n• Tous ses leads (${user.leadCount})\n• Son abonnement\n\nImpossible d'annuler.`,
       confirmLabel: "Supprimer définitivement",
       danger:       true,
     });
@@ -197,7 +197,7 @@ export default function AdminPage() {
   // ── Rendu ─────────────────────────────────────────────────────────────────
 
   if (loading) return (
-    <div className="flex items-center justify-center h-screen text-slate-600 text-sm">Chargement</div>
+    <div className="flex items-center justify-center h-screen text-slate-600 text-sm">Chargement…</div>
   );
 
   if (error) return (
@@ -266,7 +266,7 @@ export default function AdminPage() {
           {/* Recherche */}
           <div className="ml-auto relative">
             <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Nom, email"
+              placeholder="Nom, email…"
               className="h-7 pl-7 pr-3 w-44 rounded-lg bg-white/[0.05] border border-white/[0.08]
                          text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-brand-500/40"/>
             <svg className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-600" width="11" height="11"
@@ -353,7 +353,7 @@ export default function AdminPage() {
                       <span className="text-xs mono text-slate-700">
                         {user.clerk?.clerkCreatedAt
                           ? new Date(user.clerk.clerkCreatedAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" })
-                          : ""}
+                          : "—"}
                       </span>
                     </td>
 
@@ -364,7 +364,7 @@ export default function AdminPage() {
                           disabled={isBusy}
                           title="Trial Pro 7 jours"
                           className="h-6 px-2 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-medium hover:bg-amber-500/20 transition-all disabled:opacity-30">
-                          {busy === user.user_id ? "" : "+7j"}
+                          {busy === user.user_id ? "…" : "+7j"}
                         </button>
                         <button onClick={() => setPlan(user.user_id, user.plan === "pro" ? "free" : "pro")}
                           disabled={isBusy}
@@ -416,8 +416,8 @@ export default function AdminPage() {
                             <p className="text-[10px] font-bold tracking-widest text-slate-600 uppercase mb-2">Compte</p>
                             {[
                               { label: "User ID",        value: user.user_id, mono: true },
-                              { label: "Code trial",     value: user.trial_code_used || "", mono: true },
-                              { label: "Exp. trial",     value: user.trial_expires_at ? new Date(user.trial_expires_at).toLocaleDateString("fr-FR") : "" },
+                              { label: "Code trial",     value: user.trial_code_used || "—", mono: true },
+                              { label: "Exp. trial",     value: user.trial_expires_at ? new Date(user.trial_expires_at).toLocaleDateString("fr-FR") : "—" },
                               { label: "2FA",            value: user.clerk?.twoFactor ? "✅ Activé" : "Non" },
                               { label: "Dernier lead",   value: relativeDate(user.lastLeadAt) },
                             ].map(row => (
@@ -470,14 +470,14 @@ export default function AdminPage() {
                                   title="Envoyer un lien de connexion par email"
                                   className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-blue-500/10 border border-blue-500/20
                                              text-blue-400 text-[11px] font-medium hover:bg-blue-500/20 transition-all disabled:opacity-30">
-                                  {busy === user.user_id + "_reset" ? "Envoi" : "✉ Envoyer lien de connexion"}
+                                  {busy === user.user_id + "_reset" ? "Envoi…" : "✉ Envoyer lien de connexion"}
                                 </button>
                                 <button onClick={() => deleteUser(user)}
                                   disabled={busy === user.user_id + "_delete"}
                                   title="Supprimer le compte définitivement"
                                   className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-red-500/10 border border-red-500/20
                                              text-red-400 text-[11px] font-medium hover:bg-red-500/20 transition-all disabled:opacity-30">
-                                  {busy === user.user_id + "_delete" ? "Suppression" : "🗑 Supprimer"}
+                                  {busy === user.user_id + "_delete" ? "Suppression…" : "🗑 Supprimer"}
                                 </button>
                               </div>
                             </div>

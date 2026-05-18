@@ -75,9 +75,9 @@ function KanbanCard({
       </div>
 
       <p className="text-xs font-semibold text-slate-200 group-hover:text-white truncate transition-colors mb-1 pr-4">
-        {lead.nom || ""}
+        {lead.nom || "—"}
       </p>
-      <p className="text-[11px] text-slate-600 truncate mb-2">{lead.metier || ""}</p>
+      <p className="text-[11px] text-slate-600 truncate mb-2">{lead.metier || "—"}</p>
 
       {lead.telephone ? (
         <a

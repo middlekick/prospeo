@@ -40,7 +40,7 @@ export default function ScrapeForm({ onDone }: Props) {
         }
         throw new Error(data.error || "Erreur scraping");
       }
-      setMsg({ text: `✓ ${data.added} lead(s) ajouté(s)  total ${data.total}`, ok: true });
+      setMsg({ text: `✓ ${data.added} lead(s) ajouté(s) — total ${data.total}`, ok: true });
       onDone();
       // Rafraîchir le quota plan (le badge "X scrapings restants" doit refléter l'usage)
       refresh();
@@ -58,7 +58,7 @@ export default function ScrapeForm({ onDone }: Props) {
         <input
           value={metier}
           onChange={e => setMetier(e.target.value)}
-          placeholder="plombier, électricien"
+          placeholder="plombier, électricien…"
           className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-brand-500/50 w-full sm:w-44"
         />
       </div>
@@ -68,7 +68,7 @@ export default function ScrapeForm({ onDone }: Props) {
           <input
             value={ville}
             onChange={e => setVille(e.target.value)}
-            placeholder="Paris, Lyon"
+            placeholder="Paris, Lyon…"
             className="h-9 sm:h-8 px-3 rounded-md bg-white/5 border border-white/10 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-brand-500/50 w-full sm:w-36"
           />
         </div>
@@ -96,7 +96,7 @@ export default function ScrapeForm({ onDone }: Props) {
         disabled={loading || quotaReached}
         className="h-9 sm:h-8 px-4 rounded-md bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-sm font-medium text-white transition-colors w-full sm:w-auto"
       >
-        {loading ? "Scraping" : "Scraper"}
+        {loading ? "Scraping…" : "Scraper"}
       </button>
 
       {/* Badge quota plan free */}

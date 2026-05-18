@@ -2,7 +2,7 @@
 
 /**
  * components/ui/OnboardingModal.tsx
- * Modal d'onboarding au 1er login  4 étapes illustrées.
+ * Modal d'onboarding au 1er login — 4 étapes illustrées.
  * Déclenché depuis app/page.tsx si "onboarding_done" absent du localStorage.
  */
 
@@ -18,7 +18,7 @@ const STEPS = [
   {
     emoji: "📞",
     title: "Appelez avec le script",
-    desc:  "Ouvrez la page Scripts pour avoir votre téléprompter en plein écran. Chaque étape du cold call est guidée  de l'accroche aux objections.",
+    desc:  "Ouvrez la page Scripts pour avoir votre téléprompter en plein écran. Chaque étape du cold call est guidée — de l'accroche aux objections.",
     tip:   "Le script s'adapte à chaque réponse du prospect.",
   },
   {

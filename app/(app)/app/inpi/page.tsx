@@ -78,7 +78,7 @@ export default function INPIPage() {
           href="/#pricing"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-colors shadow-[0_0_20px_rgba(0,229,255,0.3)]"
         >
-          Passer Pro  19 /mois →
+          Passer Pro — 19 €/mois →
         </Link>
         <p className="text-xs text-slate-700">14 jours gratuits · annulable à tout moment</p>
       </div>
@@ -94,7 +94,7 @@ export default function INPIPage() {
       <header className="flex items-center justify-between gap-3 pl-14 md:pl-5 pr-5 py-3 border-b border-white/[0.05] shrink-0 bg-[#080b12]/70 backdrop-blur-md">
         <div>
           <h1 className="text-[13px] font-semibold text-slate-200 tracking-tight">INPI / RNE</h1>
-          <p className="text-[11px] text-slate-600 mt-0.5">Base nationale des entreprises  Registre National des Entreprises</p>
+          <p className="text-[11px] text-slate-600 mt-0.5">Base nationale des entreprises — Registre National des Entreprises</p>
         </div>
         {/* Chips capacités */}
         <div className="hidden md:flex items-center gap-2">
@@ -123,7 +123,7 @@ export default function INPIPage() {
                 />
               </div>
               <span className="text-[12px] text-cyan-400/70">
-                Enrichissement en cours  {enrichPct}%  recherche des numéros via Google Maps
+                Enrichissement en cours — {enrichPct}% — recherche des numéros via Google Maps…
               </span>
             </>
           ) : (

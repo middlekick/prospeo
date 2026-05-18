@@ -18,7 +18,7 @@ interface Props {
 }
 
 const RDV_STATUTS = [
-  { value: "",           label: ""          },
+  { value: "",           label: "—"          },
   { value: "en_attente", label: "En attente" },
   { value: "confirme",   label: "Confirmé"   },
   { value: "annule",     label: "Annulé"     },
@@ -177,7 +177,7 @@ function EmailPanel({ lead, onClose, onSent }: EmailPanelProps) {
         disabled={sending}
         className="w-full h-8 rounded-md bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/30 text-cyan-300 text-xs font-medium transition-colors disabled:opacity-40"
       >
-        {sending ? "Envoi" : "Envoyer"}
+        {sending ? "Envoi…" : "Envoyer"}
       </button>
     </div>
   );
@@ -223,7 +223,7 @@ function Journal({ lead, activities, onAdded }: JournalProps) {
           value={note}
           onChange={e => setNote(e.target.value)}
           onKeyDown={e => e.key === "Enter" && addNote()}
-          placeholder="Ajouter une note rapide"
+          placeholder="Ajouter une note rapide…"
           className="input-base flex-1 text-xs"
         />
         <VoiceButton
@@ -400,7 +400,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             <p className="text-[12px] text-slate-500 mt-0.5 tracking-wide">{form.metier}{form.emplacement ? ` · ${form.emplacement}` : ""}</p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Bouton email  masqué si plan free */}
+            {/* Bouton email — masqué si plan free */}
             {!planLoading && (plan === "pro" || plan === "agency") ? (
               <button
                 onClick={() => setEmailOpen(v => !v)}
@@ -420,7 +420,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
             ) : !planLoading ? (
               <a
                 href="/#pricing"
-                title="Fonctionnalité Pro  Passer Pro"
+                title="Fonctionnalité Pro — Passer Pro"
                 className="h-8 px-3 rounded-md text-xs font-medium border border-white/10 bg-white/5 text-slate-600 flex items-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
               >
                 🔒 Email
@@ -577,7 +577,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 </Field>
                 <Field label="Type de campagne">
                   <select value={form.ads_type} onChange={e => set("ads_type", e.target.value)} className="input-base w-full">
-                    {ADS_TYPES.map(t => <option key={t} value={t}>{t || ""}</option>)}
+                    {ADS_TYPES.map(t => <option key={t} value={t}>{t || "—"}</option>)}
                   </select>
                 </Field>
               </div>
@@ -594,7 +594,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 <div className="flex gap-2">
                   <input value={newService} onChange={e => setNewService(e.target.value)}
                     onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addService())}
-                    placeholder="Ajouter un service"
+                    placeholder="Ajouter un service…"
                     className="input-base flex-1" />
                   <button onClick={addService} className="px-3 py-1 rounded-md bg-brand-600/30 text-brand-300 text-xs hover:bg-brand-600/50">+</button>
                 </div>
@@ -693,7 +693,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               {saving ? (
                 <span className="flex items-center gap-1.5">
                   <svg className="animate-spin" width="10" height="10" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity=".3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
-                  Sauvegarde
+                  Sauvegarde…
                 </span>
               ) : "Sauvegarder"}
             </button>

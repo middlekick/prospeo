@@ -267,7 +267,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
              style={{ opacity: contentFade ? 1 : 0, transition: "opacity 0.35s ease" }}>
 
           {/* ════════════════════════════════════════════════════════════
-              SCÈNE 1  Scraping + Table + Drawer
+              SCÈNE 1 — Scraping + Table + Drawer
           ════════════════════════════════════════════════════════════ */}
           {scene === "scraping" && (
             <>
@@ -299,7 +299,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                   {scrapePhase === "loading" ? (
                     <div className="flex flex-col items-center gap-2">
                       <div className="w-7 h-7 rounded-full border-2 border-brand-500/25 border-t-brand-500 animate-spin" />
-                      <span className="text-[10px] text-slate-600 font-mono">Recherche Maps en cours</span>
+                      <span className="text-[10px] text-slate-600 font-mono">Recherche Maps en cours…</span>
                     </div>
                   ) : (
                     <button className={`px-6 py-2 rounded-lg text-xs font-semibold transition-all ${
@@ -403,7 +403,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SCÈNE 2  Vue Kanban
+              SCÈNE 2 — Vue Kanban
           ════════════════════════════════════════════════════════════ */}
           {scene === "kanban" && (
             <div className="h-full flex flex-col">
@@ -469,14 +469,14 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SCÈNE 3  Recherche INPI
+              SCÈNE 3 — Recherche INPI
           ════════════════════════════════════════════════════════════ */}
           {scene === "inpi" && (
             <div className="flex flex-col h-full">
               <div className="px-4 pt-2.5 pb-2 border-b border-white/[0.05] flex-shrink-0">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-[10px] text-cyan-400/80 font-mono uppercase tracking-widest">Base INPI / RNE</span>
-                  <span className="text-[9px] text-slate-600"> entreprises créées récemment</span>
+                  <span className="text-[9px] text-slate-600">— entreprises créées récemment</span>
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1 px-3 py-2 bg-white/[0.04] border border-white/[0.09] rounded-lg text-xs text-slate-300 font-mono flex items-center min-h-[30px]">
@@ -536,11 +536,11 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SCÈNE 4  Session d'appels
+              SCÈNE 4 — Session d'appels
           ════════════════════════════════════════════════════════════ */}
           {scene === "session" && (
             <div className="h-full flex">
-              {/* Panel gauche  lead actuel */}
+              {/* Panel gauche — lead actuel */}
               <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 bg-gradient-to-b from-[#0a0c14] to-[#050508]">
                 <div className="text-[9px] font-mono text-brand-400/70 uppercase tracking-widest">
                   Session d&apos;appels · {sessionCount} contacté{sessionCount > 1 ? "s" : ""}
@@ -555,10 +555,10 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                 {/* Boutons résultat */}
                 <div className="grid grid-cols-2 gap-2 w-full max-w-[240px] mt-1">
                   {[
-                    { l: "1  Intéressé",    c: "bg-emerald-600/20 text-emerald-400 border-emerald-500/25" },
-                    { l: "2  Rappeler",     c: "bg-amber-600/15   text-amber-400   border-amber-500/20"   },
-                    { l: "3  Ne répond pas",c: "bg-slate-600/15   text-slate-400   border-slate-500/20"   },
-                    { l: "4  Pas intéressé",c: "bg-red-600/12     text-red-400     border-red-500/18"     },
+                    { l: "1 — Intéressé",    c: "bg-emerald-600/20 text-emerald-400 border-emerald-500/25" },
+                    { l: "2 — Rappeler",     c: "bg-amber-600/15   text-amber-400   border-amber-500/20"   },
+                    { l: "3 — Ne répond pas",c: "bg-slate-600/15   text-slate-400   border-slate-500/20"   },
+                    { l: "4 — Pas intéressé",c: "bg-red-600/12     text-red-400     border-red-500/18"     },
                   ].map((b, i) => (
                     <button key={i}
                       className={`py-1.5 px-2 rounded-lg text-[9px] font-medium border transition-all ${b.c} ${
@@ -569,7 +569,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                   ))}
                 </div>
               </div>
-              {/* Panel droit  stats session */}
+              {/* Panel droit — stats session */}
               <div className="w-36 bg-[#080a0f] border-l border-white/[0.05] flex flex-col p-3 gap-2.5">
                 <div className="text-[9px] text-slate-600 uppercase tracking-wider mb-1">Stats live</div>
                 {[
@@ -596,7 +596,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SCÈNE 5  Scripts téléprompter
+              SCÈNE 5 — Scripts téléprompter
           ════════════════════════════════════════════════════════════ */}
           {scene === "scripts" && (
             <div className="flex h-full">
@@ -616,7 +616,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                 <div className="px-4 py-2.5 border-b border-white/[0.05] flex items-center justify-between flex-shrink-0">
                   <div>
                     <div className="text-[9px] text-brand-400/70 font-mono uppercase tracking-widest">Téléprompter</div>
-                    <div className="text-xs text-slate-300 font-semibold mt-0.5">Cold Call  Artisan</div>
+                    <div className="text-xs text-slate-300 font-semibold mt-0.5">Cold Call — Artisan</div>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -657,7 +657,7 @@ export default function AnimatedDemo({ forceScene }: { forceScene?: Scene } = {}
                     </div>
                     <div className="text-[9px] text-slate-500 italic mb-1">&ldquo;Je n&apos;ai pas le temps.&rdquo;</div>
                     <div className="text-[9px] text-slate-300 leading-relaxed">
-                      &ldquo;C&apos;est justement pour ça  on gère tout, vous recevez des appels entrants qualifiés.&rdquo;
+                      &ldquo;C&apos;est justement pour ça — on gère tout, vous recevez des appels entrants qualifiés.&rdquo;
                     </div>
                   </div>
                 </div>

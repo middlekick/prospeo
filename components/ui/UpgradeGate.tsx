@@ -3,7 +3,7 @@
 /**
  * components/ui/UpgradeGate.tsx
  * Masque un contenu si le plan ne l'autorise pas.
- * Affiche un overlay "ð" Fonctionnalité Pro" avec CTA vers /#pricing.
+ * Affiche un overlay "ðŸ"’ Fonctionnalité Pro" avec CTA vers /#pricing.
  */
 
 import Link from "next/link";
@@ -25,7 +25,7 @@ interface UpgradeGateProps {
   plan:     PlanTier;
   loading?: boolean;
   children: React.ReactNode;
-  /** Si true, affiche les children quand même (juste désactivés) â" sinon masqués */
+  /** Si true, affiche les children quand même (juste désactivés) â€" sinon masqués */
   blur?:    boolean;
 }
 

@@ -185,8 +185,8 @@ export function buildEmailHTML({ prenom, nomEntreprise, urlSite, screenshotUrl }
             1 semaine d'acquisition sans frais d'agence
           </p>
           <p style="${FONT};font-size:14px;color:#475569;line-height:1.6;margin:0">
-            Vous payez uniquement le budget publicitaire (~100 ) directement à la régie publicitaire.
-            Je ne me facture rien sur la semaine test  je vous prouve les résultats d'abord.
+            Vous payez uniquement le budget publicitaire (~100 €) directement à la régie publicitaire.
+            Je ne me facture rien sur la semaine test — je vous prouve les résultats d'abord.
           </p>
         </td>
       </tr>
@@ -270,7 +270,7 @@ export function buildRdvReminderEmail({
     </p>
 
     <p style="${FONT};font-size:15px;color:#334155;line-height:1.75;margin:0 0 20px">
-      Juste un petit rappel  notre échange téléphonique est prévu <strong>demain</strong>.
+      Juste un petit rappel — notre échange téléphonique est prévu <strong>demain</strong>.
     </p>
 
     ${rdvHeure ? `
