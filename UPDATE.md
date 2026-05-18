@@ -217,6 +217,7 @@
 | 2026-05-18 | Fix | **Mojibake cp1252 repo-wide** — le bug du carré blanc touchait 22 fichiers (131 chars : ' — … € œ en chars de contrôle). Corrigé via table Windows-1252 sur tout app/components/lib. Favicon refait en cyan (`app/icon.svg`, `public/icon*.svg`), ancien `favicon.ico` Next supprimé | 26 fichiers |
 | 2026-05-18 | Fix | Migration brand incomplète : 67 classes violet/indigo réelles oubliées (sign-in/up 100% violet, INPISearch, GoogleAdsScriptViewer, not-found, Sidebar…) → cyan brand. App 100% cohérente | 10 fichiers |
 | 2026-05-18 | Fix | **Page admin cassée** = BOM (U+FEFF) avant `"use client"` dans 26 fichiers (directive ignorée → Server Component → crash hooks). BOM retiré partout | 26 fichiers |
+| 2026-05-18 | Fix | **Scroll CRM cassé** : `SmoothScrollProvider` (Lenis) global dans le layout racine détournait la molette → conteneurs `overflow-auto` (tableau leads, dashboard) non scrollables. Lenis scopé à `(public)` uniquement, CRM en scroll natif | `app/layout.tsx`, `app/(public)/layout.tsx` |
 | 2026-05-18 | Feat | **Gestion des codes d'invitation** : modèle Prisma `InviteCode` (code, days, max_uses, used_count, active, expires_at, note) + migration Neon. `/api/admin/codes` CRUD. `/api/trial` valide DB d'abord (fallback env). Admin : panneau `CodesModal` (créer/lister/toggle/suppr), stats globales (MRR estimé, payants, trials) + export CSV users + octroi manuel +7j/+14j | `prisma/schema.prisma`, `api/trial`, `api/admin/codes`, `api/admin/users`, `admin/page.tsx`, `components/admin/CodesModal.tsx` |
 
 ---
