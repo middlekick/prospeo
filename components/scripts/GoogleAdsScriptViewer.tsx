@@ -409,7 +409,7 @@ function BlockRenderer({ block, openSub, onToggleSub }: {
     tip:          { border: "border-l-sky-500",      bg: "bg-sky-500/[0.04]",      label: "ASTUCE",         textColor: "text-sky-400"     },
     warn:         { border: "border-l-red-500",      bg: "bg-red-500/[0.04]",      label: "ATTENTION",      textColor: "text-red-400"     },
     instructions: { border: "border-l-orange-500",  bg: "bg-orange-500/[0.04]",   label: "INSTRUCTIONS",   textColor: "text-orange-400"  },
-    choices:      { border: "border-l-violet-500",  bg: "bg-violet-500/[0.04]",   label: "SELON LA RÉPONSE", textColor: "text-violet-400" },
+    choices:      { border: "border-l-brand-500",  bg: "bg-brand-500/[0.04]",   label: "SELON LA RÉPONSE", textColor: "text-brand-400" },
   };
 
   const c = config[block.type];
@@ -426,7 +426,7 @@ function BlockRenderer({ block, openSub, onToggleSub }: {
                 className={[
                   "w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
                   openSub === choice.subId
-                    ? "bg-violet-500/20 text-violet-200 border border-violet-500/30"
+                    ? "bg-brand-500/20 text-brand-200 border border-brand-500/30"
                     : "bg-white/[0.04] text-slate-300 border border-white/[0.06] hover:bg-white/[0.08] hover:text-white",
                 ].join(" ")}
               >
@@ -434,7 +434,7 @@ function BlockRenderer({ block, openSub, onToggleSub }: {
                 <span className={`text-[10px] transition-transform duration-150 ${openSub === choice.subId ? "rotate-90" : ""}`}>▶</span>
               </button>
               {openSub === choice.subId && (
-                <div className="mt-1.5 ml-3 pl-3 border-l border-violet-500/30 py-1.5">
+                <div className="mt-1.5 ml-3 pl-3 border-l border-brand-500/30 py-1.5">
                   {choice.content.split("\n").map((line, i) => (
                     <p key={i} className="text-sm text-slate-300 leading-relaxed">{line}</p>
                   ))}
@@ -652,9 +652,9 @@ export default function GoogleAdsScriptViewer({ onBack }: { onBack: () => void }
 
               {/* Mindset */}
               {current.mindset && (
-                <div className="mb-5 px-4 py-3 rounded-xl bg-violet-900/20 border border-violet-500/20">
-                  <div className="text-[10px] font-bold tracking-widest text-violet-500/70 mb-1.5">MINDSET</div>
-                  <p className="text-sm text-violet-300/80 italic leading-relaxed">{current.mindset}</p>
+                <div className="mb-5 px-4 py-3 rounded-xl bg-brand-900/20 border border-brand-500/20">
+                  <div className="text-[10px] font-bold tracking-widest text-brand-500/70 mb-1.5">MINDSET</div>
+                  <p className="text-sm text-brand-300/80 italic leading-relaxed">{current.mindset}</p>
                 </div>
               )}
 

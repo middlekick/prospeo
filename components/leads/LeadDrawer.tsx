@@ -585,7 +585,7 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
               <Field label="Services">
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {form.ads_services.map(s => (
-                    <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-violet-900/40 text-brand-300 text-xs">
+                    <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-900/40 text-brand-300 text-xs">
                       {s}
                       <button onClick={() => removeService(s)} className="hover:text-red-400">×</button>
                     </span>

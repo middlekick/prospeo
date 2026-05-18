@@ -103,7 +103,7 @@ function TeleprompterBlocks({ blocks, showMindset }: { blocks: Block[]; showMind
         if (block.type === "mindset") {
           if (!showMindset) return null;
           return (
-            <div key={block.id} className="px-4 py-3 rounded-lg bg-violet-900/20 border border-brand-500/20">
+            <div key={block.id} className="px-4 py-3 rounded-lg bg-brand-900/20 border border-brand-500/20">
               <div className="text-xs font-bold tracking-widest text-brand-500/70 mb-1.5">{block.label || "MINDSET"}</div>
               {block.text && <p className="text-sm text-brand-300/80 italic leading-relaxed">{block.text}</p>}
             </div>
@@ -213,7 +213,7 @@ function TeleprompterSteps({ steps, showMindset }: { steps: Step[]; showMindset:
             </div>
 
             {step.mindset && showMindset && (
-              <div className="mb-6 px-4 py-3 rounded-lg bg-violet-900/20 border border-brand-500/20">
+              <div className="mb-6 px-4 py-3 rounded-lg bg-brand-900/20 border border-brand-500/20">
                 <div className="text-xs font-bold tracking-widest text-brand-500/70 mb-1.5">MINDSET</div>
                 <p className="text-sm text-brand-300/80 italic leading-relaxed">{step.mindset}</p>
               </div>

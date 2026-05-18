@@ -117,7 +117,7 @@ export default function Sidebar() {
         <div className="flex items-center gap-3 px-4 py-[18px] shrink-0">
           {/* Icône P */}
           <div className="relative w-8 h-8 rounded-[10px] shrink-0 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-indigo-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-brand-700" />
             <div className="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]" />
             <span className="relative text-white text-[13px] font-bold tracking-tight">P</span>
           </div>

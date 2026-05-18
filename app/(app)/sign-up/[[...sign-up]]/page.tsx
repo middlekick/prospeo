@@ -21,11 +21,11 @@ const CLERK_APPEARANCE = {
     dividerLine:              "bg-white/[0.08]",
     dividerText:              "text-slate-600 text-xs",
     formFieldLabel:           "text-slate-400 text-xs",
-    formFieldInput:           "border-white/[0.10] bg-white/[0.04] text-slate-200 focus:border-violet-500/60",
-    formButtonPrimary:        "bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-colors",
-    footerActionLink:         "text-violet-400 hover:text-violet-300 transition-colors",
+    formFieldInput:           "border-white/[0.10] bg-white/[0.04] text-slate-200 focus:border-brand-500/60",
+    formButtonPrimary:        "bg-brand-600 hover:bg-brand-500 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-colors",
+    footerActionLink:         "text-brand-400 hover:text-brand-300 transition-colors",
     identityPreviewText:      "text-slate-300",
-    identityPreviewEditButton:"text-violet-400 hover:text-violet-300",
+    identityPreviewEditButton:"text-brand-400 hover:text-brand-300",
   },
 };
 
@@ -40,7 +40,7 @@ export default function SignUpPage() {
 
       <div className="relative z-10 flex flex-col items-center gap-6 w-full px-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center shadow-[0_0_18px_rgba(124,58,237,0.5)]">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-[0_0_18px_rgba(124,58,237,0.5)]">
             <span className="text-white font-bold text-sm">P</span>
           </div>
           <span className="text-slate-100 font-semibold text-[17px] tracking-tight">Prospeo</span>

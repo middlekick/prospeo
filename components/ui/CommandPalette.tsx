@@ -161,7 +161,7 @@ export default function CommandPalette() {
                     >
                       <span className="text-base w-6 text-center">{n.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <div className={`text-sm ${active === i ? "text-violet-200" : "text-slate-300"}`}>{n.label}</div>
+                        <div className={`text-sm ${active === i ? "text-brand-200" : "text-slate-300"}`}>{n.label}</div>
                         <div className="text-xs text-slate-600">{n.hint}</div>
                       </div>
                       {active === i && <span className="text-xs text-brand-400">↵</span>}
@@ -187,7 +187,7 @@ export default function CommandPalette() {
                       >
                         <span className="w-6 text-center text-slate-600">·</span>
                         <div className="flex-1 min-w-0">
-                          <div className={`text-sm truncate ${active === gi ? "text-violet-200" : "text-slate-300"}`}>{l.nom}</div>
+                          <div className={`text-sm truncate ${active === gi ? "text-brand-200" : "text-slate-300"}`}>{l.nom}</div>
                           <div className="text-xs text-slate-600 truncate">
                             {l.metier}{l.emplacement ? ` · ${l.emplacement}` : ""}
                           </div>

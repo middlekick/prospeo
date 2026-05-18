@@ -242,7 +242,7 @@ export default function INPISearch({ onAddLeads }: Props) {
               <input value={q} onChange={e => setQ(e.target.value)}
                 placeholder="plombier, maçon, SARL…"
                 onKeyDown={e => e.key === "Enter" && search(1)}
-                className="h-8 pl-8 pr-3 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[13px] text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-violet-500/40 w-52 transition-colors"
+                className="h-8 pl-8 pr-3 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[13px] text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-brand-500/40 w-52 transition-colors"
               />
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function INPISearch({ onAddLeads }: Props) {
             <div className="relative w-48">
               <select value={dept} onChange={e => setDept(e.target.value)}
                 className="appearance-none h-8 w-full pl-3 pr-7 rounded-lg bg-[#0e1118] border border-white/[0.08]
-                           text-[13px] text-slate-200 focus:outline-none focus:border-violet-500/40
+                           text-[13px] text-slate-200 focus:outline-none focus:border-brand-500/40
                            cursor-pointer [color-scheme:dark] transition-colors">
                 <option value="">Tous les dpts.</option>
                 {DEPARTEMENTS.map(([code, label]) => (
@@ -270,7 +270,7 @@ export default function INPISearch({ onAddLeads }: Props) {
             <div className="relative w-52">
               <select value={naf} onChange={e => setNaf(e.target.value)}
                 className="appearance-none h-8 w-full pl-3 pr-7 rounded-lg bg-[#0e1118] border border-white/[0.08]
-                           text-[13px] text-slate-200 focus:outline-none focus:border-violet-500/40
+                           text-[13px] text-slate-200 focus:outline-none focus:border-brand-500/40
                            cursor-pointer [color-scheme:dark] transition-colors">
                 <option value="">Tous secteurs</option>
                 {NAF_SUGGESTIONS.map(([code, label]) => (
@@ -308,13 +308,13 @@ export default function INPISearch({ onAddLeads }: Props) {
             <label className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider">Max ans</label>
             <input type="number" value={annees} min={1} max={10} disabled={moisMax > 0}
               onChange={e => setAnnees(Number(e.target.value))}
-              className="h-8 px-3 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[13px] text-slate-200 focus:outline-none focus:border-violet-500/40 w-16 font-mono"
+              className="h-8 px-3 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[13px] text-slate-200 focus:outline-none focus:border-brand-500/40 w-16 font-mono"
             />
           </div>
 
           {/* Rechercher */}
           <button onClick={() => search(1)} disabled={loading}
-            className="h-8 px-5 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-[13px] font-semibold text-white transition-all shadow-[0_0_16px_rgba(124,58,237,0.2)] flex items-center gap-2">
+            className="h-8 px-5 rounded-lg bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-[13px] font-semibold text-white transition-all shadow-[0_0_16px_rgba(124,58,237,0.2)] flex items-center gap-2">
             {loading ? (
               <>
                 <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity=".3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
@@ -332,7 +332,7 @@ export default function INPISearch({ onAddLeads }: Props) {
         {/* Filtre artisans + résultat count */}
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 cursor-pointer w-fit group">
-            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${rmOnly ? "bg-violet-500 border-violet-500" : "bg-white/[0.04] border-white/[0.12] group-hover:border-violet-500/40"}`}
+            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${rmOnly ? "bg-brand-500 border-brand-500" : "bg-white/[0.04] border-white/[0.12] group-hover:border-brand-500/40"}`}
               onClick={() => setRmOnly(v => !v)}>
               {rmOnly && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
             </div>
@@ -341,7 +341,7 @@ export default function INPISearch({ onAddLeads }: Props) {
           </label>
           {total > 0 && (
             <span className="text-[11px] text-slate-600 font-mono">
-              ~<span className="text-violet-400 font-semibold">{total.toLocaleString("fr-FR")}</span> dans l&apos;API
+              ~<span className="text-brand-400 font-semibold">{total.toLocaleString("fr-FR")}</span> dans l&apos;API
               {results.length > 0 && <span className="text-slate-700"> · {results.length} affichés</span>}
             </span>
           )}
@@ -363,7 +363,7 @@ export default function INPISearch({ onAddLeads }: Props) {
               {selected.size === results.length ? "Tout désélectionner" : "Tout sélectionner"}
             </button>
             {selected.size > 0 && (
-              <span className="text-[11px] font-mono text-violet-400 font-semibold">
+              <span className="text-[11px] font-mono text-brand-400 font-semibold">
                 {selected.size} sélectionné{selected.size > 1 ? "s" : ""}
               </span>
             )}
@@ -377,7 +377,7 @@ export default function INPISearch({ onAddLeads }: Props) {
             <button
               onClick={importSelected}
               disabled={!selected.size || importing}
-              className="h-7 px-4 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors shadow-[0_0_12px_rgba(124,58,237,0.2)]"
+              className="h-7 px-4 rounded-lg bg-brand-600 hover:bg-brand-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors shadow-[0_0_12px_rgba(124,58,237,0.2)]"
             >
               {importing ? "Import…" : `Ajouter ${selected.size || ""} au CRM`}
             </button>
@@ -392,9 +392,9 @@ export default function INPISearch({ onAddLeads }: Props) {
         {!searched && !loading && (
           <div className="flex flex-col items-center justify-center py-24 gap-5">
             <div className="relative w-16 h-16 flex items-center justify-center shrink-0">
-              <div className="absolute inset-0 rounded-2xl bg-violet-500/10 blur-xl" />
-              <div className="relative w-14 h-14 rounded-2xl bg-violet-500/[0.08] border border-violet-500/[0.15] flex items-center justify-center">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-violet-400">
+              <div className="absolute inset-0 rounded-2xl bg-brand-500/10 blur-xl" />
+              <div className="relative w-14 h-14 rounded-2xl bg-brand-500/[0.08] border border-brand-500/[0.15] flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-brand-400">
                   <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
                   <path d="M7 8h10M7 11h6"/>
                 </svg>
@@ -409,7 +409,7 @@ export default function INPISearch({ onAddLeads }: Props) {
             <div className="flex items-center gap-3">
               {[
                 { dot: "bg-cyan-400", label: "Département" },
-                { dot: "bg-violet-400", label: "Secteur NAF" },
+                { dot: "bg-brand-400", label: "Secteur NAF" },
                 { dot: "bg-amber-400", label: "Ancienneté" },
               ].map(({ dot, label }) => (
                 <div key={label} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.06]">
@@ -424,7 +424,7 @@ export default function INPISearch({ onAddLeads }: Props) {
         {/* Chargement */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
-            <svg className="animate-spin text-violet-500" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <svg className="animate-spin text-brand-500" width="20" height="20" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity=".2"/>
               <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
             </svg>
@@ -458,8 +458,8 @@ export default function INPISearch({ onAddLeads }: Props) {
                     onClick={toggleAll}
                     className={`w-4 h-4 rounded border flex items-center justify-center cursor-pointer transition-all ${
                       selected.size === results.length && results.length > 0
-                        ? "bg-violet-500 border-violet-500 shadow-[0_0_6px_rgba(124,58,237,0.4)]"
-                        : "bg-white/[0.03] border-white/[0.15] hover:border-violet-500/40"
+                        ? "bg-brand-500 border-brand-500 shadow-[0_0_6px_rgba(124,58,237,0.4)]"
+                        : "bg-white/[0.03] border-white/[0.15] hover:border-brand-500/40"
                     }`}
                   >
                     {selected.size === results.length && results.length > 0 && (
@@ -485,7 +485,7 @@ export default function INPISearch({ onAddLeads }: Props) {
                     className={[
                       "border-b border-white/[0.04] cursor-pointer transition-all group",
                       checked
-                        ? "bg-violet-500/[0.08] hover:bg-violet-500/[0.12]"
+                        ? "bg-brand-500/[0.08] hover:bg-brand-500/[0.12]"
                         : "hover:bg-white/[0.025]",
                     ].join(" ")}
                   >
@@ -493,8 +493,8 @@ export default function INPISearch({ onAddLeads }: Props) {
                     <td className="py-3 px-3">
                       <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
                         checked
-                          ? "bg-violet-500 border-violet-500 shadow-[0_0_6px_rgba(124,58,237,0.4)]"
-                          : "bg-white/[0.03] border-white/[0.15] group-hover:border-violet-500/30"
+                          ? "bg-brand-500 border-brand-500 shadow-[0_0_6px_rgba(124,58,237,0.4)]"
+                          : "bg-white/[0.03] border-white/[0.15] group-hover:border-brand-500/30"
                       }`}>
                         {checked && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5"><polyline points="20 6 9 17 4 12"/></svg>}
                       </div>

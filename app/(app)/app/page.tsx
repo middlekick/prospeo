@@ -61,7 +61,7 @@ function BulkBar({ count, onClear, onBulkTag, onBulkDelete, loading }: BulkBarPr
   }, []);
 
   return (
-    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-3 md:px-4 py-2.5 bg-[#1a1d2e] border border-brand-500/30 rounded-2xl shadow-2xl shadow-violet-900/20 max-w-[calc(100vw-1.5rem)] overflow-x-auto">
+    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-3 md:px-4 py-2.5 bg-[#1a1d2e] border border-brand-500/30 rounded-2xl shadow-2xl shadow-brand-900/20 max-w-[calc(100vw-1.5rem)] overflow-x-auto">
       <span className="text-xs font-semibold text-brand-300">{count} sélectionné{count > 1 ? "s" : ""}</span>
       <div className="w-px h-4 bg-white/10 mx-1" />
 

@@ -30,8 +30,8 @@ export default function NotFound() {
 
       {/* Logo */}
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl bg-violet-500/20 flex items-center justify-center">
-          <span className="text-violet-400 text-sm font-bold">P</span>
+        <div className="w-8 h-8 rounded-xl bg-brand-500/20 flex items-center justify-center">
+          <span className="text-brand-400 text-sm font-bold">P</span>
         </div>
         <span className="text-slate-400 text-sm font-medium">Prospeo</span>
       </div>
@@ -50,7 +50,7 @@ export default function NotFound() {
       {/* CTA */}
       <Link
         href="/app"
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-colors mt-2"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors mt-2"
       >
         ← Retour aux leads
       </Link>
