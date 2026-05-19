@@ -7,8 +7,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { mailer }                     from "@/lib/email";
+import { rateLimit }                  from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const rl = rateLimit("contact", req, 5, 10 * 60_000); // 5 / 10 min / IP
+  if (rl) return rl;
+
   if (!process.env.GMAIL_USER) {
     return NextResponse.json({ error: "Gmail non configuré" }, { status: 500 });
   }

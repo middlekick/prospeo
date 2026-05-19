@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:encoding": "node scripts/check-encoding.js",
+    "prepare": "node scripts/install-hooks.js"
   },
   "dependencies": {
     "@clerk/localizations": "^4.6.3",

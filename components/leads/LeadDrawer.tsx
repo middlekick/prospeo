@@ -29,11 +29,13 @@ const ADS_TYPES = ["", "Leads", "Appels", "Trafic", "Visibilité"];
 
 // ── Icônes et couleurs du journal ─────────────────────────────────────────────
 
-const ACTIVITY_ICONS: Record<string, string> = {
-  statut: "🔄",
-  email:  "📧",
-  note:   "💬",
-  appel:  "📞",
+// SVG inline 13px, hérite de currentColor (teinté par ACTIVITY_COLORS)
+const sIcon = "inline-block align-[-2px] mr-1";
+const ACTIVITY_ICONS: Record<string, React.ReactNode> = {
+  statut: <svg className={sIcon} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>,
+  email:  <svg className={sIcon} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>,
+  note:   <svg className={sIcon} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+  appel:  <svg className={sIcon} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -57,10 +59,13 @@ function formatActivityDate(iso: string): string {
 
 type EmailTemplate = "offre" | "rdv_confirmation" | "rdv_rappel";
 
-const EMAIL_TEMPLATES: { value: EmailTemplate; label: string; icon: string; desc: string }[] = [
-  { value: "offre",            icon: "🚀", label: "Offre semaine gratuite", desc: "Présente la semaine d'acquisition offerte"   },
-  { value: "rdv_confirmation", icon: "✅", label: "Confirmation RDV",       desc: "Confirme la date et l'heure de l'échange"    },
-  { value: "rdv_rappel",       icon: "⏰", label: "Rappel J-1",             desc: "Rappel la veille du RDV"                     },
+const tIcon = (d: React.ReactNode) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{d}</svg>
+);
+const EMAIL_TEMPLATES: { value: EmailTemplate; label: string; icon: React.ReactNode; desc: string }[] = [
+  { value: "offre",            icon: tIcon(<><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></>),                 label: "Offre semaine gratuite", desc: "Présente la semaine d'acquisition offerte"   },
+  { value: "rdv_confirmation", icon: tIcon(<><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></>), label: "Confirmation RDV",       desc: "Confirme la date et l'heure de l'échange"    },
+  { value: "rdv_rappel",       icon: tIcon(<><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></>),                 label: "Rappel J-1",             desc: "Rappel la veille du RDV"                     },
 ];
 
 interface EmailPanelProps {
@@ -423,7 +428,8 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                 title="Fonctionnalité Pro — Passer Pro"
                 className="h-8 px-3 rounded-md text-xs font-medium border border-white/10 bg-white/5 text-slate-600 flex items-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors"
               >
-                🔒 Email
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Email
               </a>
             ) : null}
             {/* Bouton WhatsApp */}
@@ -654,13 +660,15 @@ export default function LeadDrawer({ lead, onClose, onSaved, onDeleted }: Props)
                       onClick={() => setEmailOpen(true)}
                       className="flex items-center gap-1.5 h-7 px-3 rounded-md bg-white/5 border border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/10 text-xs transition-colors"
                     >
-                      ✅ Confirmer le RDV
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                      Confirmer le RDV
                     </button>
                     <button
                       onClick={() => setEmailOpen(true)}
                       className="flex items-center gap-1.5 h-7 px-3 rounded-md bg-white/5 border border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/10 text-xs transition-colors"
                     >
-                      ⏰ Rappel J-1
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      Rappel J-1
                     </button>
                   </div>
                 </div>

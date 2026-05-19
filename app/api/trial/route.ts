@@ -10,8 +10,12 @@
 import { auth }   from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
+  const rl = rateLimit("trial", req, 10, 10 * 60_000); // 10 essais / 10 min / IP
+  if (rl) return rl;
+
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
 

@@ -4,6 +4,7 @@ import { auth }                       from "@clerk/nextjs/server";
 import { prisma }                     from "@/lib/prisma";
 import { normalizeLead }              from "@/lib/db";
 import { checkAndIncrementScrape, getUserPlan, PLAN_LIMITS } from "@/lib/plan";
+import { rateLimit }                from "@/lib/rate-limit";
 
 const PAGE_SIZE = 20;
 
@@ -21,6 +22,9 @@ async function fetchPage(query: string, apiKey: string, start: number): Promise<
 
 // POST /api/scrape — scrape Google Maps et ajoute les leads trouvés
 export async function POST(req: NextRequest) {
+  const rl = rateLimit("scrape", req, 12, 5 * 60_000); // 12 / 5 min / IP
+  if (rl) return rl;
+
   const { userId } = await auth();
   if (!userId)
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
